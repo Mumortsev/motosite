@@ -1,63 +1,1770 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f3f1eb">
-<meta name="description" content="Мотоинженерия, кастом, обслуживание V-Twin и кроссовых мотоциклов. Демонстрационная витрина мастерской и атлас мотоспортивных локаций Кубани.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="MOTO KUBAN — инженерия движения">
-<meta property="og:description" content="Кастом-мастерская, диагностика, смета и атлас мотоспортивных локаций. Демонстрационная версия.">
-<title>MOTO KUBAN — мастерская и мотоспорт</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<style>
-:root{--paper:#f3f1eb;--paper2:#e9e6dd;--card:#fffdf9;--ink:#202722;--muted:#666d66;--stroke:#d8d8cf;--accent:#a94c30;--on-accent:#fff;--sport:#101915;--sport-card:#19231e;--sport-ink:#f4f4ed;--sport-muted:#a5b0a8;--sport-accent:#c5e58f;--round:17px;--max:1440px;--sans:'Manrope','DM Sans',Arial,sans-serif;--serif:'Playfair Display',Georgia,serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6}body[data-division="cross"]{--accent:#4c684a}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.6}img{max-width:100%;display:block}button,input{border-radius:0}:focus-visible{outline:3px solid #2a78df;outline-offset:3px}::selection{background:#b9cba9;color:#111}h1,h2,h3,h4,p{margin-top:0}h1,h2,h3{line-height:1.08}small{font-size:12px}em{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:-.055em}a:hover{text-decoration-thickness:1px}.skip{position:absolute;top:-70px;left:20px;z-index:99;background:white;padding:10px}.skip:focus{top:10px}.wrap{width:min(calc(100% - 80px),var(--max));margin:0 auto}.line{height:1px;background:var(--stroke)}.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--accent)}.display{font-size:clamp(44px,6.3vw,100px);font-weight:700;letter-spacing:-.075em;line-height:.98}.section-title{font-size:clamp(36px,4.3vw,65px);font-weight:700;letter-spacing:-.065em}.lead{font-size:clamp(16px,1.4vw,19px);max-width:640px;color:var(--muted);line-height:1.65}.mono{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.subtle{color:var(--muted)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:52px;padding:12px 21px;border:1px solid transparent;border-radius:7px;font-weight:800;font-size:12px;letter-spacing:.035em;transition:transform .24s,background .24s,border-color .24s;color:var(--ink);text-decoration:none}.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}.btn-primary{background:var(--ink);color:white}.btn-accent{background:var(--accent);color:white}.btn-ghost{background:transparent;border-color:var(--stroke)}.btn-ghost:hover{border-color:var(--ink)}.btn-small{min-height:40px;padding:8px 13px;font-size:11px}.btn svg{width:15px;height:15px;flex-shrink:0}.capsule{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--stroke);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:700}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent)}.topline{height:6px;background:var(--ink)}.site-header{position:sticky;top:0;z-index:100;background:rgba(243,241,235,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--stroke)}.header-content{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:78px}.brand{display:inline-flex;align-items:center;gap:13px;white-space:nowrap}.brand-mark{width:41px;height:41px;border:2px solid currentColor;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:13px;letter-spacing:-.08em;transform:rotate(-12deg)}.brand-name{font-size:16px;line-height:1.08;font-weight:900;letter-spacing:-.05em}.brand-name span{display:block;font-weight:600;letter-spacing:.13em;font-size:8px;margin-top:4px}.header-nav,.header-actions{display:flex;gap:9px;align-items:center}.header-link{padding:9px 10px;color:var(--muted);font-size:12px;font-weight:800}.header-link:hover{color:var(--ink)}.header-switch{display:flex;gap:4px;border:1px solid var(--stroke);padding:4px;border-radius:9px;background:var(--paper2)}.switch-item{border:0;background:transparent;color:var(--muted);padding:9px 13px;border-radius:6px;font-weight:800;font-size:11px;white-space:nowrap}.switch-item[aria-pressed="true"]{background:var(--ink);color:white}.menu-trigger{width:43px;height:43px;display:none;align-items:center;justify-content:center;border:1px solid var(--stroke);background:transparent;border-radius:6px;font-size:21px}.mobile-nav{background:var(--paper);border-top:1px solid var(--stroke);padding:20px 0 26px}.mobile-nav[hidden]{display:none}.mobile-nav .nav-list{display:grid;gap:5px}.mobile-nav a,.mobile-nav button{width:100%;text-align:left;border:0;border-bottom:1px solid var(--stroke);padding:14px 6px;font-size:15px;font-weight:700;background:transparent}.section{padding:105px 0}.section-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}.section-top .section-title{max-width:850px;margin:12px 0 0}.section-index{font-weight:800;font-size:11px;color:var(--muted);letter-spacing:.15em}.hero{padding:55px 0 65px}.hero-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:5vw;align-items:center}.hero-copy{padding:25px 0}.hero-copy .eyebrow{margin:0 0 23px}.division-switch{display:inline-flex;gap:5px;padding:5px;background:#e5e3da;border:1px solid #d6d6ca;border-radius:10px;margin-bottom:30px}.division-btn{font-size:11px;font-weight:850;border:0;background:transparent;padding:12px 16px;border-radius:7px;color:#626c62}.division-btn[aria-pressed="true"]{background:var(--ink);color:#fff}.division-btn:focus-visible{outline-color:#2679dc}.hero-copy h1{margin:0 0 30px;max-width:710px}.hero-copy .lead{max-width:490px;margin-bottom:28px}.hero-buttons{display:flex;flex-wrap:wrap;gap:10px}.hero-photo{position:relative;min-height:630px;background:#333934;overflow:hidden;border-radius:var(--round)}.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .85s cubic-bezier(.2,.8,.2,1)}.hero-photo:hover img{transform:scale(1.035)}.hero-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.01) 45%,rgba(0,0,0,.82) 100%);pointer-events:none}.photo-fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#e7e8e2;background:radial-gradient(circle at 50% 45%,#535950,#202823);padding:30px}.hero-image-meta{position:absolute;bottom:25px;left:28px;right:28px;z-index:2;color:white;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:end}.hero-image-meta strong{font-size:20px;line-height:1.2;display:block;max-width:330px}.meta-tag{font-size:10px;letter-spacing:.15em;color:#e4e8de;text-transform:uppercase}.hero-image-meta .num{font-size:74px;font-weight:600;letter-spacing:-.09em;line-height:.8}.trust-strip{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);margin-top:25px}.trust-strip div{padding:20px 12px;border-right:1px solid var(--stroke);font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}.trust-strip div:first-child{padding-left:0}.trust-strip div:last-child{border:0}.topic-banner{padding:30px 35px;background:var(--ink);color:white;border-radius:var(--round);display:flex;align-items:center;justify-content:space-between;gap:30px;margin-top:65px}.topic-banner strong{font-size:clamp(20px,2.4vw,31px);line-height:1.2;letter-spacing:-.04em;display:block}.topic-banner p{font-size:12px;color:#bec7c0;margin:8px 0 0}.topic-banner .btn{background:#c7d7b4;color:#1c2b20;flex-shrink:0}.service-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.service-card{border:1px solid var(--stroke);border-radius:var(--round);padding:26px;background:var(--card);min-height:405px;display:flex;flex-direction:column;transition:transform .3s,border-color .3s,box-shadow .3s}.service-card:hover{transform:translateY(-4px);border-color:#b7bdaf;box-shadow:0 14px 36px rgba(20,30,20,.07)}.service-card .seq{font-size:11px;color:var(--accent);font-weight:900;letter-spacing:.15em;margin-bottom:32px}.service-card h3{font-size:23px;letter-spacing:-.05em;margin:0 0 13px}.service-card p{color:var(--muted);font-size:12px;line-height:1.6}.service-card ul{list-style:none;margin:12px 0 20px;padding:0}.service-card li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px solid var(--stroke);padding:9px 0;font-size:11px}.service-card li span:last-child{font-weight:850;white-space:nowrap}.service-card .card-link{margin-top:auto;background:none;border:0;padding:12px 0 0;text-align:left;font-size:11px;font-weight:900;color:var(--accent)}.light-accent{background:var(--paper2)}.ai-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:var(--card);border:1px solid var(--stroke);border-radius:var(--round);padding:30px}.panel-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:22px}.panel-top h3{font-size:22px;letter-spacing:-.045em;margin:0}.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:25px}.tab{background:var(--paper);border:1px solid var(--stroke);border-radius:7px;padding:12px 7px;font-size:11px;font-weight:800}.tab[aria-selected="true"]{background:var(--ink);color:white;border-color:var(--ink)}.chip-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0 25px}.chip{background:var(--paper);border:1px solid var(--stroke);border-radius:9px;text-align:left;padding:16px 14px;line-height:1.35;font-size:12px;font-weight:750;min-height:70px}.chip[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 var(--accent);background:#fff}.field-label{display:block;font-size:11px;font-weight:850;margin:0 0 9px}.input,.textarea{background:#fff;border:1px solid #cbd0c7;border-radius:7px;width:100%;padding:14px 15px;color:var(--ink);min-height:51px;font-size:13px}.textarea{min-height:105px;resize:vertical}.input:focus,.textarea:focus{outline:3px solid #a0b9dc;outline-offset:1px}.form-actions{display:flex;gap:10px;margin-top:12px;align-items:center}.helper{font-size:11px;color:var(--muted);margin:11px 0 0}.status{padding:8px 12px;background:var(--paper);border-radius:8px;font-size:11px;font-weight:800;color:var(--muted)}.status.error{color:#9d372b;background:#ffebe5}.result-kicker{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}.risk{padding:5px 10px;border-radius:5px;font-size:10px;font-weight:850;background:#f1e7bd;color:#785821}.risk.red{background:#f9ddd8;color:#9b3527}.risk.green{background:#d9eeda;color:#285f3e}.ai-result-title{font-size:clamp(25px,2.4vw,36px);letter-spacing:-.055em;margin:24px 0 15px}.ai-result-desc{white-space:pre-wrap;font-size:13px;line-height:1.75;color:var(--muted);min-height:105px}.data-grid{display:grid;grid-template-columns:1.2fr .75fr .95fr;gap:10px;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);padding:20px 0;margin:24px 0}.data-grid span{font-size:10px;color:var(--muted);display:block}.data-grid strong{font-size:13px;display:block;margin-top:6px;line-height:1.3}.notice{font-size:11px;color:var(--muted);border-left:2px solid var(--accent);padding-left:11px;margin:16px 0}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.project-card{background:var(--card);border:1px solid var(--stroke);border-radius:var(--round);overflow:hidden}.project-visual{position:relative;height:385px;background:#353a33;overflow:hidden;touch-action:pan-y}.project-visual img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}.project-visual .before{clip-path:inset(0 50% 0 0);z-index:1}.project-visual .ba-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#fff;z-index:2;pointer-events:none;box-shadow:0 0 8px #333}.project-visual .ba-handle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:white;color:var(--ink);z-index:2;border-radius:50px;width:49px;height:49px;display:grid;place-items:center;font-size:12px;font-weight:850;pointer-events:none}.project-visual .image-fallback{display:grid;place-items:center;height:100%;color:#eee;background:#333b35;padding:30px;text-align:center}.project-controls{padding:14px 25px;border-bottom:1px solid var(--stroke);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}.mini-tabs{display:flex;gap:5px}.mini-tab{padding:6px 9px;border:1px solid var(--stroke);background:none;border-radius:4px;font-size:10px;font-weight:800}.mini-tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:white}.ba-slider{width:130px;accent-color:var(--accent);cursor:ew-resize}.project-body{padding:25px}.project-body h3{font-size:clamp(23px,2.5vw,35px);letter-spacing:-.06em;margin:13px 0}.project-body p{font-size:13px;color:var(--muted)}.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin:20px 0}.spec-grid .spec{padding:10px 0;border-top:1px solid var(--stroke)}.spec span{display:block;color:var(--muted);font-size:10px}.spec strong{font-size:12px;display:block;margin-top:2px}.calc-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:start}.calc-config{display:grid;gap:15px}.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.choice{border:1px solid var(--stroke);background:var(--card);padding:14px 12px;border-radius:8px;text-align:left;font-size:12px;font-weight:800;line-height:1.35}.choice[aria-pressed="true"]{background:var(--ink);color:white}.choice small{font-size:10px;font-weight:500;display:block;margin-top:5px;opacity:.76}.work-list{display:grid;gap:5px}.work-item{display:flex;align-items:center;gap:15px;padding:15px 13px;background:var(--paper);border:1px solid var(--stroke);border-radius:8px;cursor:pointer}.work-item:has(input:checked){border-color:var(--accent);background:#fff}.work-item input{width:18px;height:18px;accent-color:var(--accent);flex:0 0 18px}.work-item span{flex:1;line-height:1.35;font-size:12px;font-weight:650}.work-item strong{font-size:12px;white-space:nowrap}.calc-summary{position:sticky;top:101px}.total{font-size:clamp(37px,4.3vw,65px);font-weight:750;letter-spacing:-.07em;line-height:1;margin:15px 0;color:var(--accent)}.calc-note{font-size:11px;color:var(--muted)}.estimate-rows{margin:25px 0;border-top:1px solid var(--stroke)}.estimate-row{border-bottom:1px solid var(--stroke);display:flex;justify-content:space-between;gap:12px;padding:12px 0;font-size:11px}.estimate-row strong{text-align:right;white-space:nowrap}.pending-list{margin:15px 0}.pending-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff0de;padding:11px 12px;border-radius:8px;font-size:12px;margin:6px 0}.pending-item button{border:0;background:none;font-weight:800;color:#8b322a}.contact-fields{display:grid;gap:10px;margin:20px 0 13px}.send-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.send-grid .btn{padding:10px 8px;font-size:11px}.form-error{color:#a7362a;font-size:12px;margin-top:8px;min-height:16px}.fine-print{font-size:10px;color:var(--muted);margin-top:12px}.footer{background:#171e19;color:#f3f2eb;padding:58px 0 30px}.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px}.footer .brand{margin-bottom:24px}.footer p{color:#b4bfb4;font-size:12px;max-width:385px}.footer a{text-decoration:underline;text-decoration-color:#57615a;text-underline-offset:4px}.footer-bottom{margin-top:60px;padding-top:23px;border-top:1px solid #424a42;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#aeb5ad;font-size:11px}.reveal{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .7s}.js-animated .reveal:not(.is-visible){transform:translateY(26px);opacity:0}
-/* Motorsport division: deliberately independent dark editorial system. */
-body[data-page="sport"]{background:var(--sport);color:var(--sport-ink);--accent:var(--sport-accent);--muted:var(--sport-muted);--stroke:#39463e}body[data-page="sport"] .site-header{background:rgba(16,25,21,.95);border-color:#3a453d}body[data-page="sport"] .header-link{color:#c2d0c4}body[data-page="sport"] .brand{color:#edf2e8}body[data-page="sport"] .header-switch{background:#243027;border-color:#3f4b42}body[data-page="sport"] .switch-item[aria-pressed="true"]{background:var(--sport-accent);color:#142218}body[data-page="sport"] .topline{background:var(--sport-accent)}body[data-page="sport"] .menu-trigger{color:white}.sport-hero{padding:95px 0 35px;background:radial-gradient(ellipse at 80% 0%,#344537 0%,transparent 48%)}.sport-header{display:grid;grid-template-columns:1.4fr .6fr;gap:30px;align-items:end}.sport-header h1{max-width:1000px;margin:22px 0 24px}.sport-header .lead{color:#c1cbbf}.sport-header .inline-note{border-left:2px solid var(--sport-accent);padding:0 0 0 20px;font-size:12px;color:#c3cabc}.sport-section{padding:60px 0 100px}.sport .eyebrow{color:var(--sport-accent)}.sport .section-title{color:var(--sport-ink)}.track-pills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:30px 0 15px}.track-pill{background:#202e24;border:1px solid #415046;color:#e9f0e9;border-radius:9px;text-align:left;padding:19px;min-height:101px}.track-pill[aria-pressed="true"]{border-color:var(--sport-accent);background:#354a37}.track-pill small{color:var(--sport-accent);font-size:10px}.track-pill strong{display:block;margin:4px 0;font-size:15px;line-height:1.25}.atlas-grid{display:grid;grid-template-columns:1.5fr .65fr;gap:15px}.map-shell{min-width:0;background:#1c2921;border:1px solid #485548;border-radius:var(--round);overflow:hidden;position:relative}.map-inner{height:500px;width:100%;background:#1b2921;z-index:1}.map-fallback{position:absolute;inset:0;z-index:2;background:repeating-linear-gradient(0deg,#1a2921,#1a2921 35px,#22372a 36px),#1b2b21;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;pointer-events:none}.map-fallback[hidden]{display:none}.map-fallback p{max-width:290px;color:#afbeaf;font-size:12px}.map-hud{position:absolute;z-index:400;left:17px;top:17px;pointer-events:none;background:rgba(20,28,23,.92);border:1px solid #5a695d;padding:10px 14px;border-radius:6px;max-width:calc(100% - 34px);font-size:11px;color:var(--sport-accent);font-weight:800}.map-credit{font-size:10px;color:#afbeb2;padding:9px 14px;background:#111d15}.track-detail{background:#1e2a22;border:1px solid #455247;border-radius:var(--round);padding:25px}.track-detail h3{font-size:27px;letter-spacing:-.05em;margin:12px 0}.track-detail p{font-size:12px;color:#bdc9be;line-height:1.65}.track-details{display:grid;gap:0;margin:17px 0}.track-details div{border-top:1px solid #3e4d41;padding:10px 0}.track-details span{font-size:10px;color:#adbbad;display:block}.track-details strong{font-size:14px;display:block}.track-detail .btn{background:var(--sport-accent);color:#182a19;width:100%;margin-top:12px}.elevation{margin-top:20px;border-top:1px solid #3b493e;padding:16px 0 0}.elevation svg{width:100%;height:76px;overflow:visible}.elevation path{stroke:var(--sport-accent);stroke-width:2.5;fill:none}.elevation .key{font-size:10px;color:#a8b5a7}.reg-section{background:#19241c;padding:80px 0 100px}.reg-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid #455445}.reg-table{width:100%;border-collapse:collapse;min-width:690px;background:#223025;text-align:left}.reg-table th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--sport-accent);padding:18px 17px;border-bottom:1px solid #56624f}.reg-table td{padding:17px;font-size:12px;color:#e2eae0;border-bottom:1px solid #3a4a3c;vertical-align:top}.reg-table tr:last-child td{border-bottom:0}.sport-notice{padding:17px;border:1px solid #4e614d;border-radius:9px;font-size:12px;color:#d2dfcd;margin:20px 0}.sport .footer{border-top:1px solid #3e493f}.modal[hidden]{display:none}.modal{position:fixed;inset:0;z-index:200;background:rgba(5,9,7,.95);display:grid;place-items:center;padding:20px}.modal-panel{position:relative;width:min(1100px,100%);height:min(87vh,850px);display:flex;flex-direction:column;gap:12px}.modal-image-wrap{min-height:0;flex:1;border-radius:12px;overflow:hidden;background:#252a26;display:grid;place-items:center}.modal-image-wrap img{max-height:100%;max-width:100%;width:100%;height:100%;object-fit:contain}.modal-head,.modal-controls{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;color:white}.modal-head strong{font-size:15px}.modal button{border:1px solid #57625a;color:white;background:#243328;border-radius:6px;padding:9px 16px}.modal-controls .btn{min-height:40px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:1180px){.header-nav{display:none}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-grid{grid-template-columns:1fr 1fr;gap:24px}.hero-photo{min-height:570px}.atlas-grid{grid-template-columns:1.2fr .8fr}.header-switch{display:none}.menu-trigger{display:flex}}
-@media(max-width:820px){.wrap{width:min(calc(100% - 34px),var(--max))}.section{padding:65px 0}.hero{padding:30px 0}.hero-grid,.ai-layout,.calc-layout,.atlas-grid,.sport-header{grid-template-columns:1fr}.hero-copy{padding:14px 0}.hero-copy h1{max-width:670px}.hero-photo{min-height:440px}.topic-banner{margin-top:40px}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.project-visual{height:310px}.project-grid{gap:10px}.panel{padding:23px}.calc-summary{position:static}.track-pills{grid-template-columns:repeat(2,minmax(0,1fr))}.map-inner{height:440px}.sport-hero{padding:60px 0 15px}.footer-grid{grid-template-columns:1fr 1fr}.footer-grid>div:first-child{grid-column:1/-1}}
-@media(max-width:620px){.section-top{display:block}.section-top .section-index{display:block;margin-top:12px}body{font-size:14px}.header-content{min-height:66px}.brand-mark{width:35px;height:35px}.brand-name{font-size:14px}.header-actions .btn{display:none}.display{font-size:clamp(42px,12vw,64px)}.section-title{font-size:clamp(35px,9vw,48px)}.eyebrow{font-size:10px}.hero-photo{min-height:380px}.hero-image-meta{left:18px;right:18px;bottom:18px}.hero-image-meta .num{font-size:52px}.hero-image-meta strong{font-size:16px}.trust-strip{grid-template-columns:1fr 1fr}.trust-strip div{padding:14px 12px;font-size:9px}.trust-strip div:last-child{grid-column:1/-1;border-top:1px solid var(--stroke)}.topic-banner{display:grid;padding:24px}.topic-banner .btn{width:100%}.section-top{margin-bottom:26px}.service-grid,.project-grid,.chip-list{grid-template-columns:1fr}.service-card{min-height:0}.service-card .seq{margin-bottom:18px}.panel{padding:20px}.ai-result-desc{min-height:0}.data-grid{grid-template-columns:1fr 1fr}.data-grid>div:first-child{grid-column:1/-1}.project-visual{height:auto;aspect-ratio:4/5}.project-controls{padding:12px 14px}.ba-slider{width:100px}.choice-grid{grid-template-columns:1fr}.work-item{padding:13px 9px}.work-item strong{font-size:11px}.map-inner{height:365px}.track-pills{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}.track-pill{min-width:190px;scroll-snap-align:start}.track-detail{padding:20px}.footer-grid{grid-template-columns:1fr}.footer-grid>div:first-child{grid-column:auto}.footer-bottom{margin-top:36px}.send-grid{grid-template-columns:1fr 1fr}.sport-section{padding:40px 0 65px}.reg-section{padding:60px 0}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important} .js-animated .reveal:not(.is-visible){opacity:1;transform:none}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>МОТО-АЛЬЯНС КУБАНЬ // Кастом-Цех, Ремонт и Спортивная База КК</title>
+  <meta name="description" content="Штучный кастом V-Twin, глубокий ребилд моторов Harley-Davidson, гоночная настройка подвесок WP/KYB и база Федерации Мотоспорта Кубани.">
+  <meta name="theme-color" content="#07080b">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="МОТО-АЛЬЯНС КУБАНЬ // Кастом-Цех & Мотоспорт Кубани">
+  <meta property="og:description" content="Инженерный цех постройки кастомов, ребилд ДВС и спутниковый атлас гоночных трасс Краснодарского края.">
+  <meta property="og:image" content="images/hero_custom_vtwin.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+
+  <!-- Спутниковые карты для эффекта Google Earth -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root {
+      --bg-deep: #07080b;
+      --bg-metal: #0e1118;
+      --bg-plate: #141822;
+      --border-steel: #2a3142;
+      --text-light: #f3f5f8;
+      --text-muted: #8e97a8;
+      --primary: #ff5500;
+      --primary-glow: rgba(255, 85, 0, 0.45);
+      --gold: #f0be5d;
+      --gold-glow: rgba(240, 190, 93, 0.4);
+      --font-display: 'Russo One', sans-serif;
+      --font-cond: 'Oswald', sans-serif;
+      --font-body: 'Golos Text', sans-serif;
+    }
+
+    body.mode-cross {
+      --primary: #00f0ff;
+      --primary-glow: rgba(0, 240, 255, 0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-deep);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    body {
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 85, 0, 0.08) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+    }
+    body.mode-cross {
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+    }
+
+    img { max-width: 100%; display: block; object-fit: cover; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Скошенные плашки и выраженная интерактивность */
+    .chamfer-box {
+      background: linear-gradient(145deg, #161a25 0%, #0b0d14 100%);
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      position: relative;
+    }
+
+    /* Очевидные кликабельные кнопки с объемом и тактильным откликом */
+    .action-btn {
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      font-family: var(--font-cond);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      padding: 13px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s;
+      border: 1px solid rgba(255,255,255,0.15);
+      user-select: none;
+    }
+    .action-btn:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #ff6a1a 0%, var(--primary) 100%);
+      color: #000;
+      border-color: #ff9452;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+    body.mode-cross .btn-primary {
+      background: linear-gradient(180deg, #38f4ff 0%, var(--primary) 100%);
+      border-color: #85f8ff;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 22px var(--primary-glow);
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #ffd987 0%, var(--gold) 100%);
+      color: #000;
+      border-color: #fff0bd;
+      box-shadow: 0 4px 15px var(--gold-glow);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-steel);
+      color: #fff;
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Верхняя инфо-строка */
+    .top-telemetry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 16px;
+      background: #050608;
+      border-bottom: 1px solid var(--border-steel);
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 100%;
+    }
+    .pulse-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      margin-right: 4px;
+    }
+
+    /* Шапка сайта */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(8, 10, 15, 0.95);
+      border-bottom: 1px solid var(--border-steel);
+      backdrop-filter: blur(12px);
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 8px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-display);
+      font-size: clamp(17px, 4.4vw, 22px);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .brand-logo span {
+      background: var(--primary);
+      color: #000;
+      padding: 2px 7px;
+      font-size: clamp(13px, 3.5vw, 16px);
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Выделенная кнопка Федерации в шапке */
+    .fed-nav-trigger {
+      background: linear-gradient(180deg, #fce09b 0%, var(--gold) 100%);
+      color: #000 !important;
+      font-family: var(--font-cond);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 8px 14px;
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      box-shadow: 0 0 14px var(--gold-glow);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      border: 1px solid #fff;
+      cursor: pointer;
+    }
+    .fed-nav-trigger:active { transform: scale(0.96); }
+
+    .burger-btn {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      background: #141824;
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+      cursor: pointer;
+    }
+    .burger-btn span {
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    /* Мобильное выдвижное меню (Бургер) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 82%;
+      max-width: 320px;
+      height: 100vh;
+      background: #0c0f17;
+      border-left: 2px solid var(--primary);
+      z-index: 10000;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+    }
+    .mobile-drawer.open { right: 0; }
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-steel);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .drawer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .drawer-links a {
+      font-family: var(--font-cond);
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #131722;
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+    }
+
+    /* Переключатель дивизионов (Тяжелый кастом / Кросс) */
+    .mode-toggle-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #090a0f;
+      padding: 3px;
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      width: 100%;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+    }
+    .mode-tab-btn {
+      padding: 10px 6px;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      font-family: var(--font-cond);
+      font-size: clamp(11px, 2.9vw, 13px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      line-height: 1.2;
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+    }
+    .mode-tab-btn.active {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 14px var(--primary-glow);
+    }
+
+    /* Разделы страницы */
+    .section {
+      padding: 50px 16px;
+      border-top: 1px solid var(--border-steel);
+      width: 100%;
+    }
+    .section-head {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .section-kicker {
+      font-family: var(--font-cond);
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(23px, 6vw, 40px);
+      text-transform: uppercase;
+      line-height: 1.1;
+      word-break: break-word;
+    }
+    .section-title em { font-style: normal; color: var(--primary); }
+
+    /* Первый экран Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 30px 16px 45px;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 85, 0, 0.12);
+      border-left: 3px solid var(--primary);
+      padding: 6px 12px;
+      font-family: var(--font-cond);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    body.mode-cross .hero-badge {
+      background: rgba(0, 240, 255, 0.12);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 7.2vw, 50px);
+      line-height: 1.08;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+    .hero-title em { font-style: normal; color: var(--primary); }
+    .hero-lead {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    /* Фото-стенд на первом экране */
+    .hero-stand {
+      overflow: hidden;
+      width: 100%;
+    }
+    .stand-img-box {
+      width: 100%;
+      height: 240px;
+      position: relative;
+    }
+    .stand-img-box img { width: 100%; height: 100%; }
+    .stand-hud {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,6,8,0.2) 0%, rgba(6,6,8,0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+    }
+    .stand-tag {
+      align-self: flex-start;
+      background: rgba(6,6,8,0.85);
+      border: 1px solid var(--border-steel);
+      padding: 4px 8px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .stand-specs-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 8px;
+    }
+    .stand-spec-item span {
+      display: block;
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-family: var(--font-cond);
+    }
+    .stand-spec-item strong {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: #fff;
+    }
+
+    /* Блок-приглашение в Федерацию */
+    .fed-banner-card {
+      margin: 10px 16px 30px;
+      padding: 18px 16px;
+      background: linear-gradient(135deg, rgba(240,190,93,0.14) 0%, #0d1017 100%);
+      border: 1px solid var(--gold);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .fed-banner-card h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .fed-banner-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Матрица услуг */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      width: 100%;
+    }
+    .service-card {
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sc-num {
+      font-family: var(--font-cond);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .sc-list {
+      list-style: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .sc-list li {
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .sc-list li span:last-child {
+      color: var(--gold);
+      font-family: var(--font-cond);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ИИ Инженер */
+    .ai-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+    .ai-box {
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .ai-modes-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      background: #090b10;
+      padding: 3px;
+      border: 1px solid var(--border-steel);
+    }
+    .ai-mode-btn {
+      padding: 8px 2px;
+      text-align: center;
+      font-family: var(--font-cond);
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    }
+    .ai-mode-btn.active {
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+    }
+    .chips-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .symptom-item {
+      background: #0f131d;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 12px;
+      color: var(--text-light);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s;
+    }
+    .symptom-item.active {
+      border-left-color: var(--primary);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .ai-input-wrap {
+      display: flex;
+      gap: 6px;
+    }
+    .ai-text-field {
+      flex: 1;
+      min-width: 0;
+      background: #080a0f;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .risk-tag {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    }
+    .risk-green { background: #10b981; color: #000; }
+    .risk-yellow { background: #f59e0b; color: #000; }
+    .risk-red { background: #ef4444; color: #fff; }
+
+    .ai-stats-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border-steel);
+      border-bottom: 1px solid var(--border-steel);
+    }
+    .ai-stats-3 span {
+      display: block;
+      font-size: 9px;
+      text-transform: uppercase;
+      font-family: var(--font-cond);
+      color: var(--text-muted);
+    }
+    .ai-stats-3 strong {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: #fff;
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* Проекты с фото */
+    .projects-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      width: 100%;
+    }
+    .project-card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-pic-box {
+      width: 100%;
+      height: 220px;
+      position: relative;
+    }
+    .project-pic-box img { width: 100%; height: 100%; }
+    .proj-tabs {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      display: flex;
+      gap: 4px;
+    }
+    .proj-tab-btn {
+      background: rgba(8, 10, 15, 0.9);
+      border: 1px solid var(--border-steel);
+      color: #fff;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .proj-tab-btn.active {
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+    }
+    .project-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .spec-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .spec-table td:first-child { color: var(--text-muted); }
+    .spec-table td:last-child { text-align: right; font-weight: 600; color: #fff; }
+
+    /* Калькулятор */
+    .calc-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+    .subclass-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .subclass-item {
+      background: #0b0d13;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+    }
+    .subclass-item.active {
+      border-color: var(--primary);
+      background: rgba(255, 85, 0, 0.12);
+    }
+    body.mode-cross .subclass-item.active {
+      background: rgba(0, 240, 255, 0.12);
+    }
+
+    .services-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .service-check-row {
+      background: #0b0d13;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      gap: 6px;
+    }
+    .service-check-row.checked {
+      border-color: var(--primary);
+      background: rgba(255, 85, 0, 0.1);
+    }
+    body.mode-cross .service-check-row.checked {
+      background: rgba(0, 240, 255, 0.1);
+    }
+
+    .calc-sum-box {
+      padding: 20px 16px;
+      border-top: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .total-val {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--primary);
+    }
+    .calc-input {
+      width: 100%;
+      background: #07090e;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* =========================================================================
+       СТРАНИЦА ФЕДЕРАЦИИ + СПУТНИКОВЫЙ 3D/EARTH МОДУЛЬ
+       ========================================================================= */
+    #federationPage {
+      display: none;
+      min-height: 100vh;
+      background: #07080c;
+      width: 100%;
+    }
+    #federationPage.active { display: block; }
+    #workshopPage.hidden { display: none; }
+
+    .fed-hero-block {
+      padding: 30px 16px 20px;
+      background: radial-gradient(circle at 80% 20%, rgba(240,190,93,0.1) 0%, transparent 60%), #0c0f17;
+      border-bottom: 1px solid var(--border-steel);
+    }
+
+    /* Интерактивный спутниковый контейнер */
+    .satellite-viewport-box {
+      margin: 16px 0;
+      border: 1px solid var(--border-steel);
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    }
+    #earthMap {
+      width: 100%;
+      height: 380px;
+      z-index: 1;
+      background: #0b0d14;
+    }
+    .earth-hud-top {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .earth-badge {
+      background: rgba(7, 9, 14, 0.9);
+      border: 1px solid var(--gold);
+      padding: 4px 10px;
+      font-family: var(--font-cond);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-transform: uppercase;
+      pointer-events: auto;
+    }
+    .earth-action-direct {
+      background: rgba(0,0,0,0.85);
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 4px 10px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      text-transform: uppercase;
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Кнопки переключения трасс для спутниковой карты */
+    .track-pills-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .track-pill-btn {
+      background: #111520;
+      border: 1px solid var(--border-steel);
+      padding: 10px 8px;
+      font-family: var(--font-cond);
+      font-size: 12px;
+      text-transform: uppercase;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all 0.2s;
+    }
+    .track-pill-btn.active {
+      border-color: var(--gold);
+      background: rgba(240, 190, 93, 0.15);
+    }
+    .track-pill-btn strong { color: #fff; font-size: 12px; }
+    .track-pill-btn span { color: var(--gold); font-size: 10px; }
+
+    footer {
+      padding: 30px 16px;
+      border-top: 1px solid var(--border-steel);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: #050608;
+    }
+
+    /* Адаптив для широких экранов планшетов и ПК */
+    @media (min-width: 820px) {
+      body { font-size: 15px; }
+      header { padding: 14px 40px; }
+      .hero { grid-template-columns: 1.15fr 0.85fr; padding: 60px 40px; }
+      .services-grid { grid-template-columns: repeat(4, 1fr); }
+      .ai-wrapper { grid-template-columns: 1fr 1.3fr; }
+      .projects-stack { grid-template-columns: 1fr 1fr; }
+      .calc-wrap { grid-template-columns: 1.3fr 1fr; }
+      .section { padding: 80px 40px; }
+      .fed-hero-block { padding: 50px 40px; }
+      .track-pills-row { grid-template-columns: repeat(4, 1fr); }
+      #earthMap { height: 480px; }
+    }
+
+    /* =========================================================================
+       WOW-UPGRADES: СТЕНД ТЕЛЕМЕТРИИ, РАДАР, ДО/ПОСЛЕ, ОДОМЕТР
+       ========================================================================= */
+
+    /* 1. Эффект смены темы дивизиона */
+    body.theme-flash {
+      animation: themeFlashPulse 0.4s ease-out;
+    }
+    @keyframes themeFlashPulse {
+      0% { filter: brightness(1.35) contrast(1.15); }
+      100% { filter: brightness(1) contrast(1); }
+    }
+
+    /* Скользящий бегунок в переключателе дивизионов */
+    .mode-toggle-bar {
+      position: relative;
+    }
+    .mode-indicator-slider {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 3px;
+      width: calc(50% - 3px);
+      background: var(--primary);
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      box-shadow: 0 0 18px var(--primary-glow);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s, box-shadow 0.25s;
+      z-index: 1;
+      pointer-events: none;
+    }
+    body.mode-cross .mode-indicator-slider {
+      transform: translateX(100%);
+    }
+    .mode-tab-btn {
+      position: relative;
+      z-index: 2;
+    }
+    .mode-tab-btn.active {
+      background: transparent !important;
+      color: #000 !important;
+      box-shadow: none !important;
+    }
+
+    /* 2. Стенд телеметрии Hero */
+    .hero-stand {
+      position: relative;
+    }
+    .stand-corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--primary);
+      border-style: solid;
+      pointer-events: none;
+      z-index: 5;
+      transition: border-color 0.3s;
+    }
+    .stand-corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .stand-corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+    .stand-corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+    .stand-corner-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .stand-laser-scan {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--primary) 50%, transparent 100%);
+      box-shadow: 0 0 14px var(--primary), 0 0 26px var(--primary);
+      opacity: 0.85;
+      pointer-events: none;
+      z-index: 4;
+      animation: laserScanMotion 4.2s ease-in-out infinite alternate;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    @keyframes laserScanMotion {
+      0% { top: 4%; opacity: 0.25; }
+      50% { opacity: 0.95; }
+      100% { top: 92%; opacity: 0.35; }
+    }
+
+    .stand-target-cross {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px;
+      height: 46px;
+      border: 1px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      animation: reticleSpin 24s linear infinite;
+    }
+    .stand-target-cross::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+      transition: background 0.3s;
+    }
+    @keyframes reticleSpin {
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .stand-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(4, 5, 8, 0.82);
+      border: 1px solid var(--border-steel);
+      padding: 3px 8px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .spec-mini-meter {
+      height: 4px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      margin-top: 5px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .spec-mini-fill {
+      height: 100%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+      transition: width 0.5s ease, background 0.3s;
+    }
+
+    /* 3. Спутниковая карта: радарный сонар и оверлей высот */
+    .radar-pulse-ring {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      top: -12px;
+      left: -12px;
+      animation: radarSonar 1.8s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes radarSonar {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    .earth-hud-corners {
+      position: absolute;
+      inset: 8px;
+      pointer-events: none;
+      z-index: 500;
+    }
+    .earth-c-tl { position: absolute; top: 0; left: 0; width: 14px; height: 14px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .earth-c-tr { position: absolute; top: 0; right: 0; width: 14px; height: 14px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+    .earth-c-bl { position: absolute; bottom: 0; left: 0; width: 14px; height: 14px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .earth-c-br { position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+    .earth-elevation-panel {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(6, 8, 12, 0.88);
+      border: 1px solid var(--border-steel);
+      border-left: 3px solid var(--gold);
+      padding: 8px 12px;
+      z-index: 500;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .elevation-sparkline-svg {
+      flex: 1;
+      min-width: 140px;
+      height: 24px;
+    }
+
+    /* 4. ИИ Инженер: волна детонации и сканирующий оверлей */
+    .sensor-wave-box {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+      padding: 0 4px;
+    }
+    .sensor-wave-bar {
+      width: 3px;
+      background: var(--primary);
+      border-radius: 1px;
+      animation: eqBounce 1.1s ease-in-out infinite alternate;
+      transition: background 0.3s;
+    }
+    .sensor-wave-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .sensor-wave-bar:nth-child(2) { height: 75%; animation-delay: 0.3s; }
+    .sensor-wave-bar:nth-child(3) { height: 100%; animation-delay: 0.05s; }
+    .sensor-wave-bar:nth-child(4) { height: 60%; animation-delay: 0.4s; }
+    .sensor-wave-bar:nth-child(5) { height: 85%; animation-delay: 0.2s; }
+    @keyframes eqBounce {
+      0% { transform: scaleY(0.3); opacity: 0.5; }
+      100% { transform: scaleY(1); opacity: 1; }
+    }
+
+    #aiResultCard {
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-scan-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 10, 16, 0.94);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .ai-scan-overlay.scanning {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .ai-scan-bar {
+      width: 140px;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .ai-scan-fill {
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      transform: translateX(-100%);
+      animation: scanBarFill 0.28s ease-out forwards;
+    }
+    @keyframes scanBarFill {
+      100% { transform: translateX(0); }
+    }
+
+    /* 5. Интерактивный Before/After слайдер в проектах */
+    .ba-slider-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      user-select: none;
+      cursor: ew-resize;
+      background: #000;
+      touch-action: pan-y;
+    }
+    .ba-img-after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ba-img-before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 2;
+      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+      will-change: clip-path;
+    }
+    .ba-divider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 14px var(--primary);
+      z-index: 3;
+      pointer-events: none;
+      transform: translateX(-50%);
+      transition: background-color 0.3s, box-shadow 0.3s;
+      will-change: left;
+    }
+    .ba-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      background: #0d1017;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 16px var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      z-index: 4;
+      pointer-events: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      will-change: left;
+    }
+    .ba-tag-before, .ba-tag-after {
+      position: absolute;
+      bottom: 8px;
+      padding: 4px 9px;
+      background: rgba(6, 6, 8, 0.88);
+      backdrop-filter: blur(4px);
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      z-index: 5;
+      border: 1px solid rgba(255,255,255,0.18);
+      pointer-events: none;
+      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+      will-change: opacity, transform;
+    }
+    .ba-tag-before { left: 8px; color: var(--text-muted); }
+    .ba-tag-after { right: 8px; color: var(--primary); border-color: var(--primary); }
+
+    /* 6. Калькулятор: кнопки Telegram + WhatsApp и живой счетчик */
+    .calc-btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      width: 100%;
+    }
+    .btn-telegram {
+      background: linear-gradient(180deg, #2aabee 0%, #229ed9 100%);
+      color: #fff;
+      border-color: #55c0f5;
+      box-shadow: 0 4px 14px rgba(34, 158, 217, 0.4);
+    }
+    .btn-whatsapp {
+      background: linear-gradient(180deg, #25d366 0%, #1ea952 100%);
+      color: #fff;
+      border-color: #4ee085;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+    }
+    .btn-telegram:hover { box-shadow: 0 6px 20px rgba(34, 158, 217, 0.6); }
+    .btn-whatsapp:hover { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55); }
+
+    .input-error-shake {
+      animation: inputShake 0.4s ease-in-out;
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6) !important;
+    }
+    @keyframes inputShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+
+    /* =========================================================================
+       SCROLL REVEAL: ПЛАВНОЕ ПОДТЯГИВАНИЕ БЛОКОВ СНИЗУ
+       ========================================================================= */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-up.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+
+  </style>
 </head>
-<body data-page="workshop" data-division="custom">
-<a class="skip" href="#mainContent">Перейти к содержимому</a>
-<div class="topline"></div>
-<header class="site-header"><div class="wrap header-content">
-  <a class="brand" href="#workshop" data-view="workshop" aria-label="MOTO KUBAN — мастерская"><span class="brand-mark">MK</span><span class="brand-name">MOTO / KUBAN<span>ENGINEERING & MOTOSPORT</span></span></a>
-  <nav class="header-nav" aria-label="Основная навигация"><a class="header-link" href="#servicesSec" data-view="workshop">Услуги</a><a class="header-link" href="#aiSec" data-view="workshop">Диагностика</a><a class="header-link" href="#projectsSec" data-view="workshop">Проекты</a><a class="header-link" href="#calcSec" data-view="workshop">Калькулятор</a></nav>
-  <div class="header-actions"><div class="header-switch" aria-label="Разделы сайта"><button type="button" class="switch-item" id="headerWorkshop" data-view="workshop" aria-pressed="true">Мастерская</button><button type="button" class="switch-item" id="headerSport" data-view="sport" aria-pressed="false">Мотоспорт</button></div><button type="button" class="btn btn-primary btn-small" data-view="workshop" data-target="calcSec">Обсудить проект ↗</button><button class="menu-trigger" type="button" id="menuToggle" aria-label="Открыть меню" aria-controls="mobileNavigation" aria-expanded="false">☰</button></div>
-</div><nav id="mobileNavigation" class="mobile-nav" aria-label="Мобильная навигация" hidden><div class="wrap nav-list"><button type="button" data-view="workshop">Мастерская</button><button type="button" data-view="sport">Мотоспорт и атлас трасс</button><a href="#servicesSec" data-view="workshop">Услуги</a><a href="#aiSec" data-view="workshop">ИИ-диагностика</a><a href="#projectsSec" data-view="workshop">Проекты</a><a href="#calcSec" data-view="workshop">Калькулятор и заявка</a></div></nav></header>
-<main id="mainContent">
-<div id="workshopPage">
-<section class="hero"><div class="wrap"><div class="hero-grid">
-  <div class="hero-copy reveal"><div class="eyebrow" id="heroBadge">Мастерская / Краснодар / 01</div><div class="division-switch" role="group" aria-label="Специализация мастерской"><button class="division-btn" type="button" data-division-select="custom" aria-pressed="true">Кастом / V-Twin</button><button class="division-btn" type="button" data-division-select="cross" aria-pressed="false">Кросс / эндуро</button></div><h1 class="display" id="heroTitle">Машина с <em>характером.</em><br>Работа с точностью.</h1><p class="lead" id="heroLead">Проектирование, кастомизация и техническое обслуживание мотоциклов. От идеи до точной настройки.</p><div class="hero-buttons"><button class="btn btn-accent" type="button" data-target="calcSec">Рассчитать проект <span>↗</span></button><button class="btn btn-ghost" type="button" data-target="aiSec">Подобрать решение <span>↗</span></button></div><div class="trust-strip"><div>01 / Моторы и механика</div><div>02 / Кастом и металл</div><div>03 / Спортивный сервис</div></div></div>
-  <div class="hero-photo reveal"><div class="photo-fallback" id="heroImageFallback">Фотография мастерской<br>загружается из исходного проекта</div><img id="heroImage" src="" alt="Кастомный мотоцикл в мастерской" fetchpriority="high"><div class="hero-image-meta"><div><div class="meta-tag" id="heroImageTag">MOTO / ENGINEERING LAB</div><strong>Ремесло механики.<br>Инженерия движения.</strong></div><div class="num">01.</div></div></div>
-</div><div class="topic-banner reveal"><div><span class="eyebrow" style="color:#c1d79e">/ MOTORSPORT DIVISION</span><strong>От мастерской — к трассе.</strong><p>Точки мотоспортивных локаций Кубани, спутниковые снимки и справочные материалы.</p></div><button type="button" class="btn" data-view="sport">Исследовать атлас ↗</button></div></div></section>
-<section class="section" id="servicesSec"><div class="wrap"><div class="section-top reveal"><div><span class="eyebrow">Экспертиза / 01</span><h2 class="section-title" id="servTitle">Точные руки.<br><em>Сильные машины.</em></h2></div><span class="section-index">01 — 04 / СПЕЦИАЛИЗАЦИИ</span></div><div class="service-grid" id="servicesGrid"></div><p class="fine-print">Список работ и ориентировочные цены перенесены из исходного демонстрационного проекта. Уточняйте фактическую доступность и стоимость.</p></div></section>
-<section class="section light-accent" id="aiSec"><div class="wrap"><div class="section-top reveal"><div><span class="eyebrow">Интеллектуальный помощник / 02</span><h2 class="section-title">Проблема есть.<br><em>Решение найдём.</em></h2></div><span class="section-index">ДИАГНОСТИКА / ТЮНИНГ / ТО</span></div><div class="ai-layout"><div class="panel reveal"><div class="panel-top"><h3>С чего начнём?</h3><span class="capsule"><span class="dot"></span> Мотоинженер</span></div><div class="tabs" role="tablist" aria-label="Режим анализа"><button class="tab" id="aiTabDefect" role="tab" aria-selected="true" data-ai-mode="defect">Дефектовка</button><button class="tab" id="aiTabTuning" role="tab" aria-selected="false" data-ai-mode="tuning">Тюнинг</button><button class="tab" id="aiTabMaintenance" role="tab" aria-selected="false" data-ai-mode="maintenance">ТО</button></div><label class="field-label" id="aiChipsSubtitle">Частые обращения</label><div class="chip-list" id="aiChipContainer"></div><label for="aiCustomInput" class="field-label">Или опишите задачу своими словами</label><textarea id="aiCustomInput" class="textarea" maxlength="1200" placeholder="Например: стук в моторе после прогрева..."></textarea><div class="form-actions"><button type="button" class="btn btn-primary" id="analyzeButton">Запросить анализ ↗</button><span class="status" id="aiConnection">API: не проверено</span></div><p class="helper">Готовые сценарии — справочные примеры из исходного сайта. Свободный текст обрабатывается сервером <code>/api/diagnose</code>, если он доступен.</p></div>
-<div class="panel reveal" id="aiResultCard" aria-live="polite"><div class="panel-top"><span class="eyebrow">Техническая карта / результат</span><span class="status" id="aiModelBadge">Готовый сценарий</span></div><div class="result-kicker"><span class="mono" id="aiResCode">#ENG-001</span><span class="risk" id="aiResRisk">Оценка</span></div><h3 class="ai-result-title" id="aiResTitle">Выберите симптом или программу</h3><p class="ai-result-desc" id="aiResDesc">Подготовим техническую рекомендацию.</p><div class="data-grid"><div><span>Рекомендуемые работы</span><strong id="aiResService">—</strong></div><div><span>Время / ориентир</span><strong id="aiResTime">—</strong></div><div><span>Цена / из источника</span><strong id="aiResPrice">—</strong></div></div><button type="button" id="transferAi" class="btn btn-accent" style="width:100%">Перенести рекомендацию в смету ↗</button><p class="notice">Онлайн-анализ не является подтверждённым диагнозом. Для безопасной эксплуатации нужна очная диагностика специалистом. При признаках опасной неисправности прекратите движение.</p><div id="aiFeedback" class="helper" role="status"></div></div></div></div></section>
-<section class="section" id="projectsSec"><div class="wrap"><div class="section-top reveal"><div><span class="eyebrow">Визуальный архив / 03</span><h2 class="section-title" id="projectsTitle">Построено с <em>идеей.</em></h2></div><span class="section-index">ГАЛЕРЕЯ / ДО И ПОСЛЕ</span></div><div class="project-grid" id="projectsGrid"></div><p class="fine-print">Фотографии и характеристики взяты из предоставленного сайта; авторство и статус реализованных заказов отдельно не подтверждались.</p></div></section>
-<section class="section light-accent" id="calcSec"><div class="wrap"><div class="section-top reveal"><div><span class="eyebrow">Планирование работ / 04</span><h2 class="section-title">Посчитаем <em>по делу.</em></h2></div><span class="section-index">ПРЕДВАРИТЕЛЬНАЯ СМЕТА</span></div><div class="calc-layout"><div class="calc-config"><div class="panel reveal"><div class="panel-top"><h3>01 / Класс мотоцикла</h3></div><div class="choice-grid" id="subclassContainer"></div></div><div class="panel reveal"><div class="panel-top"><h3>02 / Выберите работы</h3></div><div class="work-list" id="calcServicesList"></div></div></div><aside class="panel calc-summary reveal"><span class="eyebrow">Ваш расчёт</span><div class="total" id="calcTotalDisplay" aria-live="polite">0 ₽</div><div id="calcDaysDisplay" class="calc-note">Отметьте позиции</div><div class="estimate-rows" id="estimateRows"></div><div id="pendingList" class="pending-list"></div><label class="field-label" for="clientBikeModel">Мотоцикл</label><input class="input" id="clientBikeModel" type="text" maxlength="130" placeholder="Например, Harley-Davidson Softail"><div class="contact-fields"><div><label class="field-label" for="clientPhone">Ваш телефон</label><input class="input" id="clientPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="45" placeholder="+7 999 123-45-67"></div><div><label class="field-label" for="clientComment">Комментарий к заявке</label><textarea class="textarea" id="clientComment" maxlength="700" placeholder="Пожелания, удобное время, детали"></textarea></div></div><div class="send-grid"><button type="button" id="sendTelegram" class="btn btn-primary">Telegram ↗</button><button type="button" id="sendWhatsapp" class="btn btn-accent">WhatsApp ↗</button></div><button type="button" id="copyEstimate" class="btn btn-ghost" style="margin-top:10px;width:100%">Скопировать смету</button><div id="formError" role="alert" class="form-error"></div><p class="fine-print">Сумма — предварительный расчёт по ценам исходника. Каналы связи открывают передачу сообщения, но не подтверждают, что заявка доставлена мастерской.</p></aside></div></div></section>
-</div>
-<div id="federationPage" class="sport" hidden>
-<section class="sport-hero"><div class="wrap"><div class="sport-header"><div><div class="eyebrow">MOTO / KUBAN — TRACK INTELLIGENCE</div><h1 class="display">Земля. Трасса.<br><em>Точка старта.</em></h1><p class="lead">Атлас мотоспортивных локаций Краснодарского края. Спутниковая навигация, параметры из исходного проекта и переход в Google Earth.</p></div><div class="inline-note">Справочный раздел об объектах мотоспорта. Этот сайт не является официальным ресурсом федерации. Точность координат, высот и технических характеристик требует проверки.</div></div></div></section>
-<section class="sport-section" id="atlasSec"><div class="wrap"><div class="section-top"><div><span class="eyebrow">Спутниковая навигация / 01</span><h2 class="section-title">Исследовать <em>рельеф.</em></h2></div><span class="section-index">4 ЛОКАЦИИ ИЗ ИСХОДНИКА</span></div><p class="lead" style="font-size:13px">Выберите точку: карта приблизится к указанным координатам. Встроенный атлас — спутниковая карта 2D; настоящий объёмный вид доступен по ссылке Google Earth.</p><div class="track-pills" id="trackPills"></div><div class="atlas-grid"><div class="map-shell"><div class="map-hud" id="earthHudLabel">СПУТНИКОВЫЙ АТЛАС</div><div id="earthMap" class="map-inner" aria-label="Интерактивная спутниковая карта"></div><div class="map-fallback" id="mapFallback"><div><strong>Спутниковая карта</strong><p>Карта откроется при входе в раздел при наличии соединения с Leaflet и ArcGIS. Выбор локаций и переход в Google Earth доступны независимо.</p></div></div><div class="map-credit">Leaflet / Esri World Imagery · Для карт необходим интернет · Спутниковый вид 2D</div></div><aside class="track-detail" aria-live="polite"><span class="eyebrow">Информация об объекте</span><h3 id="trackNameOut">—</h3><p id="trackDescOut">—</p><div class="track-details"><div><span>Длина / из исходного файла</span><strong id="trackLenOut">—</strong></div><div><span>Перепад высот / из исходного файла</span><strong id="trackAltOut">—</strong></div><div><span>Покрытие / из исходного файла</span><strong id="trackSoilOut">—</strong></div></div><div class="elevation"><div class="key">СХЕМАТИЧЕСКИЙ ПРОФИЛЬ · НЕ ГЕОДЕЗИЧЕСКИЕ ИЗМЕРЕНИЯ</div><svg viewBox="0 0 300 85" role="img" aria-label="Схематический характер рельефа"><path id="elevationSparkline" d="M 0 50 Q 70 20 140 55 T 300 38"/></svg></div><a id="googleEarthLink" href="https://earth.google.com/web/" target="_blank" rel="noopener noreferrer" class="btn">Открыть объёмный вид в Google Earth ↗</a><p class="fine-print" style="color:#b5c2b1">Точка на карте указана по координатам исходника; это не подтверждение прохождения трассы именно по этому маршруту.</p></aside></div></div></section>
-<section class="reg-section"><div class="wrap"><div class="section-top"><div><span class="eyebrow">Технический справочник / 02</span><h2 class="section-title">Спортивные <em>классы.</em></h2></div><span class="section-index">КЛАССИФИКАЦИЯ / ТЕХКОМИССИЯ</span></div><div class="sport-notice">Таблица ниже перенесена из исходного HTML как исторический справочный материал. Возрастные ограничения, шумовые нормы и объёмы двигателей <strong>не проверены на соответствие актуальным регламентам 2026 года</strong>. Для допуска к соревнованиям используйте действующие документы организатора и <a href="https://www.mfr.ru/" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">Федерации мотоциклетного спорта России</a>.</div><div class="reg-table-wrap" tabindex="0" aria-label="Прокручиваемая таблица классов"><table class="reg-table"><thead><tr><th scope="col">Класс</th><th scope="col">Возраст в источнике</th><th scope="col">Двигатель в источнике</th><th scope="col">Пункты проверки в источнике</th></tr></thead><tbody><tr><td><b>50 / 65 см³</b></td><td>6–12 лет</td><td>Автомат / механика</td><td>Кнопка глушения («чека»), кожух цепи</td></tr><tr><td><b>85 см³</b></td><td>11–15 лет</td><td>2Т до 85 см³</td><td>Шум выхлопа до 112 дБ, натяжка спиц</td></tr><tr><td><b>125 см³</b></td><td>От 14 лет</td><td>2Т 125 / 4Т 250</td><td>Экипировка FIM, омологация шлема</td></tr><tr><td><b>OPEN</b></td><td>От 15 лет</td><td>До 450 см³ (из исходника)</td><td>Отсутствие течей стоек, наконечники рычагов</td></tr><tr><td><b>Ветераны</b></td><td>45+ лет</td><td>Свободный класс</td><td>Спортивная страховка, техпаспорт</td></tr></tbody></table></div><div style="margin-top:30px"><button type="button" class="btn btn-accent" data-view="workshop">Вернуться в мастерскую ↗</button></div></div></section>
-</div>
-</main>
-<footer class="footer"><div class="wrap"><div class="footer-grid"><div><a href="#workshop" class="brand" data-view="workshop"><span class="brand-mark">MK</span><span class="brand-name">MOTO / KUBAN<span>ENGINEERING & MOTOSPORT</span></span></a><p>Концепт коммерческого сайта мастерской с отдельным справочным мотоспортивным разделом. Представленные услуги, стоимость, проекты и контактные данные требуют подтверждения владельцем.</p></div><div><div class="eyebrow">Мастерская</div><p><a href="#servicesSec" data-view="workshop">Услуги</a></p><p><a href="#aiSec" data-view="workshop">Диагностика</a></p><p><a href="#calcSec" data-view="workshop">Расчёт и заявка</a></p></div><div><div class="eyebrow">Мотоспорт</div><p><a href="#sport" data-view="sport">Атлас трасс</a></p><p><a href="https://www.mfr.ru/" target="_blank" rel="noopener noreferrer">Регламенты МФР ↗</a></p><p id="workingHoursText">Режим работы: уточняется</p></div></div><div class="footer-bottom"><span>© 2026 · MOTO / KUBAN — демонстрационный сайт</span><span>Дизайн-концепция / Workshop × Motorsport</span></div></div></footer>
-<div class="modal" id="galleryModal" role="dialog" aria-modal="true" aria-label="Просмотр фотографий проекта" hidden><div class="modal-panel"><div class="modal-head"><strong id="modalTitle">Проект</strong><button type="button" id="modalClose" aria-label="Закрыть просмотр">Закрыть ✕</button></div><div class="modal-image-wrap"><img id="modalImage" alt="Фото проекта в полном размере"></div><div class="modal-controls"><button type="button" id="modalPrev">← Предыдущее</button><span id="modalCounter">1 / 3</span><button type="button" id="modalNext">Следующее →</button></div></div></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-'use strict';
-// Конфигурация для адаптации под новую мастерскую: измените здесь бренд, адрес изображений, цены (ниже) и каналы связи.
-const SITE_CONFIG={brand:'MOTO / KUBAN',brandSubtitle:'ENGINEERING & MOTOSPORT',logoLetters:'MK',city:'Краснодар',imageBase:'https://motosite-genanana.msk1.amvera.tech/',hours:null,telegramRecipient:'',whatsappRecipient:'',diagnosisEndpoint:'/api/diagnose'};
-const divisionData = {
+<body>
+
+  <!-- ВЕРХНЯЯ СТРОКА ТЕЛЕМЕТРИИ -->
+  <div class="top-telemetry">
+    <div>
+      <span style="color:var(--gold); font-weight:700;">КРАСНОДАР</span> • ЦЕХ & СПОРТ-БАЗА КК
+    </div>
+    <div>09:00 — 21:00 • БЕЗ ВЫХОДНЫХ</div>
+  </div>
+
+  <!-- ШАПКА САЙТА -->
+  <header>
+    <div class="header-row">
+      <div class="brand-logo">
+        <a href="javascript:showWorkshopView()">МОТО<span>КУБАНЬ</span>ЦЕХ</a>
+      </div>
+
+      <div class="header-controls">
+        <!-- ЯРКАЯ КЛИКАБЕЛЬНАЯ КНОПКА ФЕДЕРАЦИИ -->
+        <button class="fed-nav-trigger" onclick="showFederationView()">
+          ФЕДЕРАЦИЯ КК ❯
+        </button>
+        <!-- КНОПКА МЕНЮ -->
+        <button class="burger-btn" onclick="toggleMenu(true)" aria-label="Открыть меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ ДИВИЗИОНОВ 50/50 -->
+    <div class="mode-toggle-bar" id="modeToggleBar">
+      <div class="mode-indicator-slider" id="modeSlider"></div>
+      <button class="mode-tab-btn active" id="btnCustom" onclick="switchDivision('custom')">
+        Тяжёлый Кастом & V-Twin
+      </button>
+      <button class="mode-tab-btn" id="btnCross" onclick="switchDivision('cross')">
+        Кросс и Эндуро Дивизион
+      </button>
+    </div>
+  </header>
+
+  <!-- МОБИЛЬНОЕ ВЫДВИЖНОЕ МЕНЮ (БУРГЕР) -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleMenu(false)"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <div>
+      <div class="drawer-head">
+        <strong style="font-family:var(--font-display); font-size:16px;">НАВИГАЦИЯ ЦЕХА</strong>
+        <button onclick="toggleMenu(false)" style="font-size:24px; color:#fff; line-height:1;">✕</button>
+      </div>
+      <div class="drawer-links">
+        <a href="#servicesSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>01. Услуги цеха</span><span>❯</span>
+        </a>
+        <a href="#aiSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>02. ИИ-Диагност</span><span>❯</span>
+        </a>
+        <a href="#projectsSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>03. Проекты До/После</span><span>❯</span>
+        </a>
+        <a href="#calcSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>04. Смета работ</span><span>❯</span>
+        </a>
+        <a href="javascript:void(0)" onclick="toggleMenu(false); showFederationView();" style="border-color:var(--gold); color:var(--gold);">
+          <span>Федерация Мотоспорта КК</span><span>❯</span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <button class="action-btn btn-primary" style="width:100%; font-size:13px;" onclick="toggleMenu(false); document.getElementById('calcSec').scrollIntoView({behavior:'smooth'});">
+        Записаться на подъёмник
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       ВИД 1: КОММЕРЧЕСКИЙ ЦЕХ
+       ========================================================================= -->
+  <div id="workshopPage">
+
+    <!-- 01 / ПЕРВЫЙ ЭКРАН HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-badge" id="heroBadge">ЦЕХ ТЯЖЁЛОГО МЕТАЛЛА И V-TWIN ИНЖЕНЕРИИ</div>
+        <h1 class="hero-title" id="heroTitle">
+          ПОСТРОЙКА <em>ШТУЧНЫХ КАСТОМОВ</em> И РЕБИЛД МОТОРОВ V-TWIN
+        </h1>
+        <p class="hero-lead" id="heroLead">
+          Проектирование рам, маятников под каток 280–300 мм, аргонодуговая сварка выхлопных систем из титана и глубокий ребилд двигателей Harley-Davidson и Indian в Краснодаре.
+        </p>
+        <div class="hero-actions">
+          <button class="action-btn btn-primary" onclick="document.getElementById('calcSec').scrollIntoView({behavior:'smooth'})">
+            Рассчитать смету работ ❯
+          </button>
+          <button class="action-btn btn-outline" onclick="document.getElementById('aiSec').scrollIntoView({behavior:'smooth'})">
+            ИИ-дефектовщик байка ❯
+          </button>
+        </div>
+      </div>
+
+      <!-- Правый стенд с фото мотоцикла: HUD-сканер телеметрии -->
+      <div class="chamfer-box hero-stand">
+        <div class="stand-corner stand-corner-tl"></div>
+        <div class="stand-corner stand-corner-tr"></div>
+        <div class="stand-corner stand-corner-bl"></div>
+        <div class="stand-corner stand-corner-br"></div>
+        <div class="stand-laser-scan"></div>
+        <div class="stand-target-cross"></div>
+
+        <div class="stand-img-box">
+          <img id="heroStandImg" src="images/hero_custom_vtwin.jpg" alt="Мотоцикл на стапеле">
+          <div class="stand-hud">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="stand-tag" id="heroStandTag">СТАПЕЛЬ 01 // ШТУЧНЫЙ КАСТОМ V-TWIN</span>
+              <span class="stand-status-pill">
+                <i class="pulse-dot"></i>LIVE TELEMETRY
+              </span>
+            </div>
+            <div class="stand-specs-row">
+              <div class="stand-spec-item">
+                <span id="heroSpecL1">Крутящий момент</span>
+                <strong id="heroSpecV1">до 210 Н·м</strong>
+                <div class="spec-mini-meter"><div class="spec-mini-fill" id="heroSpecMeter1" style="width: 88%;"></div></div>
+              </div>
+              <div class="stand-spec-item">
+                <span id="heroSpecL2">Сварка выхлопа</span>
+                <strong id="heroSpecV2">Титан ВТ1-0</strong>
+                <div class="spec-mini-meter"><div class="spec-mini-fill" id="heroSpecMeter2" style="width: 100%;"></div></div>
+              </div>
+              <div class="stand-spec-item">
+                <span id="heroSpecL3">Ширина катка</span>
+                <strong id="heroSpecV3">240–300 мм</strong>
+                <div class="spec-mini-meter"><div class="spec-mini-fill" id="heroSpecMeter3" style="width: 95%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПЛАШКА ПЕРЕХОДА НА СТРАНИЦУ ФЕДЕРАЦИИ -->
+    <div class="chamfer-box fed-banner-card reveal-up">
+      <div>
+        <h4>Спортивная база Федерации Мотоспорта КК</h4>
+        <p>Спутниковый атлас трасс («Орлёнок», «Белая Стрела», «Маркотх»), регламент техкомиссии МФР и подготовка пилотов.</p>
+      </div>
+      <button class="action-btn btn-gold" onclick="showFederationView()">
+        Открыть страницу Федерации и Спутник Земли ❯
+      </button>
+    </div>
+
+    <!-- 02 / УСЛУГИ ЦЕХА -->
+    <section class="section" id="servicesSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker" id="servKicker">СПЕЦИАЛИЗАЦИЯ ЦЕХА</div>
+        <h2 class="section-title" id="servTitle">ЧЕТЫРЕ НАПРАВЛЕНИЯ <em>V-TWIN И КАСТОМА</em></h2>
+      </div>
+      <div class="services-grid" id="servicesGrid"></div>
+    </section>
+
+    <!-- 03 / ИИ ИНЖЕНЕР -->
+    <section class="section" id="aiSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">ИНТЕРАКТИВНЫЙ БОРТОВОЙ МОДУЛЬ</div>
+        <h2 class="section-title">МОТО-ИНЖЕНЕР AI <em>// ДЕФЕКТОВКА</em></h2>
+      </div>
+
+      <div class="ai-wrapper reveal-up">
+        <div class="chamfer-box ai-box">
+          <div class="ai-modes-3">
+            <button class="ai-mode-btn active" id="aiTab1" onclick="selectAiMode(1)">1. Дефектовка</button>
+            <button class="ai-mode-btn" id="aiTab2" onclick="selectAiMode(2)">2. Тюнинг</button>
+            <button class="ai-mode-btn" id="aiTab3" onclick="selectAiMode(3)">3. ТО</button>
+          </div>
+
+          <div id="aiChipsSubtitle" style="font-family:var(--font-cond); font-size:11px; color:var(--gold); text-transform:uppercase;">
+            НАЖМИТЕ НА ЧАСТЫЙ СИМПТОМ ДЛЯ ДЕФЕКТОВКИ:
+          </div>
+          <div class="chips-stack" id="aiChipContainer"></div>
+
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">Или опишите симптом своими словами:</div>
+            <div class="ai-input-wrap">
+              <input type="text" id="aiCustomInput" class="ai-text-field" placeholder="Например: цокот в цилиндре на горячую...">
+              <button class="action-btn btn-primary" style="padding:8px 14px; font-size:12px;" onclick="runAiAnalysis()">Разобрать</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chamfer-box ai-box" id="aiResultCard" style="border-left: 4px solid var(--primary);">
+          <!-- Сканирующий оверлей при дефектовке -->
+          <div class="ai-scan-overlay" id="aiScanOverlay">
+            <div style="font-family:var(--font-cond); font-size:11px; color:var(--primary); letter-spacing:0.12em; text-transform:uppercase;">
+              // СКАНИРОВАНИЕ ШИНЫ CAN-BUS И ДАТЧИКОВ...
+            </div>
+            <div class="ai-scan-bar"><div class="ai-scan-fill"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-family:var(--font-cond); font-size:11px; color:var(--gold);" id="aiResCode">ТЕХКАРТА: #VTW-402</span>
+                <span id="aiModelBadge" style="font-family:var(--font-cond); font-size:10px; color:#10b981; border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:3px; text-transform:uppercase; display:inline-flex; align-items:center; gap:4px;">
+                  <i style="width:5px; height:5px; background:#10b981; border-radius:50%; display:inline-block;"></i>DeepSeek V4.1 Flash • Кэш ВКЛ
+                </span>
+                <div class="sensor-wave-box" title="Датчик детонации и акустического шума">
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                </div>
+              </div>
+              <span class="risk-tag risk-yellow" id="aiResRisk">Требует ревизии</span>
+            </div>
+            <h3 style="font-family:var(--font-display); font-size:18px; text-transform:uppercase; margin-bottom:8px;" id="aiResTitle">
+              Уход тепловых зазоров клапанов и износ натяжителя ГРМ
+            </h3>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.55;" id="aiResDesc">
+              Характерный износ гидронатяжителей цепи ГРМ. Требуется эндоскопия хона, проверка давления масла и установка усиленной гидравлической плиты Feuling.
+            </p>
+          </div>
+
+          <div class="ai-stats-3">
+            <div><span>Комплекс</span><strong id="aiResService">Ревизия ГРМ</strong></div>
+            <div><span>Срок</span><strong id="aiResTime">2–3 дня</strong></div>
+            <div><span>Ориентир</span><strong id="aiResPrice" style="color:var(--gold);">от 28 000 ₽</strong></div>
+          </div>
+
+          <button class="action-btn btn-primary" style="width:100%; font-size:12px;" onclick="applyAiToCalc()">
+            Перенести работы в калькулятор сметы ❯
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 / ПРОЕКТЫ -->
+    <section class="section" id="projectsSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">РЕАЛЬНЫЕ КЕЙСЫ ЦЕХА</div>
+        <h2 class="section-title" id="projectsTitle">ВЫПОЛНЕННЫЕ <em>КАСТОМ-ПРОЕКТЫ</em></h2>
+      </div>
+      <div class="projects-stack" id="projectsGrid"></div>
+    </section>
+
+    <!-- 05 / КАЛЬКУЛЯТОР -->
+    <section class="section" id="calcSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">ПРЯМОЙ РАСЧЁТ</div>
+        <h2 class="section-title" id="calcTitle">КАЛЬКУЛЯТОР <em>КАСТОМА И РЕМОНТА</em></h2>
+      </div>
+
+      <div class="calc-wrap reveal-up">
+        <div>
+          <div class="chamfer-box" style="padding:16px; margin-bottom:12px;">
+            <div style="font-family:var(--font-display); font-size:15px; color:var(--gold); text-transform:uppercase; margin-bottom:10px;" id="calcStep1Title">
+              1. Выберите класс мотоцикла
+            </div>
+            <div class="subclass-row" id="subclassContainer"></div>
+          </div>
+
+          <div class="chamfer-box" style="padding:16px;">
+            <div style="font-family:var(--font-display); font-size:15px; color:var(--gold); text-transform:uppercase; margin-bottom:10px;">
+              2. Отметьте требуемые работы
+            </div>
+            <div class="services-stack" id="calcServicesList"></div>
+          </div>
+        </div>
+
+        <div class="chamfer-box calc-sum-box">
+          <div>
+            <div style="font-family:var(--font-cond); color:var(--text-muted); text-transform:uppercase; font-size:11px;">
+              Предварительная смета
+            </div>
+            <div class="total-val" id="calcTotalDisplay">0 ₽</div>
+            <div style="font-size:12px; color:var(--gold);" id="calcDaysDisplay">Выберите услуги для расчёта</div>
+
+            <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+              <input type="text" id="clientBikeModel" class="calc-input" placeholder="Марка и модель (Harley / KTM / др.)">
+              <input type="tel" id="clientPhone" class="calc-input" placeholder="Телефон для фиксации времени подъёмника">
+            </div>
+          </div>
+          <div class="calc-btn-group">
+            <button class="action-btn btn-telegram" onclick="sendOrder('tg')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:6px;"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>В Telegram ❯
+            </button>
+            <button class="action-btn btn-whatsapp" onclick="sendOrder('wa')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:6px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>В WhatsApp ❯
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- =========================================================================
+       ВИД 2: СТРАНИЦА ФЕДЕРАЦИИ + СПУТНИК GOOGLE EARTH
+       ========================================================================= -->
+  <div id="federationPage">
+    <div class="fed-hero-block">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:8px;">
+        <span style="font-family:var(--font-cond); color:var(--gold); font-size:12px; font-weight:700;">
+          РОО ФМСКК • АККРЕДИТОВАНА МФР
+        </span>
+        <button class="action-btn btn-outline" style="padding:6px 12px; font-size:11px;" onclick="showWorkshopView()">
+          ← В цех кастома
+        </button>
+      </div>
+
+      <h1 class="section-title" style="margin-bottom:8px;">
+        ФЕДЕРАЦИЯ МОТОСПОРТА <em>КРАСНОДАРСКОГО КРАЯ</em>
+      </h1>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.6; max-width:760px;">
+        Официальный спортивно-технический центр и комиссия мотокросса базируются в Туапсинском районе (пгт. Новомихайловский, СТК ВДЦ «Орлёнок»).
+      </p>
+    </div>
+
+    <!-- ИНТЕРАКТИВНЫЙ СПУТНИКОВЫЙ АТЛАС ЗЕМЛИ (GOOGLE EARTH СТИЛЬ) -->
+    <section class="section" style="padding-top:24px;">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">СПУТНИКОВЫЙ ЗУМ ТРАСС В РЕАЛЬНОМ ВРЕМЕНИ</div>
+        <h2 class="section-title">СПУТНИКОВЫЙ <em>3D-АТЛАС ТРАСС КУБАНИ</em></h2>
+        <p style="font-size:12px; color:var(--text-muted);">
+          Нажмите на любую трассу ниже — спутник плавно приблизит Землю прямо к треку, покажет рельеф, перепады высот и грунтовое полотно:
+        </p>
+      </div>
+
+      <!-- Кнопки выбора трасс -->
+      <div class="track-pills-row">
+        <button class="track-pill-btn active" id="pill0" onclick="zoomToTrack(0)">
+          <strong>01. ВДЦ «Орлёнок»</strong>
+          <span>Новомихайловский • MXGP ❯</span>
+        </button>
+        <button class="track-pill-btn" id="pill1" onclick="zoomToTrack(1)">
+          <strong>02. «Белая Стрела»</strong>
+          <span>Краснодар • Суглинок ❯</span>
+        </button>
+        <button class="track-pill-btn" id="pill2" onclick="zoomToTrack(2)">
+          <strong>03. «Чембурка»</strong>
+          <span>Анапа • Морской песок ❯</span>
+        </button>
+        <button class="track-pill-btn" id="pill3" onclick="zoomToTrack(3)">
+          <strong>04. «Хребет Маркотх»</strong>
+          <span>Геленджик • Хард-Эндуро ❯</span>
+        </button>
+      </div>
+
+      <!-- Контейнер спутниковой карты с тактическим HUD -->
+      <div class="satellite-viewport-box reveal-up">
+        <div class="earth-hud-corners">
+          <div class="earth-c-tl"></div>
+          <div class="earth-c-tr"></div>
+          <div class="earth-c-bl"></div>
+          <div class="earth-c-br"></div>
+        </div>
+
+        <div class="earth-hud-top">
+          <div class="earth-badge" id="earthHudLabel">ОРБИТА: ТРАССА ВДЦ «ОРЛЁНОК» (MXGP)</div>
+          <a class="earth-action-direct" id="googleEarthLink" href="https://earth.google.com/web/@44.2565,38.8375,120a,1200d,35y,0h,45t,0r" target="_blank" rel="noopener">
+            Google Earth 3D ↗
+          </a>
+        </div>
+
+        <div id="earthMap"></div>
+
+        <!-- Тактический профиль высот поверх карты -->
+        <div class="earth-elevation-panel">
+          <div>
+            <div style="font-size:9px; color:var(--gold); font-family:var(--font-cond); text-transform:uppercase;">
+              РЕЛЬЕФ ТРАССЫ // ПРОФИЛЬ ВЫСОТ
+            </div>
+            <strong id="trackAltOverlay" style="font-size:12px; color:#fff;">Перепад: 40 м</strong>
+          </div>
+          <svg class="elevation-sparkline-svg" viewBox="0 0 160 30" preserveAspectRatio="none">
+            <path id="elevationSparkline" d="M 0,22 Q 30,5 60,18 T 120,8 T 160,25" fill="none" stroke="#f0be5d" stroke-width="2" />
+          </svg>
+          <div style="font-size:9px; color:var(--text-muted); font-family:var(--font-cond); text-align:right;">
+            AZIMUTH: <span style="color:#fff;">035° N</span><br>GPS SATELLITES: <span style="color:#10b981;">18 LOCK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Информационная карточка активной трассы -->
+      <div class="chamfer-box reveal-up" style="padding:16px; margin-top:10px;" id="trackTelemetryCard">
+        <h3 style="font-family:var(--font-display); font-size:17px; text-transform:uppercase; color:#fff;" id="trackNameOut">
+          СТК ВДЦ «Орлёнок» (Туапсинский район)
+        </h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:6px 0 12px;" id="trackDescOut">
+          Трасса Чемпионата Мира MXGP на берегу Черного моря. Плотный морской глинозём, каскадные спуски и разрывные столы до 32 м.
+        </p>
+        <div class="stand-specs-row" style="border-top:1px solid var(--border-steel); padding-top:10px;">
+          <div><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase;">Длина полотна</span><strong id="trackLenOut" style="font-size:13px; color:#fff;">1 850 м</strong></div>
+          <div><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase;">Перепад высот</span><strong id="trackAltOut" style="font-size:13px; color:#fff;">40 метров</strong></div>
+          <div><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase;">Тип покрытия</span><strong id="trackSoilOut" style="font-size:13px; color:var(--gold);">Морская глина</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ТАБЛИЦА РЕГЛАМЕНТА МФР -->
+    <section class="section" style="background:#090b10;">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">РЕГЛАМЕНТ СПОРТИВНОЙ ТЕХКОМИССИИ МФР</div>
+        <h2 class="section-title">ОФИЦИАЛЬНЫЕ КЛАССЫ <em>И ТЕХКОМИССИЯ</em></h2>
+      </div>
+
+      <div class="chamfer-box" style="overflow-x:auto; padding:12px;">
+        <table class="spec-table" style="min-width:480px;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--gold); text-align:left; font-family:var(--font-cond); color:var(--gold);">
+              <th style="padding:8px 0;">Класс</th>
+              <th>Возраст</th>
+              <th>Регламент двигателя</th>
+              <th>Точки проверки техкомиссией</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:8px 0;"><strong>50 / 65 см³</strong></td>
+              <td>6–12 лет</td>
+              <td>Автомат / Механика</td>
+              <td>Кнопка глушения («чека»), кожух цепи</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>85 см³</strong></td>
+              <td>11–15 лет</td>
+              <td>2Т до 85 см³</td>
+              <td>Шум выхлопа до 112 дБ, натяжка спиц</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>125 см³</strong></td>
+              <td>От 14 лет</td>
+              <td>2Т 125 / 4Т 250</td>
+              <td>Экипировка FIM, омологация шлема</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>OPEN</strong></td>
+              <td>От 15 лет</td>
+              <td>Свободный (до 450сс)</td>
+              <td>Отсутствие течей стоек, шарики на рычагах</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>Ветераны</strong></td>
+              <td>45+ лет</td>
+              <td>Свободный класс</td>
+              <td>Спортивная страховка МФР, техпаспорт</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ПОДВАЛ -->
+  <footer>
+    <div>
+      <strong style="color:#fff;">МОТО-АЛЬЯНС КУБАНЬ</strong> — Центр кастомайзинга, ремонта и подготовки мотоспорта Кубани.
+    </div>
+    <div>г. Краснодар • Пн–Вс с 09:00 до 20:00</div>
+  </footer>
+
+  <!-- Скрипт Leaflet для Спутника Google Earth -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // БАЗА ДАННЫХ ДИВИЗИОНОВ
+    const divisionData = {
       custom: {
         badge: "ЦЕХ ТЯЖЁЛОГО МЕТАЛЛА И V-TWIN ИНЖЕНЕРИИ",
         heroTitle: "ПОСТРОЙКА <em>ШТУЧНЫХ КАСТОМОВ</em> И РЕБИЛД МОТОРОВ V-TWIN",
@@ -287,7 +1994,8 @@ const divisionData = {
       }
     };
 
-const earthTracksData = [
+    // БАЗА ДАННЫХ ДЛЯ СПУТНИКА GOOGLE EARTH (РЕАЛЬНЫЕ КООРДИНАТЫ ТРАСС КУБАНИ)
+    const earthTracksData = [
       {
         name: "СТК ВДЦ «Орлёнок» (Туапсинский район)",
         desc: "Трасса Чемпионата Мира MXGP на берегу Черного моря. Плотный морской глинозём, каскадные спуски и разрывные столы до 32 м.",
@@ -337,213 +2045,761 @@ const earthTracksData = [
         earthUrl: "https://earth.google.com/web/@44.6050,37.9950,450a,2500d,35y,0h,60t,0r"
       }
     ];
-const $=id=>document.getElementById(id);
-const fmt=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
-const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const imgURL=path=>/^(https?:)?\/\//.test(path)?path:SITE_CONFIG.imageBase.replace(/\/$/,'')+'/'+String(path).replace(/^\//,'');
-const trackNames=['ВДЦ «Орлёнок»','«Белая Стрела»','«Чембурка»','Маркотхский хребет'];
-const tracksMeta=['Туапсинский район / MX','Краснодар / MX','Анапа / MX','Геленджик / эндуро'];
-const profiles=['M0 44 Q30 10 65 34 T130 27 T215 50 T300 25','M0 49 Q35 38 68 45 T138 35 T215 42 T300 30','M0 48 Q35 57 75 49 T160 42 T230 55 T300 47','M0 75 Q36 70 65 57 T130 44 T190 27 T245 17 T300 9'];
-const state={division:'custom',page:'workshop',aiMode:'defect',result:null,selected:new Set(),pending:[],matchedAdvice:new Map(),subclass:0,track:0,gallery:null,photoIndex:0,menu:false,requestController:null,map:null,marker:null,total:0,totalAnimation:null};
-const modeOrder=['defect','tuning','maintenance'];
-const modelServices=()=>divisionData[state.division].calcServices;
-const scrollToId=id=>{const el=$(id);if(el)el.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'})};
-const showError=(s)=>{$('formError').textContent=s;};
-function toggleMenu(open){state.menu=!!open;$('mobileNavigation').hidden=!state.menu;$('menuToggle').setAttribute('aria-expanded',String(state.menu));$('menuToggle').setAttribute('aria-label',state.menu?'Закрыть меню':'Открыть меню');$('menuToggle').textContent=state.menu?'✕':'☰';}
-function navigate(page,target,history=true){
-  if(state.requestController){state.requestController.abort();state.requestController=null;}$('analyzeButton').disabled=false;$('analyzeButton').textContent='Запросить анализ ↗';
-  state.page=page==='sport'?'sport':'workshop';
-  const sport=state.page==='sport';
-  $('federationPage').hidden=!sport;$('workshopPage').hidden=sport;
-  document.body.dataset.page=state.page;
-  $('headerWorkshop').setAttribute('aria-pressed',String(!sport));$('headerSport').setAttribute('aria-pressed',String(sport));
-  toggleMenu(false);
-  if(history){const hash=sport?'#sport':'#'+(target||'workshop');if(location.hash!==hash)window.history.pushState({page:state.page},'',hash);}
-  if(sport){window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(()=>{initMap();if(state.map)setTimeout(()=>state.map.invalidateSize(),70)});}else if(target&&$(target)){requestAnimationFrame(()=>scrollToId(target));}else window.scrollTo({top:0,behavior:'instant'});
-}
-function setupNavigation(){
-  document.addEventListener('click',e=>{
-    const view=e.target.closest('[data-view]');
-    if(view){e.preventDefault();const target=view.dataset.target||view.getAttribute('href')?.replace('#','');navigate(view.dataset.view,target&&target!=='workshop'&&target!=='sport'?target:null);return;}
-    const anchor=e.target.closest('[data-target]');if(anchor){e.preventDefault();if(state.page!=='workshop')navigate('workshop',anchor.dataset.target);else scrollToId(anchor.dataset.target);}
-  });
-  $('menuToggle').addEventListener('click',()=>toggleMenu(!state.menu));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('galleryModal').hidden)closeGallery();else if(state.menu)toggleMenu(false);}});
-  window.addEventListener('popstate',()=>handleHash(false));
-  window.addEventListener('hashchange',()=>handleHash(false));
-}
-function handleHash(fromStartup){const hash=decodeURIComponent(location.hash.slice(1));if(hash==='sport'||hash==='atlasSec'){navigate('sport',null,false);if(hash==='atlasSec')scrollToId('atlasSec');}else{navigate('workshop',hash&&hash!=='workshop'?hash:null,false);}}
-function renderDivision(div){
-  if(!divisionData[div])return;
-  state.division=div;document.body.dataset.division=div;document.querySelectorAll('[data-division-select]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.divisionSelect===div)));
-  const d=divisionData[div];
-  $('heroBadge').textContent=div==='custom'?'Кастом-ателье / инженерия V-Twin':'Гоночная мастерская / кросс и эндуро';
-  $('heroTitle').innerHTML=div==='custom'?'Машина с <em>характером.</em><br>Работа с точностью.':'Точность на <em>пределе.</em><br>Воля к скорости.';
-  $('heroLead').textContent=d.heroLead;
-  $('heroImage').alt=div==='custom'?'Кастомный V-Twin в мастерской':'Кроссовый мотоцикл в техническом боксе';
-  $('heroImageTag').textContent=d.heroTag;
-  $('heroImageFallback').hidden=false;
-  $('heroImage').style.display='block';$('heroImage').src=imgURL(d.heroImg);
-  $('servTitle').innerHTML=div==='custom'?'Сделано из <em>металла.</em><br>Продумано до детали.':'Подготовлено к <em>гонке.</em><br>Проверено на трассе.';
-  $('projectsTitle').innerHTML=div==='custom'?'Строим <em>характер.</em>':'Готовим <em>победы.</em>';
-  renderServices();
-  state.selected=new Set([0,1]);state.pending=[];state.matchedAdvice=new Map();state.subclass=0;
-  renderSubclasses();renderCalcServices();renderEstimate();renderProjects();setAiMode(state.aiMode);
-}
-function renderServices(){
-  $('servicesGrid').innerHTML=divisionData[state.division].services.map((s,i)=>`<article class="service-card reveal"><div class="seq">${safe(s.num||'0'+(i+1))}</div><h3>${safe(s.title)}</h3><p>${safe(s.desc)}</p><ul>${s.list.map(item=>`<li><span>${safe(item[0])}</span><span>${safe(item[1])}</span></li>`).join('')}</ul><button class="card-link" type="button" data-target="calcSec">Составить смету ↗</button></article>`).join('');revealNew();
-}
-function setAiMode(mode){
-  if(!modeOrder.includes(mode))return;
-  if(state.requestController){state.requestController.abort();state.requestController=null;}$('analyzeButton').disabled=false;$('analyzeButton').textContent='Запросить анализ ↗';
-  state.aiMode=mode;
-  const data=divisionData[state.division].aiModes[mode];
-  document.querySelectorAll('[data-ai-mode]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.aiMode===mode)));
-  $('aiChipsSubtitle').textContent=data.title;
-  $('aiChipContainer').innerHTML=data.chips.map((ch,i)=>`<button type="button" class="chip" data-chip="${i}" aria-pressed="${i===0}">${safe(ch.text)} ↗</button>`).join('');
-  applyPreset(0);
-}
-function applyPreset(index){
-  const chips=divisionData[state.division].aiModes[state.aiMode].chips;
-  const ch=chips[index];if(!ch)return;if(state.requestController){state.requestController.abort();state.requestController=null;}$('analyzeButton').disabled=false;$('analyzeButton').textContent='Запросить анализ ↗';
-  document.querySelectorAll('[data-chip]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.chip)===index)));
-  setAiResult({...ch,service:ch.srv,riskClass:ch.risk,riskText:ch.riskTxt},'Готовый сценарий');
-  $('aiConnection').textContent='Пример из каталога';$('aiConnection').classList.remove('error');
-}
-function setAiResult(data,source){
-  state.result={code:String(data.code||'#AI-RESULT'),title:String(data.title||'Рекомендация'),desc:String(data.desc||'Подробности отсутствуют.'),service:String(data.service||data.srv||'Диагностика'),time:String(data.time||'Уточняется'),price:String(data.price||'По запросу'),risk:String(data.riskClass||data.risk||'risk-yellow'),riskText:String(data.riskText||data.riskTxt||'Нужна проверка'),source};
-  const r=state.result;
-  $('aiResCode').textContent=r.code;$('aiResTitle').textContent=r.title;$('aiResDesc').textContent=r.desc;$('aiResService').textContent=r.service;$('aiResTime').textContent=r.time;$('aiResPrice').textContent=r.price;
-  $('aiResRisk').textContent=r.riskText;$('aiResRisk').className='risk'+(r.risk.includes('red')?' red':r.risk.includes('green')?' green':'');
-  $('aiModelBadge').textContent=source;$('aiFeedback').textContent='';$('transferAi').disabled=false;
-}
-async function runAiAnalysis(){
-  const q=$('aiCustomInput').value.trim();if(!q){$('aiFeedback').textContent='Сначала опишите неисправность или задачу.';$('aiCustomInput').focus();return;}
-  if(state.requestController)state.requestController.abort();
-  const controller=new AbortController();state.requestController=controller;
-  const timer=setTimeout(()=>controller.abort(),11000);
-  $('analyzeButton').disabled=true;$('analyzeButton').textContent='Анализируем…';
-  $('aiConnection').textContent='Запрос к серверу…';$('aiConnection').classList.remove('error');$('aiFeedback').textContent='';
-  document.querySelectorAll('[data-chip]').forEach(b=>b.setAttribute('aria-pressed','false'));
-  try{
-    const resp=await fetch(SITE_CONFIG.diagnosisEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,division:state.division,mode:state.aiMode}),signal:controller.signal});
-    if(!resp.ok)throw Error(`HTTP ${resp.status}`);
-    const data=await resp.json();if(!data||typeof data!=='object'||typeof data.desc!=='string'||typeof data.title!=='string')throw Error('некорректный JSON-ответ API');
-    if(state.requestController!==controller)return;
-    setAiResult(data,data.cached?'Ответ API · кэш':'Ответ серверного API');
-    $('aiConnection').textContent='API: ответ получен';
-  }catch(err){
-    if(state.requestController!==controller)return;
-    state.result=null;$('transferAi').disabled=true;
-    $('aiResCode').textContent='#API-OFFLINE';$('aiResTitle').textContent='Сервис анализа временно недоступен';
-    $('aiResDesc').textContent='Не удалось связаться с сервером диагностики. Проверьте подключение /api/diagnose. Вы можете выбрать справочный сценарий выше или самостоятельно добавить работы в калькулятор.';
-    $('aiResService').textContent='—';$('aiResTime').textContent='—';$('aiResPrice').textContent='—';$('aiResRisk').className='risk';$('aiResRisk').textContent='Нет результата';
-    $('aiModelBadge').textContent='Нет ответа API';$('aiConnection').textContent='API: недоступен';$('aiConnection').classList.add('error');
-    $('aiFeedback').textContent='Свободный запрос не обработан; никакой диагноз не был сгенерирован.';
-  }finally{clearTimeout(timer);if(state.requestController===controller){state.requestController=null;$('analyzeButton').disabled=false;$('analyzeButton').textContent='Запросить анализ ↗';}}
-}
-function applyAiToCalc(){
-  const r=state.result;if(!r){$('aiFeedback').textContent='Нет рекомендации для переноса.';return;}
-  // Only select a service by explicit strongly matching service title. Otherwise transfer it as a distinct quote-required item.
-  const norm=s=>String(s).toLowerCase().replace(/ё/g,'е').replace(/[^а-яa-z0-9]+/g,' ').split(' ').filter(w=>w.length>=5);
-  const words=norm(r.service);
-  const candidates=modelServices().map((s,i)=>({i,overlap:words.filter(w=>norm(s.name).some(x=>x.startsWith(w.slice(0,5))||w.startsWith(x.slice(0,5)))).length}));
-  const best=candidates.sort((a,b)=>b.overlap-a.overlap)[0];
-  if(best&&best.overlap>=2){state.selected.add(best.i);state.matchedAdvice.set(best.i,r.service);$('aiFeedback').textContent='Похожая работа отмечена в смете. Проверьте её состав: совпадение названий не гарантирует одинаковый объём работ.';}
-  else{
-    const id=state.division+'|'+r.code+'|'+r.service;
-    if(!state.pending.some(p=>p.id===id))state.pending.push({id,name:r.service,sourcePrice:r.price});
-    $('aiFeedback').textContent='Рекомендация перенесена отдельной позицией «Стоимость уточняется». Цена не добавлена в итог без подтверждения.';
-  }
-  renderCalcServices();renderEstimate();scrollToId('calcSec');
-}
-function renderSubclasses(){const subs=divisionData[state.division].subclasses;$('subclassContainer').innerHTML=subs.map((s,i)=>`<button type="button" class="choice" data-subclass="${i}" aria-pressed="${state.subclass===i}">${safe(s.name)}<small>Коэффициент ×${s.mult.toLocaleString('ru-RU')}</small></button>`).join('');}
-function renderCalcServices(){
-  $('calcServicesList').innerHTML=modelServices().map((s,i)=>`<label class="work-item"><input type="checkbox" data-service="${i}" ${state.selected.has(i)?'checked':''}><span>${safe(s.name)}</span><strong>${fmt(s.price)}</strong></label>`).join('');
-}
-function renderEstimate(){
-  const services=modelServices();const subs=divisionData[state.division].subclasses;
-  let subtotal=0,days=0;for(const i of state.selected){if(services[i]){subtotal+=services[i].price;days+=services[i].days;}}
-  state.total=Math.round(subtotal*subs[state.subclass].mult);
-  animateTotal(state.total);
-  $('calcDaysDisplay').textContent=state.selected.size?`Ориентир: ${days} раб. дн. при последовательном выполнении · коэффициент класса ×${subs[state.subclass].mult}`:'Выберите позиции для расчёта';
-  $('estimateRows').innerHTML=[...state.selected].map(i=>services[i]?`<div class="estimate-row"><span>${safe(services[i].name)}${state.matchedAdvice.get(i)?`<br><small style="color:var(--accent)">Рекомендация: ${safe(state.matchedAdvice.get(i))} · уточните соответствие работ</small>`:''}</span><strong>${fmt(services[i].price*subs[state.subclass].mult)}</strong></div>`:'').join('')||'<div class="estimate-row"><span>Пока нет работ</span><span>—</span></div>';
-  $('pendingList').innerHTML=state.pending.map((p,i)=>`<div class="pending-item"><span>${safe(p.name)}<br><small>Ориентир исходника: ${safe(p.sourcePrice)}, <b>в итог не включено</b></small></span><button type="button" data-remove-pending="${i}" aria-label="Удалить позицию ${safe(p.name)}">✕</button></div>`).join('');
-}
-function animateTotal(target){const el=$('calcTotalDisplay');if(state.totalAnimation)cancelAnimationFrame(state.totalAnimation);if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=fmt(target);return;}
-  const initial=parseInt(el.textContent.replace(/[^\d]/g,''),10)||0;const start=performance.now();
-  const tick=t=>{const p=Math.min(1,(t-start)/320),e=1-(1-p)**3;el.textContent=fmt(initial+(target-initial)*e);if(p<1)state.totalAnimation=requestAnimationFrame(tick);else state.totalAnimation=null;};state.totalAnimation=requestAnimationFrame(tick);
-}
-function estimateMessage(){const services=modelServices(),sub=divisionData[state.division].subclasses[state.subclass];return `Здравствуйте! Заявка с демонстрационного сайта ${SITE_CONFIG.brand}.\nНаправление: ${state.division==='custom'?'Кастом и V-Twin':'Кросс и эндуро'}\nКласс: ${sub.name}\nМодель: ${$('clientBikeModel').value.trim()||'Не указана'}\nТелефон: ${$('clientPhone').value.trim()||'Не указан'}\nВыбранные работы:\n${[...state.selected].map(i=>'- '+services[i].name).join('\n')||'Нет'}\nДополнительные рекомендации (цена уточняется):\n${state.pending.map(p=>'- '+p.name+' ('+p.sourcePrice+' — ориентир исходника)').join('\n')||'Нет'}\nПредварительная стоимость учтённых работ: ${fmt(state.total)}\nКомментарий: ${$('clientComment').value.trim()||'—'}\nЦена и сроки требуют подтверждения.`;}
-function sendOrder(channel){const phone=$('clientPhone').value.replace(/\D/g,'');if(phone.length<6){showError('Укажите номер телефона, минимум 6 цифр, чтобы подготовить заявку.');$('clientPhone').focus();return;}showError('');const message=estimateMessage();
-  // Telegram share opens a recipient picker; without a recipient configured we never claim direct delivery.
-  let url;if(channel==='tg')url='https://t.me/share/url?text='+encodeURIComponent(message);else{const n=(SITE_CONFIG.whatsappRecipient||'').replace(/\D/g,'');url=n?'https://wa.me/'+n+'?text='+encodeURIComponent(message):'https://api.whatsapp.com/send?text='+encodeURIComponent(message);}
-  const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.appendChild(link);link.click();link.remove();
-}
-async function copyEstimate(){const txt=estimateMessage();try{await navigator.clipboard.writeText(txt);$('copyEstimate').textContent='Скопировано ✓';setTimeout(()=>$('copyEstimate').textContent='Скопировать смету',1600);}catch{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();$('copyEstimate').textContent=ok?'Скопировано ✓':'Не удалось скопировать';}}
-function renderProjects(){
-  const projects=divisionData[state.division].projects;
-  $('projectsGrid').innerHTML=projects.map((p,i)=>{const ba=i===0&&p.photos.length>=2;
-    return `<article class="project-card reveal"><div class="project-visual" id="projVisual_${i}"><div class="image-fallback">Фотография проекта загружается…</div><img class="after" data-project-img="${i}" src="${safe(imgURL(p.photos[0]))}" alt="${safe(p.name)} — фотография" loading="lazy" style="z-index:0"><img class="before" id="before_${i}" src="${safe(imgURL(p.photos[1]||p.photos[0]))}" alt="${safe(p.name)} — до работ" loading="lazy" style="${ba?'':'display:none'}"><div class="ba-line" id="line_${i}" style="${ba?'':'display:none'}"></div><div class="ba-handle" id="handle_${i}" style="${ba?'':'display:none'}">⇆</div></div><div class="project-controls"><div class="mini-tabs"><button type="button" class="mini-tab" data-photo="${i}:0" aria-pressed="true">${ba?'До / после':'Общий'}</button><button type="button" class="mini-tab" data-photo="${i}:1" aria-pressed="false">${ba?'До':'Стапель'}</button><button type="button" class="mini-tab" data-photo="${i}:2" aria-pressed="false">Детали</button></div>${ba?`<label class="mono">Сравнить <input class="ba-slider" type="range" min="0" max="100" value="50" data-ba="${i}" aria-label="Сравнить фотографию до и после"></label>`:''}<button type="button" class="mini-tab" data-open-gallery="${i}" title="На весь экран">⛶</button></div><div class="project-body"><span class="eyebrow">${safe(p.cat)}</span><h3>${safe(p.name)}</h3><p>${safe(p.desc)}</p><div class="spec-grid">${p.specs.map(s=>`<div class="spec"><span>${safe(s[0])}</span><strong>${safe(s[1])}</strong></div>`).join('')}</div><button type="button" class="btn btn-ghost btn-small" data-open-gallery="${i}">Рассмотреть проект ↗</button></div></article>`;}).join('');
-  $('projectsGrid').querySelectorAll('img').forEach(img=>{img.addEventListener('load',()=>{const fb=img.closest('.project-visual')?.querySelector('.image-fallback');if(fb)fb.style.display='none'});img.addEventListener('error',()=>{img.style.display='none';const fb=img.closest('.project-visual')?.querySelector('.image-fallback');if(fb){fb.style.display='grid';fb.textContent='Фотография недоступна: проверьте адрес исходных изображений в конфигурации.'}});});
-  revealNew();
-}
-function selectProjectPhoto(projectIdx,photoIdx){const p=divisionData[state.division].projects[projectIdx];if(!p||!p.photos[photoIdx])return;const visual=$('projVisual_'+projectIdx);const image=visual?.querySelector('.after');if(!visual||!image)return;image.style.display='block';image.src=imgURL(p.photos[photoIdx]);const before=$('before_'+projectIdx);if(before){before.style.display=projectIdx===0&&photoIdx===0?'block':'none';$('line_'+projectIdx).style.display=before.style.display==='block'?'block':'none';$('handle_'+projectIdx).style.display=before.style.display==='block'?'grid':'none';}
-  visual.closest('article').querySelectorAll('[data-photo]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.photo===projectIdx+':'+photoIdx)));
-}
-function setBeforeAfter(idx,val){const pct=Number(val);const before=$('before_'+idx);if(before){before.style.clipPath=`inset(0 ${100-pct}% 0 0)`;$('line_'+idx).style.left=pct+'%';$('handle_'+idx).style.left=pct+'%';}}
-function openGallery(i){const p=divisionData[state.division].projects[i];if(!p)return;state.gallery=i;state.photoIndex=0;renderGalleryImage();$('galleryModal').hidden=false;$('modalClose').focus();document.body.style.overflow='hidden';}
-function renderGalleryImage(){const p=divisionData[state.division].projects[state.gallery];if(!p)return;$('modalTitle').textContent=p.name;$('modalImage').src=imgURL(p.photos[state.photoIndex]);$('modalImage').alt=p.name+' — фотография '+(state.photoIndex+1);$('modalCounter').textContent=(state.photoIndex+1)+' / '+p.photos.length;}
-function galleryStep(step){const p=divisionData[state.division].projects[state.gallery];if(p){state.photoIndex=(state.photoIndex+step+p.photos.length)%p.photos.length;renderGalleryImage();}}
-function closeGallery(){if($('galleryModal').hidden)return;$('galleryModal').hidden=true;document.body.style.overflow='';const opener=document.querySelector(`[data-open-gallery="${state.gallery}"]`);opener?.focus();state.gallery=null;}
-function renderTracks(){
-  $('trackPills').innerHTML=earthTracksData.map((t,i)=>`<button type="button" class="track-pill" data-track="${i}" aria-pressed="${state.track===i}"><small>0${i+1} / ${safe(tracksMeta[i])}</small><strong>${safe(trackNames[i])}</strong><span style="font-size:10px;color:#d3dfd1">Выбрать точку ↗</span></button>`).join('');
-}
-function zoomToTrack(i){const d=earthTracksData[i];if(!d)return;state.track=i;renderTracks();$('earthHudLabel').textContent=d.hud;$('trackNameOut').textContent=d.name;$('trackDescOut').textContent=d.desc;$('trackLenOut').textContent=d.len;$('trackAltOut').textContent=d.alt;$('trackSoilOut').textContent=d.soil;$('elevationSparkline').setAttribute('d',profiles[i]);$('googleEarthLink').href=d.earthUrl;
-  if(state.map){state.map.flyTo([d.lat,d.lng],d.zoom,{duration:matchMedia('(prefers-reduced-motion:reduce)').matches?.2:1.2});if(state.marker)state.map.removeLayer(state.marker);state.marker=L.circleMarker([d.lat,d.lng],{radius:10,color:'#d7f4a3',weight:3,fillColor:'#25432b',fillOpacity:.95}).addTo(state.map).bindPopup(d.name);}
-}
-function initMap(){
-  if(state.map){state.map.invalidateSize();return;}
-  if(typeof L==='undefined'){$('mapFallback').hidden=false;$('mapFallback').querySelector('p').textContent='Библиотека Leaflet недоступна. Список локаций и ссылки Google Earth продолжают работать.';return;}
-  try{state.map=L.map('earthMap',{zoomControl:true,attributionControl:true,preferCanvas:true,scrollWheelZoom:false}).setView([earthTracksData[0].lat,earthTracksData[0].lng],earthTracksData[0].zoom);
-    let loaded=false;
-    const tiles=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'Tiles © Esri, Maxar, Earthstar Geographics'});
-    tiles.on('tileload',()=>{loaded=true;$('mapFallback').hidden=true});tiles.on('tileerror',()=>{if(!loaded)$('mapFallback').hidden=false});tiles.addTo(state.map);
-    zoomToTrack(state.track);
-    setTimeout(()=>{if(!loaded&&state.page==='sport'){$('mapFallback').hidden=false;$('mapFallback').querySelector('p').textContent='Не удалось загрузить спутниковые снимки. Проверьте интернет или откройте выбранную точку через Google Earth.'}},9000);
-  }catch(err){$('mapFallback').hidden=false;$('mapFallback').querySelector('p').textContent='Карта не инициализирована: '+String(err.message||err);}
-}
-function revealNew(){const nodes=[...document.querySelectorAll('.reveal:not(.is-visible)')];if(matchMedia('(prefers-reduced-motion:reduce)').matches||!('IntersectionObserver' in window)){nodes.forEach(el=>el.classList.add('is-visible'));return;}if(!window.__revealObserver){window.__revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');window.__revealObserver.unobserve(entry.target)}}),{threshold:.08});}nodes.forEach(el=>window.__revealObserver.observe(el));}
-function init(){
-  document.title=SITE_CONFIG.brand+' — мастерская и мотоспорт';
-  document.querySelectorAll('.brand-name').forEach(el=>{el.firstChild.textContent=SITE_CONFIG.brand;const sub=el.querySelector('span');if(sub)sub.textContent=SITE_CONFIG.brandSubtitle;});
-  document.querySelectorAll('.brand-mark').forEach(el=>el.textContent=SITE_CONFIG.logoLetters);
-  setupNavigation();
-  document.querySelectorAll('[data-division-select]').forEach(b=>b.addEventListener('click',()=>renderDivision(b.dataset.divisionSelect)));
-  $('heroImage').addEventListener('load',()=>{$('heroImageFallback').hidden=true;});
-  $('heroImage').addEventListener('error',()=>{$('heroImageFallback').hidden=false;$('heroImageFallback').textContent='Фотография исходного проекта недоступна. Укажите изображение в конфигурации.';$('heroImage').style.display='none'});
-  $('aiChipContainer').addEventListener('click',e=>{const c=e.target.closest('[data-chip]');if(c)applyPreset(Number(c.dataset.chip))});
-  document.querySelectorAll('[data-ai-mode]').forEach(b=>b.addEventListener('click',()=>setAiMode(b.dataset.aiMode)));
-  $('analyzeButton').addEventListener('click',runAiAnalysis);
-  $('transferAi').addEventListener('click',applyAiToCalc);
-  $('subclassContainer').addEventListener('click',e=>{const btn=e.target.closest('[data-subclass]');if(btn){state.subclass=Number(btn.dataset.subclass);renderSubclasses();renderEstimate()}});
-  $('calcServicesList').addEventListener('change',e=>{const input=e.target.closest('[data-service]');if(input){const idx=Number(input.dataset.service);input.checked?state.selected.add(idx):(state.selected.delete(idx),state.matchedAdvice.delete(idx));renderEstimate()}});
-  $('pendingList').addEventListener('click',e=>{const btn=e.target.closest('[data-remove-pending]');if(btn){state.pending.splice(Number(btn.dataset.removePending),1);renderEstimate()}});
-  $('projectsGrid').addEventListener('click',e=>{const tab=e.target.closest('[data-photo]');if(tab){const [i,t]=tab.dataset.photo.split(':').map(Number);selectProjectPhoto(i,t);return;}const opener=e.target.closest('[data-open-gallery]');if(opener)openGallery(Number(opener.dataset.openGallery));});
-  $('projectsGrid').addEventListener('input',e=>{const range=e.target.closest('[data-ba]');if(range)setBeforeAfter(Number(range.dataset.ba),range.value)});
-  $('modalClose').addEventListener('click',closeGallery);$('modalPrev').addEventListener('click',()=>galleryStep(-1));$('modalNext').addEventListener('click',()=>galleryStep(1));
-  $('galleryModal').addEventListener('click',e=>{if(e.target===$('galleryModal'))closeGallery()});
-  $('galleryModal').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')galleryStep(-1);if(e.key==='ArrowRight')galleryStep(1);if(e.key==='Tab'){const buttons=[...$('galleryModal').querySelectorAll('button')],first=buttons[0],last=buttons[buttons.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
-  let swipeX=null;$('galleryModal').addEventListener('touchstart',e=>{swipeX=e.changedTouches[0]?.clientX??null},{passive:true});$('galleryModal').addEventListener('touchend',e=>{if(swipeX===null)return;const delta=(e.changedTouches[0]?.clientX??swipeX)-swipeX;if(Math.abs(delta)>60)galleryStep(delta<0?1:-1);swipeX=null},{passive:true});
-  $('trackPills').addEventListener('click',e=>{const b=e.target.closest('[data-track]');if(b)zoomToTrack(Number(b.dataset.track))});
-  $('sendTelegram').addEventListener('click',()=>sendOrder('tg'));
-  $('sendWhatsapp').addEventListener('click',()=>sendOrder('wa'));
-  $('copyEstimate').addEventListener('click',copyEstimate);
-  $('workingHoursText').textContent=SITE_CONFIG.hours?'Режим работы: '+SITE_CONFIG.hours:'Режим работы: уточняется';
-  renderDivision('custom');renderTracks();zoomToTrack(0);
-  document.documentElement.classList.add('js-animated');revealNew();handleHash(true);
-}
-init();
-</script>
+
+    let currentDiv = 'custom';
+    let currentMult = 1.2;
+    let selectedSubclassName = 'Круизер / Софтейл';
+    let earthMap = null;
+    let activeTrackMarker = null;
+
+    // Управление меню-бургером
+    function toggleMenu(open) {
+      document.getElementById('mobileDrawer').classList.toggle('open', open);
+      document.getElementById('drawerBackdrop').classList.toggle('open', open);
+    }
+
+    // Переключение между мастерской и Федерацией
+    function showWorkshopView() {
+      document.getElementById('federationPage').classList.remove('active');
+      document.getElementById('workshopPage').classList.remove('hidden');
+      document.getElementById('modeToggleBar').style.display = 'grid';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFederationView() {
+      document.getElementById('workshopPage').classList.add('hidden');
+      document.getElementById('federationPage').classList.add('active');
+      document.getElementById('modeToggleBar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      initEarthMapIfNeeded();
+    }
+
+    // Инициализация Спутниковой Карты Google Earth с защитой от сбоя сети
+    function initEarthMapIfNeeded() {
+      setTimeout(() => {
+        if (typeof L === 'undefined') {
+          const m = document.getElementById('earthMap');
+          if (m) {
+            m.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8e97a8;font-family:var(--font-cond);text-align:center;padding:24px;line-height:1.6;">'
+              + 'СПУТНИКОВЫЙ ТЕРМИНАЛ ОРБИТЫ КУБАНИ<br><span style="color:#f0be5d;font-size:11px;">(Подключите интернет для загрузки космоснимков ArcGIS World Imagery)</span></div>';
+          }
+          return;
+        }
+
+        if (!earthMap) {
+          earthMap = L.map('earthMap', {
+            zoomControl: false,
+            attributionControl: false
+          }).setView([earthTracksData[0].lat, earthTracksData[0].lng], earthTracksData[0].zoom);
+
+          L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18
+          }).addTo(earthMap);
+
+          L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18
+          }).addTo(earthMap);
+
+          zoomToTrack(0);
+        } else {
+          earthMap.invalidateSize();
+        }
+      }, 120);
+    }
+
+    // Профили высот для SVG-спарклайна (перепад трассы)
+    const trackSparklines = [
+      "M 0,10 Q 30,26 65,12 T 110,28 T 160,16", // 0: Орлёнок (каскад столов)
+      "M 0,22 Q 35,10 70,24 T 120,12 T 160,18", // 1: Белая Стрела (ритм)
+      "M 0,24 Q 45,28 90,16 T 130,22 T 160,20", // 2: Чембурка (песок)
+      "M 0,28 Q 50,20 90,12 T 130,6 T 160,2"    // 3: Маркотх (скальный подъем)
+    ];
+
+    // Зум к конкретной трассе + анимация сонара
+    function zoomToTrack(idx) {
+      const data = earthTracksData[idx];
+      document.querySelectorAll('.track-pill-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+      document.getElementById('earthHudLabel').innerText = data.hud;
+      document.getElementById('googleEarthLink').href = data.earthUrl;
+      document.getElementById('trackNameOut').innerText = data.name;
+      document.getElementById('trackDescOut').innerText = data.desc;
+      document.getElementById('trackLenOut').innerText = data.len;
+      document.getElementById('trackAltOut').innerText = data.alt;
+      document.getElementById('trackSoilOut').innerText = data.soil;
+
+      // Обновляем тактическую плашку перепада высот
+      const altOverlay = document.getElementById('trackAltOverlay');
+      if (altOverlay) altOverlay.innerText = `Перепад: ${data.alt}`;
+      const sparkline = document.getElementById('elevationSparkline');
+      if (sparkline && trackSparklines[idx]) {
+        sparkline.setAttribute('d', trackSparklines[idx]);
+      }
+
+      if (typeof L !== 'undefined' && earthMap) {
+        earthMap.flyTo([data.lat, data.lng], data.zoom, {
+          duration: 1.8,
+          easeLinearity: 0.25
+        });
+
+        if (activeTrackMarker) earthMap.removeLayer(activeTrackMarker);
+
+        // Интерактивный пульсирующий сонар радара
+        const customIcon = L.divIcon({
+          className: 'custom-track-pin',
+          html: `<div style="position:relative;">
+            <div class="radar-pulse-ring"></div>
+            <div style="background:#f0be5d; width:16px; height:16px; border-radius:50%; border:2px solid #000; box-shadow:0 0 14px #f0be5d;"></div>
+          </div>`,
+          iconSize: [16, 16],
+          iconAnchor: [8, 8]
+        });
+
+        activeTrackMarker = L.marker([data.lat, data.lng], { icon: customIcon }).addTo(earthMap);
+      }
+    }
+
+    // Переключение режимов (Кастом / Кросс) с неоновым импульсом и шкалами
+    function switchDivision(div) {
+      currentDiv = div;
+
+      // Неоновый визуальный импульс
+      document.body.classList.remove('theme-flash');
+      void document.body.offsetWidth; // trigger reflow
+      document.body.classList.add('theme-flash');
+
+      document.body.classList.toggle('mode-cross', div === 'cross');
+      document.getElementById('btnCustom').classList.toggle('active', div === 'custom');
+      document.getElementById('btnCross').classList.toggle('active', div === 'cross');
+
+      const data = divisionData[div];
+
+      document.getElementById('heroBadge').innerText = data.badge;
+      document.getElementById('heroTitle').innerHTML = data.heroTitle;
+      document.getElementById('heroLead').innerText = data.heroLead;
+      document.getElementById('heroStandImg').src = data.heroImg;
+      document.getElementById('heroStandTag').innerText = data.heroTag;
+      document.getElementById('heroSpecL1').innerText = data.spec1[0];
+      document.getElementById('heroSpecV1').innerText = data.spec1[1];
+      document.getElementById('heroSpecL2').innerText = data.spec2[0];
+      document.getElementById('heroSpecV2').innerText = data.spec2[1];
+      document.getElementById('heroSpecL3').innerText = data.spec3[0];
+      document.getElementById('heroSpecV3').innerText = data.spec3[1];
+
+      // Обновление полосок прогресса телеметрии в Hero стенде
+      const m1 = document.getElementById('heroSpecMeter1');
+      const m2 = document.getElementById('heroSpecMeter2');
+      const m3 = document.getElementById('heroSpecMeter3');
+      if (m1 && m2 && m3) {
+        if (div === 'custom') {
+          m1.style.width = '88%';
+          m2.style.width = '100%';
+          m3.style.width = '95%';
+        } else {
+          m1.style.width = '96%';
+          m2.style.width = '92%';
+          m3.style.width = '100%';
+        }
+      }
+
+      document.getElementById('servKicker').innerText = data.servKicker;
+      document.getElementById('servTitle').innerHTML = data.servTitle;
+      renderServices(data.services);
+
+      // Инициализируем выбранный режим (дефектовка, тюнинг или ТО) с актуальными пунктами
+      const modeIdx = currentAiModeKey === 'defect' ? 1 : (currentAiModeKey === 'tuning' ? 2 : 3);
+      selectAiMode(modeIdx);
+
+      document.getElementById('projectsTitle').innerHTML = data.projectsTitle;
+      renderProjects(data.projects);
+
+      document.getElementById('calcTitle').innerHTML = data.calcTitle;
+      document.getElementById('calcStep1Title').innerText = data.step1Title;
+      renderSubclasses(data.subclasses);
+      renderCalcServices(data.calcServices);
+      recalc();
+    }
+
+    function renderServices(list) {
+      const c = document.getElementById('servicesGrid');
+      c.innerHTML = '';
+      list.forEach(item => {
+        const div = document.createElement('article');
+        div.className = 'chamfer-box service-card';
+        div.innerHTML = `
+          <div>
+            <div class="sc-num">${item.num}</div>
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <ul class="sc-list">
+              ${item.list.map(l => `<li><span>${l[0]}</span><span>${l[1]}</span></li>`).join('')}
+            </ul>
+          </div>
+          <button class="action-btn btn-outline" style="width:100%;font-size:12px;padding:9px;" onclick="document.getElementById('calcSec').scrollIntoView({behavior:'smooth'})">
+            В калькулятор сметы ❯
+          </button>
+        `;
+        c.appendChild(div);
+      });
+      observeNewElements('#servicesGrid', '.service-card');
+    }
+
+    function renderAiChips(chips) {
+      const c = document.getElementById('aiChipContainer');
+      c.innerHTML = '';
+      chips.forEach((ch, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'symptom-item' + (idx === 0 ? ' active' : '');
+        btn.innerHTML = `<span>● ${ch.text}</span><span style="color:var(--gold);">❯</span>`;
+        btn.onclick = () => {
+          c.querySelectorAll('.symptom-item').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          setAiResult(ch.code, ch.risk, ch.riskTxt, ch.title, ch.desc, ch.srv, ch.time, ch.price);
+        };
+        c.appendChild(btn);
+      });
+    }
+
+    // Установка результатов ИИ-диагностики с эффектом сканирования CAN-bus
+    function setAiResult(code, riskClass, riskText, title, desc, srv, time, price, immediate = false) {
+      const overlay = document.getElementById('aiScanOverlay');
+      const applyData = () => {
+        document.getElementById('aiResCode').innerText = `ТЕХКАРТА: ${code}`;
+        const riskEl = document.getElementById('aiResRisk');
+        riskEl.className = `risk-tag ${riskClass}`;
+        riskEl.innerText = riskText;
+        document.getElementById('aiResTitle').innerText = title;
+        document.getElementById('aiResDesc').innerText = desc;
+        document.getElementById('aiResService').innerText = srv;
+        document.getElementById('aiResTime').innerText = time;
+        document.getElementById('aiResPrice').innerText = price;
+      };
+
+      if (!immediate && overlay) {
+        overlay.classList.add('scanning');
+        setTimeout(() => {
+          applyData();
+          overlay.classList.remove('scanning');
+        }, 260);
+      } else {
+        applyData();
+      }
+    }
+
+        let currentAiModeKey = 'defect';
+
+    function selectAiMode(mode) {
+      document.querySelectorAll('.ai-mode-btn').forEach((t, i) => t.classList.toggle('active', i === mode - 1));
+      const modeKeys = ['defect', 'tuning', 'maintenance'];
+      currentAiModeKey = modeKeys[mode - 1];
+
+      const divData = divisionData[currentDiv];
+      if (!divData || !divData.aiModes) return;
+      const modeData = divData.aiModes[currentAiModeKey];
+
+      // 1. Обновляем заголовок над кнопками симптомов/программ
+      const subTitle = document.getElementById('aiChipsSubtitle');
+      if (subTitle && modeData) {
+        subTitle.innerText = modeData.title;
+      }
+
+      // 2. ДИНАМИЧЕСКИ ПЕРЕСТРАИВАЕМ ПУНКТЫ-КНОПКИ ДЛЯ ВЫБРАННОГО РЕЖИМА!
+      if (modeData && modeData.chips) {
+        renderAiChips(modeData.chips);
+        // 3. Выбираем первый пункт и отображаем карточку
+        const first = modeData.chips[0];
+        if (first) {
+          setAiResult(first.code, first.risk, first.riskTxt, first.title, first.desc, first.srv, first.time, first.price);
+        }
+      }
+    }
+
+    const isStaticDemo = location.hostname.endsWith('.github.io') || new URLSearchParams(location.search).has('demo');
+
+    if (isStaticDemo) {
+      const badge = document.getElementById('aiModelBadge');
+      badge.textContent = 'Демо-карточки · ИИ не подключён';
+      badge.style.color = 'var(--gold)';
+      const input = document.getElementById('aiCustomInput');
+      input.disabled = true;
+      input.placeholder = 'ИИ-разбор недоступен в демоверсии';
+      const button = document.querySelector('[onclick="runAiAnalysis()"]');
+      button.disabled = true;
+      button.style.opacity = '.55';
+      const note = document.createElement('p');
+      note.id = 'aiDemoNote';
+      note.textContent = 'Демонстрационный режим. Выберите готовый пример: индивидуальный ИИ-разбор требует подключения сервера.';
+      note.style.cssText = 'font-size:13px;line-height:1.6;color:var(--text-muted);margin-top:12px';
+      input.setAttribute('aria-describedby', note.id);
+      input.parentElement.after(note);
+    }
+
+    async function runAiAnalysis() {
+      if (isStaticDemo) return;
+      const q = document.getElementById('aiCustomInput').value.trim();
+      if (!q) return;
+
+      document.querySelectorAll('#aiChipContainer .symptom-item').forEach(b => b.classList.remove('active'));
+
+      const overlay = document.getElementById('aiScanOverlay');
+      if (overlay) overlay.classList.add('scanning');
+
+      const modelBadge = document.getElementById('aiModelBadge');
+
+      try {
+        const resp = await fetch('/api/diagnose', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: q,
+            division: currentDiv,
+            mode: currentAiModeKey
+          })
+        });
+
+        if (resp.ok) {
+          const data = await resp.json();
+          if (overlay) overlay.classList.remove('scanning');
+
+          if (modelBadge) {
+            if (data.cached) {
+              modelBadge.innerHTML = `<i style="width:5px; height:5px; background:#10b981; border-radius:50%; display:inline-block;"></i>DeepSeek V4.1 Flash • Кэш: [HIT] МГНОВЕННО`;
+              modelBadge.style.color = '#10b981';
+            } else {
+              modelBadge.innerHTML = `<i style="width:5px; height:5px; background:#00f0ff; border-radius:50%; display:inline-block;"></i>DeepSeek V4.1 Flash • Онлайн расчет`;
+              modelBadge.style.color = '#00f0ff';
+            }
+          }
+
+          setAiResult(
+            data.code || '#AI-DSK',
+            data.riskClass || 'risk-yellow',
+            data.riskText || 'Техкарта ИИ',
+            data.title || `Анализ: «${q}»`,
+            data.desc + (data.advice ? `\n\nРекомендация шеф-механика: ${data.advice}` : ''),
+            data.service || 'Инструментальная дефектовка узла',
+            data.time || '1–2 рабочих дня',
+            data.price || 'от 8 000 ₽',
+            true
+          );
+          return;
+        }
+      } catch (err) {
+        console.log('Local AI server not running, using internal offline heuristics:', err);
+      }
+
+      if (overlay) overlay.classList.remove('scanning');
+      if (modelBadge) {
+        modelBadge.innerHTML = `<i style="width:5px; height:5px; background:#f0be5d; border-radius:50%; display:inline-block;"></i>Локальный контур (запустите start.bat)`;
+        modelBadge.style.color = '#f0be5d';
+      }
+
+      setAiResult(
+        '#LOC-999',
+        'risk-yellow',
+        'Индивидуальный наряд',
+        `Разбор симптома: «${q}»`,
+        'Задача принята в контур стендовой диагностики. Механик проведет эндоскопию цилиндра, проверку давления масла и опрессовку впуска. (Запустите start.bat для работы с DeepSeek через .env)',
+        'Инструментальная дефектовка узла',
+        '1 день',
+        'от 5 000 ₽',
+        true
+      );
+    }
+
+    // Поддержка нажатия Enter в поле ИИ
+    const customInp = document.getElementById('aiCustomInput');
+    if (customInp) {
+      customInp.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') runAiAnalysis();
+      });
+    }
+
+    function applyAiToCalc() {
+      const checkboxes = document.querySelectorAll('.service-check-row');
+      if (checkboxes.length > 0) {
+        checkboxes[0].classList.add('checked');
+        if (checkboxes[1]) checkboxes[1].classList.add('checked');
+        recalc();
+      }
+      document.getElementById('calcSec').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Отрисовка проектов: для флагманского кейса (idx === 0) внедрен интерактивный слайдер «До / После»
+    function renderProjects(list) {
+      const c = document.getElementById('projectsGrid');
+      c.innerHTML = '';
+      list.forEach((p, idx) => {
+        const plate = document.createElement('article');
+        plate.className = 'chamfer-box project-card';
+
+        let visualHtml = '';
+        if (idx === 0) {
+          // Интерактивный До / После слайдер для флагманского проекта
+          visualHtml = `
+            <div class="ba-slider-container" id="baContainer_${idx}">
+              <img class="ba-img-after" id="projImg_${idx}" src="${p.photos[0]}" alt="${p.name} - После">
+              <img class="ba-img-before" id="baImgBefore_${idx}" src="${p.photos[1]}" alt="${p.name} - До">
+              <div class="ba-divider-line" id="baLine_${idx}"></div>
+              <div class="ba-handle" id="baHandle_${idx}">❮❯</div>
+              <span class="ba-tag-before" id="baTagBefore_${idx}">ДО // СТОК</span>
+              <span class="ba-tag-after" id="baTagAfter_${idx}">ПОСЛЕ // КАСТОМ</span>
+            </div>
+            <div class="proj-tabs" style="position:static; padding:8px 12px; background:#0b0d14; border-bottom:1px solid var(--border-steel); display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">← Тяните ползунок →</span>
+              <div style="display:flex; gap:4px;">
+                <button class="proj-tab-btn active" onclick="swapPhoto(${idx}, 0, this, '${p.photos[0]}')">Слайдер До/После</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 1, this, '${p.photos[1]}')">Сток</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 2, this, '${p.photos[2]}')">Узлы</button>
+              </div>
+            </div>
+          `;
+        } else {
+          // Классическая галерея с вкладками
+          visualHtml = `
+            <div class="project-pic-box">
+              <img id="projImg_${idx}" src="${p.photos[0]}" alt="${p.name}">
+              <div class="proj-tabs">
+                <button class="proj-tab-btn active" onclick="swapPhoto(${idx}, 0, this, '${p.photos[0]}')">Общий</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 1, this, '${p.photos[1]}')">Стапель</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 2, this, '${p.photos[2]}')">Узлы</button>
+              </div>
+            </div>
+          `;
+        }
+
+        plate.innerHTML = `
+          ${visualHtml}
+          <div class="project-body">
+            <div>
+              <div style="font-family:var(--font-cond); color:var(--primary); font-size:11px; text-transform:uppercase;">${p.cat}</div>
+              <h3 style="font-family:var(--font-display); font-size:17px; text-transform:uppercase; margin:4px 0 6px;">${p.name}</h3>
+              <p style="font-size:12px; color:var(--text-muted);">${p.desc}</p>
+            </div>
+            <table class="spec-table">
+              ${p.specs.map(s => `<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join('')}
+            </table>
+            <button class="action-btn btn-primary" style="width:100%; font-size:12px; padding:10px;" onclick="document.getElementById('calcSec').scrollIntoView({behavior:'smooth'})">
+              Рассчитать похожий проект ❯
+            </button>
+          </div>
+        `;
+        c.appendChild(plate);
+
+        if (idx === 0) {
+          initBeforeAfterSlider(idx);
+        }
+      });
+    }
+
+    // Инициализация сенсорного/мышиного слайдера До / После с обрезкой через clip-path
+    function initBeforeAfterSlider(idx) {
+      setTimeout(() => {
+        const container = document.getElementById(`baContainer_${idx}`);
+        const beforeImg = document.getElementById(`baImgBefore_${idx}`);
+        const line = document.getElementById(`baLine_${idx}`);
+        const handle = document.getElementById(`baHandle_${idx}`);
+        const tagBefore = document.getElementById(`baTagBefore_${idx}`);
+        const tagAfter = document.getElementById(`baTagAfter_${idx}`);
+        if (!container || !beforeImg || !line || !handle) return;
+
+        let isDragging = false;
+        const setPosition = (clientX) => {
+          const rect = container.getBoundingClientRect();
+          if (rect.width <= 0) return;
+          let x = clientX - rect.left;
+          x = Math.max(0, Math.min(x, rect.width));
+          const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
+          const pctStr = pct.toFixed(2);
+          beforeImg.style.clipPath = `polygon(0 0, ${pctStr}% 0, ${pctStr}% 100%, 0 100%)`;
+          line.style.left = `${pctStr}%`;
+          handle.style.left = `${pctStr}%`;
+
+          // Плавное исчезновение плашек «ДО» и «ПОСЛЕ» при наезде ползунка
+          if (tagBefore) {
+            if (pct < 12) {
+              tagBefore.style.opacity = '0';
+              tagBefore.style.transform = 'translateX(-10px)';
+            } else if (pct < 28) {
+              const alpha = (pct - 12) / (28 - 12);
+              tagBefore.style.opacity = alpha.toFixed(2);
+              tagBefore.style.transform = `translateX(${((1 - alpha) * -10).toFixed(1)}px)`;
+            } else {
+              tagBefore.style.opacity = '1';
+              tagBefore.style.transform = 'translateX(0)';
+            }
+          }
+
+          if (tagAfter) {
+            if (pct > 88) {
+              tagAfter.style.opacity = '0';
+              tagAfter.style.transform = 'translateX(10px)';
+            } else if (pct > 72) {
+              const alpha = (88 - pct) / (88 - 72);
+              tagAfter.style.opacity = alpha.toFixed(2);
+              tagAfter.style.transform = `translateX(${((1 - alpha) * 10).toFixed(1)}px)`;
+            } else {
+              tagAfter.style.opacity = '1';
+              tagAfter.style.transform = 'translateX(0)';
+            }
+          }
+        };
+
+        const onDown = (clientX) => {
+          if (beforeImg.style.display === 'none') return;
+          isDragging = true;
+          setPosition(clientX);
+        };
+        const onMove = (clientX) => {
+          if (!isDragging || beforeImg.style.display === 'none') return;
+          setPosition(clientX);
+        };
+        const onUp = () => {
+          isDragging = false;
+        };
+
+        container.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          onDown(e.clientX);
+        });
+        window.addEventListener('mousemove', (e) => onMove(e.clientX));
+        window.addEventListener('mouseup', onUp);
+
+        container.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches[0]) onDown(e.touches[0].clientX);
+        }, { passive: true });
+        window.addEventListener('touchmove', (e) => {
+          if (isDragging && e.touches && e.touches[0]) onMove(e.touches[0].clientX);
+        }, { passive: true });
+        window.addEventListener('touchend', onUp);
+        window.addEventListener('touchcancel', onUp);
+      }, 50);
+    }
+
+    function swapPhoto(pIdx, tIdx, btn, url) {
+      const img = document.getElementById(`projImg_${pIdx}`);
+      const beforeImg = document.getElementById(`baImgBefore_${pIdx}`);
+      const line = document.getElementById(`baLine_${pIdx}`);
+      const handle = document.getElementById(`baHandle_${pIdx}`);
+      const tagBefore = document.getElementById(`baTagBefore_${pIdx}`);
+      const tagAfter = document.getElementById(`baTagAfter_${pIdx}`);
+      const container = document.getElementById(`baContainer_${pIdx}`);
+
+      if (pIdx === 0 && beforeImg && line && handle) {
+        if (tIdx === 0) {
+          // Режим слайдера До / После
+          if (img) img.src = url;
+          beforeImg.style.display = 'block';
+          line.style.display = 'block';
+          handle.style.display = 'flex';
+          if (tagBefore) {
+            tagBefore.style.display = 'block';
+            tagBefore.style.opacity = '1';
+            tagBefore.style.transform = 'translateX(0)';
+          }
+          if (tagAfter) {
+            tagAfter.style.display = 'block';
+            tagAfter.style.opacity = '1';
+            tagAfter.style.transform = 'translateX(0)';
+          }
+          if (container) container.style.cursor = 'ew-resize';
+        } else {
+          // Одиночное фото (Сток или Узлы)
+          if (img) img.src = url;
+          beforeImg.style.display = 'none';
+          line.style.display = 'none';
+          handle.style.display = 'none';
+          if (tagBefore) tagBefore.style.display = 'none';
+          if (tagAfter) tagAfter.style.display = 'none';
+          if (container) container.style.cursor = 'default';
+        }
+      } else {
+        if (img) img.src = url;
+      }
+      btn.parentElement.querySelectorAll('.proj-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function renderSubclasses(subs) {
+      const c = document.getElementById('subclassContainer');
+      c.innerHTML = '';
+      subs.forEach((s, idx) => {
+        const opt = document.createElement('div');
+        opt.className = 'subclass-item' + (idx === 0 ? ' active' : '');
+        opt.innerHTML = `<strong>${s.name}</strong><span style="font-size:11px; color:var(--gold);">Выбрать ❯</span>`;
+        opt.onclick = () => {
+          c.querySelectorAll('.subclass-item').forEach(b => b.classList.remove('active'));
+          opt.classList.add('active');
+          currentMult = s.mult;
+          selectedSubclassName = s.name;
+          recalc();
+        };
+        c.appendChild(opt);
+      });
+      currentMult = subs[0].mult;
+      selectedSubclassName = subs[0].name;
+    }
+
+    function renderCalcServices(services) {
+      const c = document.getElementById('calcServicesList');
+      c.innerHTML = '';
+      services.forEach((srv, idx) => {
+        const item = document.createElement('div');
+        item.className = 'service-check-row' + (idx < 2 ? ' checked' : '');
+        item.dataset.price = srv.price;
+        item.dataset.days = srv.days;
+        item.dataset.name = srv.name;
+        item.innerHTML = `
+          <span>${srv.name}</span>
+          <span style="font-family:var(--font-cond); color:var(--gold); font-weight:700;">${srv.price.toLocaleString('ru-RU')} ₽</span>
+        `;
+        item.onclick = () => {
+          item.classList.toggle('checked');
+          recalc();
+        };
+        c.appendChild(item);
+      });
+    }
+
+    // Живой счетчик одометра в смете
+    let currentTotalValue = 0;
+    function animateTotalDisplay(target) {
+      const display = document.getElementById('calcTotalDisplay');
+      if (!display) return;
+      if (target === currentTotalValue) {
+        display.innerText = target.toLocaleString('ru-RU') + ' ₽';
+        return;
+      }
+      const start = currentTotalValue;
+      const change = target - start;
+      const duration = 280;
+      let startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (change * ease));
+        display.innerText = current.toLocaleString('ru-RU') + ' ₽';
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          currentTotalValue = target;
+          display.innerText = target.toLocaleString('ru-RU') + ' ₽';
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function recalc() {
+      let base = 0;
+      let days = 0;
+      document.querySelectorAll('.service-check-row.checked').forEach(it => {
+        base += parseInt(it.dataset.price, 10);
+        days += parseInt(it.dataset.days, 10);
+      });
+      const total = Math.round(base * currentMult);
+      animateTotalDisplay(total);
+
+      document.getElementById('calcDaysDisplay').innerText = days > 0
+        ? `Срок в цеху: ~${Math.max(1, days)} раб. дн.`
+        : 'Отметьте необходимые позиции в списке';
+    }
+
+    // Отправка заявки в Telegram или WhatsApp с валидацией телефона
+    function sendOrder(channel) {
+      const phoneInput = document.getElementById('clientPhone');
+      const bike = document.getElementById('clientBikeModel').value.trim() || 'Не указана';
+      const phone = phoneInput.value.trim();
+
+      if (!phone || phone.length < 5) {
+        phoneInput.classList.add('input-error-shake');
+        phoneInput.focus();
+        setTimeout(() => phoneInput.classList.remove('input-error-shake'), 600);
+        alert('Пожалуйста, укажите контактный номер телефона для бронирования подъемника.');
+        return;
+      }
+
+      const total = document.getElementById('calcTotalDisplay').innerText;
+      const checkedServices = [];
+      document.querySelectorAll('.service-check-row.checked').forEach(it => checkedServices.push(it.dataset.name));
+
+      const text = `Здравствуйте! Заявка с сайта МОТО-АЛЬЯНС КУБАНЬ.\n`
+        + `Дивизион: ${currentDiv === 'custom' ? 'Тяжёлый Кастом / V-Twin' : 'Кросс и Эндуро'}\n`
+        + `Класс: ${selectedSubclassName}\n`
+        + `Модель: ${bike}\n`
+        + `Телефон: ${phone}\n`
+        + `Выбранные услуги:\n- ${checkedServices.join('\n- ')}\n`
+        + `Ориентировочная смета: ${total}`;
+
+      if (channel === 'tg') {
+        window.open(`https://t.me/share/url?text=${encodeURIComponent(text)}`, '_blank');
+      } else if (channel === 'wa') {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    }
+
+    // Инициализация при загрузке
+
+    // =========================================================================
+    // SCROLL REVEAL OBSERVER (АНИМАЦИЯ ПОДТЯГИВАНИЯ СНИЗУ)
+    // =========================================================================
+    let scrollObserver = null;
+
+    function initScrollReveal() {
+      if ('IntersectionObserver' in window) {
+        scrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              scrollObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.08,
+          rootMargin: '0px 0px -30px 0px'
+        });
+
+        document.querySelectorAll('.reveal-up').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          // Если элемент уже в зоне видимости первого экрана
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('revealed');
+          } else {
+            scrollObserver.observe(el);
+          }
+        });
+      } else {
+        // Фоллбэк для старых браузеров
+        document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('revealed'));
+      }
+    }
+
+    function observeNewElements(containerSelector, itemSelector) {
+      setTimeout(() => {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        const items = container.querySelectorAll(itemSelector);
+        items.forEach((item, idx) => {
+          item.classList.add('reveal-up');
+          item.style.transitionDelay = `${idx * 0.08}s`;
+          if (scrollObserver) {
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              item.classList.add('revealed');
+            } else {
+              scrollObserver.observe(item);
+            }
+          } else {
+            item.classList.add('revealed');
+          }
+        });
+      }, 30);
+    }
+
+
+    switchDivision('custom');
+    initScrollReveal();
+  </script>
 </body>
 </html>

@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>МОТО-АЛЬЯНС КУБАНЬ // Кастом-Цех, Ремонт и Спортивная База КК</title>
+  <meta name="description" content="Штучный кастом V-Twin, глубокий ребилд моторов Harley-Davidson, гоночная настройка подвесок WP/KYB и база Федерации Мотоспорта Кубани.">
+  <meta name="theme-color" content="#07080b">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="МОТО-АЛЬЯНС КУБАНЬ // Кастом-Цех & Мотоспорт Кубани">
+  <meta property="og:description" content="Инженерный цех постройки кастомов, ребилд ДВС и спутниковый атлас гоночных трасс Краснодарского края.">
+  <meta property="og:image" content="images/hero_custom_vtwin.jpg">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+  
+  <!-- Спутниковые карты для эффекта Google Earth -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <style>
+    :root {
+      --bg-deep: #07080b;
+      --bg-metal: #0e1118;
+      --bg-plate: #141822;
+      --border-steel: #2a3142;
+      --text-light: #f3f5f8;
+      --text-muted: #8e97a8;
+      --primary: #ff5500;
+      --primary-glow: rgba(255, 85, 0, 0.45);
+      --gold: #f0be5d;
+      --gold-glow: rgba(240, 190, 93, 0.4);
+      --font-display: 'Russo One', sans-serif;
+      --font-cond: 'Oswald', sans-serif;
+      --font-body: 'Golos Text', sans-serif;
+    }
+
+    body.mode-cross {
+      --primary: #00f0ff;
+      --primary-glow: rgba(0, 240, 255, 0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-deep);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    body {
+      background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(255, 85, 0, 0.08) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+    }
+    body.mode-cross {
+      background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+    }
+
+    img { max-width: 100%; display: block; object-fit: cover; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Скошенные плашки и выраженная интерактивность */
+    .chamfer-box {
+      background: linear-gradient(145deg, #161a25 0%, #0b0d14 100%);
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      position: relative;
+    }
+
+    /* Очевидные кликабельные кнопки с объемом и тактильным откликом */
+    .action-btn {
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      font-family: var(--font-cond);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      padding: 13px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s;
+      border: 1px solid rgba(255,255,255,0.15);
+      user-select: none;
+    }
+    .action-btn:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #ff6a1a 0%, var(--primary) 100%);
+      color: #000;
+      border-color: #ff9452;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+    body.mode-cross .btn-primary {
+      background: linear-gradient(180deg, #38f4ff 0%, var(--primary) 100%);
+      border-color: #85f8ff;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 22px var(--primary-glow);
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #ffd987 0%, var(--gold) 100%);
+      color: #000;
+      border-color: #fff0bd;
+      box-shadow: 0 4px 15px var(--gold-glow);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-steel);
+      color: #fff;
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Верхняя инфо-строка */
+    .top-telemetry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 16px;
+      background: #050608;
+      border-bottom: 1px solid var(--border-steel);
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 100%;
+    }
+    .pulse-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      margin-right: 4px;
+    }
+
+    /* Шапка сайта */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(8, 10, 15, 0.95);
+      border-bottom: 1px solid var(--border-steel);
+      backdrop-filter: blur(12px);
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 8px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-display);
+      font-size: clamp(17px, 4.4vw, 22px);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .brand-logo span {
+      background: var(--primary);
+      color: #000;
+      padding: 2px 7px;
+      font-size: clamp(13px, 3.5vw, 16px);
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Выделенная кнопка Федерации в шапке */
+    .fed-nav-trigger {
+      background: linear-gradient(180deg, #fce09b 0%, var(--gold) 100%);
+      color: #000 !important;
+      font-family: var(--font-cond);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 8px 14px;
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      box-shadow: 0 0 14px var(--gold-glow);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      border: 1px solid #fff;
+      cursor: pointer;
+    }
+    .fed-nav-trigger:active { transform: scale(0.96); }
+
+    .burger-btn {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      background: #141824;
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+      cursor: pointer;
+    }
+    .burger-btn span {
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    /* Мобильное выдвижное меню (Бургер) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 82%;
+      max-width: 320px;
+      height: 100vh;
+      background: #0c0f17;
+      border-left: 2px solid var(--primary);
+      z-index: 10000;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+    }
+    .mobile-drawer.open { right: 0; }
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-steel);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .drawer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .drawer-links a {
+      font-family: var(--font-cond);
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #131722;
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+    }
+
+    /* Переключатель дивизионов (Тяжелый кастом / Кросс) */
+    .mode-toggle-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #090a0f;
+      padding: 3px;
+      border: 1px solid var(--border-steel);
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      width: 100%;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+    }
+    .mode-tab-btn {
+      padding: 10px 6px;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      font-family: var(--font-cond);
+      font-size: clamp(11px, 2.9vw, 13px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      line-height: 1.2;
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+    }
+    .mode-tab-btn.active {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 14px var(--primary-glow);
+    }
+
+    /* Разделы страницы */
+    .section {
+      padding: 50px 16px;
+      border-top: 1px solid var(--border-steel);
+      width: 100%;
+    }
+    .section-head {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .section-kicker {
+      font-family: var(--font-cond);
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(23px, 6vw, 40px);
+      text-transform: uppercase;
+      line-height: 1.1;
+      word-break: break-word;
+    }
+    .section-title em { font-style: normal; color: var(--primary); }
+
+    /* Первый экран Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 30px 16px 45px;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 85, 0, 0.12);
+      border-left: 3px solid var(--primary);
+      padding: 6px 12px;
+      font-family: var(--font-cond);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    body.mode-cross .hero-badge {
+      background: rgba(0, 240, 255, 0.12);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 7.2vw, 50px);
+      line-height: 1.08;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+    .hero-title em { font-style: normal; color: var(--primary); }
+    .hero-lead {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    /* Фото-стенд на первом экране */
+    .hero-stand {
+      overflow: hidden;
+      width: 100%;
+    }
+    .stand-img-box {
+      width: 100%;
+      height: 240px;
+      position: relative;
+    }
+    .stand-img-box img { width: 100%; height: 100%; }
+    .stand-hud {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,6,8,0.2) 0%, rgba(6,6,8,0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+    }
+    .stand-tag {
+      align-self: flex-start;
+      background: rgba(6,6,8,0.85);
+      border: 1px solid var(--border-steel);
+      padding: 4px 8px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .stand-specs-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 8px;
+    }
+    .stand-spec-item span {
+      display: block;
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-family: var(--font-cond);
+    }
+    .stand-spec-item strong {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: #fff;
+    }
+
+    /* Блок-приглашение в Федерацию */
+    .fed-banner-card {
+      margin: 10px 16px 30px;
+      padding: 18px 16px;
+      background: linear-gradient(135deg, rgba(240,190,93,0.14) 0%, #0d1017 100%);
+      border: 1px solid var(--gold);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .fed-banner-card h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .fed-banner-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Матрица услуг */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      width: 100%;
+    }
+    .service-card {
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sc-num {
+      font-family: var(--font-cond);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .sc-list {
+      list-style: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .sc-list li {
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .sc-list li span:last-child {
+      color: var(--gold);
+      font-family: var(--font-cond);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ИИ Инженер */
+    .ai-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+    .ai-box {
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .ai-modes-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      background: #090b10;
+      padding: 3px;
+      border: 1px solid var(--border-steel);
+    }
+    .ai-mode-btn {
+      padding: 8px 2px;
+      text-align: center;
+      font-family: var(--font-cond);
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    }
+    .ai-mode-btn.active {
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+    }
+    .chips-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .symptom-item {
+      background: #0f131d;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 12px;
+      color: var(--text-light);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s;
+    }
+    .symptom-item.active {
+      border-left-color: var(--primary);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .ai-input-wrap {
+      display: flex;
+      gap: 6px;
+    }
+    .ai-text-field {
+      flex: 1;
+      min-width: 0;
+      background: #080a0f;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .risk-tag {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    }
+    .risk-green { background: #10b981; color: #000; }
+    .risk-yellow { background: #f59e0b; color: #000; }
+    .risk-red { background: #ef4444; color: #fff; }
+
+    .ai-stats-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border-steel);
+      border-bottom: 1px solid var(--border-steel);
+    }
+    .ai-stats-3 span {
+      display: block;
+      font-size: 9px;
+      text-transform: uppercase;
+      font-family: var(--font-cond);
+      color: var(--text-muted);
+    }
+    .ai-stats-3 strong {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: #fff;
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* Проекты с фото */
+    .projects-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      width: 100%;
+    }
+    .project-card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-pic-box {
+      width: 100%;
+      height: 220px;
+      position: relative;
+    }
+    .project-pic-box img { width: 100%; height: 100%; }
+    .proj-tabs {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      display: flex;
+      gap: 4px;
+    }
+    .proj-tab-btn {
+      background: rgba(8, 10, 15, 0.9);
+      border: 1px solid var(--border-steel);
+      color: #fff;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .proj-tab-btn.active {
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+    }
+    .project-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .spec-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .spec-table td:first-child { color: var(--text-muted); }
+    .spec-table td:last-child { text-align: right; font-weight: 600; color: #fff; }
+
+    /* Калькулятор */
+    .calc-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+    .subclass-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .subclass-item {
+      background: #0b0d13;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+    }
+    .subclass-item.active {
+      border-color: var(--primary);
+      background: rgba(255, 85, 0, 0.12);
+    }
+    body.mode-cross .subclass-item.active {
+      background: rgba(0, 240, 255, 0.12);
+    }
+
+    .services-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .service-check-row {
+      background: #0b0d13;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      gap: 6px;
+    }
+    .service-check-row.checked {
+      border-color: var(--primary);
+      background: rgba(255, 85, 0, 0.1);
+    }
+    body.mode-cross .service-check-row.checked {
+      background: rgba(0, 240, 255, 0.1);
+    }
+
+    .calc-sum-box {
+      padding: 20px 16px;
+      border-top: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .total-val {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--primary);
+    }
+    .calc-input {
+      width: 100%;
+      background: #07090e;
+      border: 1px solid var(--border-steel);
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* =========================================================================
+       СТРАНИЦА ФЕДЕРАЦИИ + СПУТНИКОВЫЙ 3D/EARTH МОДУЛЬ
+       ========================================================================= */
+    #federationPage {
+      display: none;
+      min-height: 100vh;
+      background: #07080c;
+      width: 100%;
+    }
+    #federationPage.active { display: block; }
+    #workshopPage.hidden { display: none; }
+
+    .fed-hero-block {
+      padding: 30px 16px 20px;
+      background: radial-gradient(circle at 80% 20%, rgba(240,190,93,0.1) 0%, transparent 60%), #0c0f17;
+      border-bottom: 1px solid var(--border-steel);
+    }
+
+    /* Интерактивный спутниковый контейнер */
+    .satellite-viewport-box {
+      margin: 16px 0;
+      border: 1px solid var(--border-steel);
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    }
+    #earthMap {
+      width: 100%;
+      height: 380px;
+      z-index: 1;
+      background: #0b0d14;
+    }
+    .earth-hud-top {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .earth-badge {
+      background: rgba(7, 9, 14, 0.9);
+      border: 1px solid var(--gold);
+      padding: 4px 10px;
+      font-family: var(--font-cond);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-transform: uppercase;
+      pointer-events: auto;
+    }
+    .earth-action-direct {
+      background: rgba(0,0,0,0.85);
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 4px 10px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      text-transform: uppercase;
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Кнопки переключения трасс для спутниковой карты */
+    .track-pills-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .track-pill-btn {
+      background: #111520;
+      border: 1px solid var(--border-steel);
+      padding: 10px 8px;
+      font-family: var(--font-cond);
+      font-size: 12px;
+      text-transform: uppercase;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all 0.2s;
+    }
+    .track-pill-btn.active {
+      border-color: var(--gold);
+      background: rgba(240, 190, 93, 0.15);
+    }
+    .track-pill-btn strong { color: #fff; font-size: 12px; }
+    .track-pill-btn span { color: var(--gold); font-size: 10px; }
+
+    footer {
+      padding: 30px 16px;
+      border-top: 1px solid var(--border-steel);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: #050608;
+    }
+
+    /* Адаптив для широких экранов планшетов и ПК */
+    @media (min-width: 820px) {
+      body { font-size: 15px; }
+      header { padding: 14px 40px; }
+      .hero { grid-template-columns: 1.15fr 0.85fr; padding: 60px 40px; }
+      .services-grid { grid-template-columns: repeat(4, 1fr); }
+      .ai-wrapper { grid-template-columns: 1fr 1.3fr; }
+      .projects-stack { grid-template-columns: 1fr 1fr; }
+      .calc-wrap { grid-template-columns: 1.3fr 1fr; }
+      .section { padding: 80px 40px; }
+      .fed-hero-block { padding: 50px 40px; }
+      .track-pills-row { grid-template-columns: repeat(4, 1fr); }
+      #earthMap { height: 480px; }
+    }
+  
+    /* =========================================================================
+       WOW-UPGRADES: СТЕНД ТЕЛЕМЕТРИИ, РАДАР, ДО/ПОСЛЕ, ОДОМЕТР
+       ========================================================================= */
+
+    /* 1. Эффект смены темы дивизиона */
+    body.theme-flash {
+      animation: themeFlashPulse 0.4s ease-out;
+    }
+    @keyframes themeFlashPulse {
+      0% { filter: brightness(1.35) contrast(1.15); }
+      100% { filter: brightness(1) contrast(1); }
+    }
+
+    /* Скользящий бегунок в переключателе дивизионов */
+    .mode-toggle-bar {
+      position: relative;
+    }
+    .mode-indicator-slider {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 3px;
+      width: calc(50% - 3px);
+      background: var(--primary);
+      clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      box-shadow: 0 0 18px var(--primary-glow);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s, box-shadow 0.25s;
+      z-index: 1;
+      pointer-events: none;
+    }
+    body.mode-cross .mode-indicator-slider {
+      transform: translateX(100%);
+    }
+    .mode-tab-btn {
+      position: relative;
+      z-index: 2;
+    }
+    .mode-tab-btn.active {
+      background: transparent !important;
+      color: #000 !important;
+      box-shadow: none !important;
+    }
+
+    /* 2. Стенд телеметрии Hero */
+    .hero-stand {
+      position: relative;
+    }
+    .stand-corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--primary);
+      border-style: solid;
+      pointer-events: none;
+      z-index: 5;
+      transition: border-color 0.3s;
+    }
+    .stand-corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .stand-corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+    .stand-corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+    .stand-corner-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .stand-laser-scan {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--primary) 50%, transparent 100%);
+      box-shadow: 0 0 14px var(--primary), 0 0 26px var(--primary);
+      opacity: 0.85;
+      pointer-events: none;
+      z-index: 4;
+      animation: laserScanMotion 4.2s ease-in-out infinite alternate;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    @keyframes laserScanMotion {
+      0% { top: 4%; opacity: 0.25; }
+      50% { opacity: 0.95; }
+      100% { top: 92%; opacity: 0.35; }
+    }
+
+    .stand-target-cross {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px;
+      height: 46px;
+      border: 1px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      animation: reticleSpin 24s linear infinite;
+    }
+    .stand-target-cross::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+      transition: background 0.3s;
+    }
+    @keyframes reticleSpin {
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .stand-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(4, 5, 8, 0.82);
+      border: 1px solid var(--border-steel);
+      padding: 3px 8px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .spec-mini-meter {
+      height: 4px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      margin-top: 5px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .spec-mini-fill {
+      height: 100%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+      transition: width 0.5s ease, background 0.3s;
+    }
+
+    /* 3. Спутниковая карта: радарный сонар и оверлей высот */
+    .radar-pulse-ring {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      top: -12px;
+      left: -12px;
+      animation: radarSonar 1.8s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes radarSonar {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    .earth-hud-corners {
+      position: absolute;
+      inset: 8px;
+      pointer-events: none;
+      z-index: 500;
+    }
+    .earth-c-tl { position: absolute; top: 0; left: 0; width: 14px; height: 14px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .earth-c-tr { position: absolute; top: 0; right: 0; width: 14px; height: 14px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+    .earth-c-bl { position: absolute; bottom: 0; left: 0; width: 14px; height: 14px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .earth-c-br { position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+    .earth-elevation-panel {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(6, 8, 12, 0.88);
+      border: 1px solid var(--border-steel);
+      border-left: 3px solid var(--gold);
+      padding: 8px 12px;
+      z-index: 500;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .elevation-sparkline-svg {
+      flex: 1;
+      min-width: 140px;
+      height: 24px;
+    }
+
+    /* 4. ИИ Инженер: волна детонации и сканирующий оверлей */
+    .sensor-wave-box {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+      padding: 0 4px;
+    }
+    .sensor-wave-bar {
+      width: 3px;
+      background: var(--primary);
+      border-radius: 1px;
+      animation: eqBounce 1.1s ease-in-out infinite alternate;
+      transition: background 0.3s;
+    }
+    .sensor-wave-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .sensor-wave-bar:nth-child(2) { height: 75%; animation-delay: 0.3s; }
+    .sensor-wave-bar:nth-child(3) { height: 100%; animation-delay: 0.05s; }
+    .sensor-wave-bar:nth-child(4) { height: 60%; animation-delay: 0.4s; }
+    .sensor-wave-bar:nth-child(5) { height: 85%; animation-delay: 0.2s; }
+    @keyframes eqBounce {
+      0% { transform: scaleY(0.3); opacity: 0.5; }
+      100% { transform: scaleY(1); opacity: 1; }
+    }
+
+    #aiResultCard {
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-scan-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 10, 16, 0.94);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .ai-scan-overlay.scanning {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .ai-scan-bar {
+      width: 140px;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .ai-scan-fill {
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      transform: translateX(-100%);
+      animation: scanBarFill 0.28s ease-out forwards;
+    }
+    @keyframes scanBarFill {
+      100% { transform: translateX(0); }
+    }
+
+    /* 5. Интерактивный Before/After слайдер в проектах */
+    .ba-slider-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      user-select: none;
+      cursor: ew-resize;
+      background: #000;
+      touch-action: pan-y;
+    }
+    .ba-img-after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ba-img-before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 2;
+      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+      will-change: clip-path;
+    }
+    .ba-divider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 14px var(--primary);
+      z-index: 3;
+      pointer-events: none;
+      transform: translateX(-50%);
+      transition: background-color 0.3s, box-shadow 0.3s;
+      will-change: left;
+    }
+    .ba-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      background: #0d1017;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 16px var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      z-index: 4;
+      pointer-events: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      will-change: left;
+    }
+    .ba-tag-before, .ba-tag-after {
+      position: absolute;
+      bottom: 8px;
+      padding: 4px 9px;
+      background: rgba(6, 6, 8, 0.88);
+      backdrop-filter: blur(4px);
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      z-index: 5;
+      border: 1px solid rgba(255,255,255,0.18);
+      pointer-events: none;
+      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+      will-change: opacity, transform;
+    }
+    .ba-tag-before { left: 8px; color: var(--text-muted); }
+    .ba-tag-after { right: 8px; color: var(--primary); border-color: var(--primary); }
+
+    /* 6. Калькулятор: кнопки Telegram + WhatsApp и живой счетчик */
+    .calc-btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      width: 100%;
+    }
+    .btn-telegram {
+      background: linear-gradient(180deg, #2aabee 0%, #229ed9 100%);
+      color: #fff;
+      border-color: #55c0f5;
+      box-shadow: 0 4px 14px rgba(34, 158, 217, 0.4);
+    }
+    .btn-whatsapp {
+      background: linear-gradient(180deg, #25d366 0%, #1ea952 100%);
+      color: #fff;
+      border-color: #4ee085;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+    }
+    .btn-telegram:hover { box-shadow: 0 6px 20px rgba(34, 158, 217, 0.6); }
+    .btn-whatsapp:hover { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55); }
+
+    .input-error-shake {
+      animation: inputShake 0.4s ease-in-out;
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6) !important;
+    }
+    @keyframes inputShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+  
+    /* =========================================================================
+       SCROLL REVEAL: ПЛАВНОЕ ПОДТЯГИВАНИЕ БЛОКОВ СНИЗУ
+       ========================================================================= */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-up.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ СТРОКА ТЕЛЕМЕТРИИ -->
+  <div class="top-telemetry">
+    <div>
+      <span style="color:var(--gold); font-weight:700;">КРАСНОДАР</span> • ЦЕХ & СПОРТ-БАЗА КК
+    </div>
+    <div>09:00 — 21:00 • БЕЗ ВЫХОДНЫХ</div>
+  </div>
+
+  <!-- ШАПКА САЙТА -->
+  <header>
+    <div class="header-row">
+      <div class="brand-logo">
+        <a href="javascript:showWorkshopView()">МОТО<span>КУБАНЬ</span>ЦЕХ</a>
+      </div>
+
+      <div class="header-controls">
+        <!-- ЯРКАЯ КЛИКАБЕЛЬНАЯ КНОПКА ФЕДЕРАЦИИ -->
+        <button class="fed-nav-trigger" onclick="showFederationView()">
+          ФЕДЕРАЦИЯ КК ❯
+        </button>
+        <!-- КНОПКА МЕНЮ -->
+        <button class="burger-btn" onclick="toggleMenu(true)" aria-label="Открыть меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ ДИВИЗИОНОВ 50/50 -->
+    <div class="mode-toggle-bar" id="modeToggleBar">
+      <div class="mode-indicator-slider" id="modeSlider"></div>
+      <button class="mode-tab-btn active" id="btnCustom" onclick="switchDivision('custom')">
+        Тяжёлый Кастом & V-Twin
+      </button>
+      <button class="mode-tab-btn" id="btnCross" onclick="switchDivision('cross')">
+        Кросс и Эндуро Дивизион
+      </button>
+    </div>
+  </header>
+
+  <!-- МОБИЛЬНОЕ ВЫДВИЖНОЕ МЕНЮ (БУРГЕР) -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleMenu(false)"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <div>
+      <div class="drawer-head">
+        <strong style="font-family:var(--font-display); font-size:16px;">НАВИГАЦИЯ ЦЕХА</strong>
+        <button onclick="toggleMenu(false)" style="font-size:24px; color:#fff; line-height:1;">✕</button>
+      </div>
+      <div class="drawer-links">
+        <a href="#servicesSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>01. Услуги цеха</span><span>❯</span>
+        </a>
+        <a href="#aiSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>02. ИИ-Диагност</span><span>❯</span>
+        </a>
+        <a href="#projectsSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>03. Проекты До/После</span><span>❯</span>
+        </a>
+        <a href="#calcSec" onclick="toggleMenu(false); showWorkshopView();">
+          <span>04. Смета работ</span><span>❯</span>
+        </a>
+        <a href="javascript:void(0)" onclick="toggleMenu(false); showFederationView();" style="border-color:var(--gold); color:var(--gold);">
+          <span>Федерация Мотоспорта КК</span><span>❯</span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <button class="action-btn btn-primary" style="width:100%; font-size:13px;" onclick="toggleMenu(false); document.getElementById('calcSec').scrollIntoView({behavior:'smooth'});">
+        Записаться на подъёмник
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       ВИД 1: КОММЕРЧЕСКИЙ ЦЕХ
+       ========================================================================= -->
+  <div id="workshopPage">
+
+    <!-- 01 / ПЕРВЫЙ ЭКРАН HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-badge" id="heroBadge">ЦЕХ ТЯЖЁЛОГО МЕТАЛЛА И V-TWIN ИНЖЕНЕРИИ</div>
+        <h1 class="hero-title" id="heroTitle">
+          ПОСТРОЙКА <em>ШТУЧНЫХ КАСТОМОВ</em> И РЕБИЛД МОТОРОВ V-TWIN
+        </h1>
+        <p class="hero-lead" id="heroLead">
+          Проектирование рам, маятников под каток 280–300 мм, аргонодуговая сварка выхлопных систем из титана и глубокий ребилд двигателей Harley-Davidson и Indian в Краснодаре.
+        </p>
+        <div class="hero-actions">
+          <button class="action-btn btn-primary" onclick="document.getElementById('calcSec').scrollIntoView({behavior:'smooth'})">
+            Рассчитать смету работ ❯
+          </button>
+          <button class="action-btn btn-outline" onclick="document.getElementById('aiSec').scrollIntoView({behavior:'smooth'})">
+            ИИ-дефектовщик байка ❯
+          </button>
+        </div>
+      </div>
+
+      <!-- Правый стенд с фото мотоцикла: HUD-сканер телеметрии -->
+      <div class="chamfer-box hero-stand">
+        <div class="stand-corner stand-corner-tl"></div>
+        <div class="stand-corner stand-corner-tr"></div>
+        <div class="stand-corner stand-corner-bl"></div>
+        <div class="stand-corner stand-corner-br"></div>
+        <div class="stand-laser-scan"></div>
+        <div class="stand-target-cross"></div>
+
+        <div class="stand-img-box">
+          <img id="heroStandImg" src="images/hero_custom_vtwin.jpg" alt="Мотоцикл на стапеле">
+          <div class="stand-hud">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="stand-tag" id="heroStandTag">СТАПЕЛЬ 01 // ШТУЧНЫЙ КАСТОМ V-TWIN</span>
+              <span class="stand-status-pill">
+                <i class="pulse-dot"></i>LIVE TELEMETRY
+              </span>
+            </div>
+            <div class="stand-specs-row">
+              <div class="stand-spec-item">
+                <span id="heroSpecL1">Крутящий момент</span>
+                <strong id="heroSpecV1">до 210 Н·м</strong>
+                <div class="spec-mini-meter"><div class="spec-mini-fill" id="heroSpecMeter1" style="width: 88%;"></div></div>
+              </div>
+              <div class="stand-spec-item">
+                <span id="heroSpecL2">Сварка выхлопа</span>
+                <strong id="heroSpecV2">Титан ВТ1-0</strong>
+                <div class="spec-mini-meter"><div class="spec-mini-fill" id="heroSpecMeter2" style="width: 100%;"></div></div>
+              </div>
+              <div class="stand-spec-item">
+                <span id="heroSpecL3">Ширина катка</span>
+                <strong id="heroSpecV3">240–300 мм</strong>
+                <div class="spec-mini-meter"><div class="spec-mini-fill" id="heroSpecMeter3" style="width: 95%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПЛАШКА ПЕРЕХОДА НА СТРАНИЦУ ФЕДЕРАЦИИ -->
+    <div class="chamfer-box fed-banner-card reveal-up">
+      <div>
+        <h4>Спортивная база Федерации Мотоспорта КК</h4>
+        <p>Спутниковый атлас трасс («Орлёнок», «Белая Стрела», «Маркотх»), регламент техкомиссии МФР и подготовка пилотов.</p>
+      </div>
+      <button class="action-btn btn-gold" onclick="showFederationView()">
+        Открыть страницу Федерации и Спутник Земли ❯
+      </button>
+    </div>
+
+    <!-- 02 / УСЛУГИ ЦЕХА -->
+    <section class="section" id="servicesSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker" id="servKicker">СПЕЦИАЛИЗАЦИЯ ЦЕХА</div>
+        <h2 class="section-title" id="servTitle">ЧЕТЫРЕ НАПРАВЛЕНИЯ <em>V-TWIN И КАСТОМА</em></h2>
+      </div>
+      <div class="services-grid" id="servicesGrid"></div>
+    </section>
+
+    <!-- 03 / ИИ ИНЖЕНЕР -->
+    <section class="section" id="aiSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">ИНТЕРАКТИВНЫЙ БОРТОВОЙ МОДУЛЬ</div>
+        <h2 class="section-title">МОТО-ИНЖЕНЕР AI <em>// ДЕФЕКТОВКА</em></h2>
+      </div>
+
+      <div class="ai-wrapper reveal-up">
+        <div class="chamfer-box ai-box">
+          <div class="ai-modes-3">
+            <button class="ai-mode-btn active" id="aiTab1" onclick="selectAiMode(1)">1. Дефектовка</button>
+            <button class="ai-mode-btn" id="aiTab2" onclick="selectAiMode(2)">2. Тюнинг</button>
+            <button class="ai-mode-btn" id="aiTab3" onclick="selectAiMode(3)">3. ТО</button>
+          </div>
+
+          <div id="aiChipsSubtitle" style="font-family:var(--font-cond); font-size:11px; color:var(--gold); text-transform:uppercase;">
+            НАЖМИТЕ НА ЧАСТЫЙ СИМПТОМ ДЛЯ ДЕФЕКТОВКИ:
+          </div>
+          <div class="chips-stack" id="aiChipContainer"></div>
+
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">Или опишите симптом своими словами:</div>
+            <div class="ai-input-wrap">
+              <input type="text" id="aiCustomInput" class="ai-text-field" placeholder="Например: цокот в цилиндре на горячую...">
+              <button class="action-btn btn-primary" style="padding:8px 14px; font-size:12px;" onclick="runAiAnalysis()">Разобрать</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chamfer-box ai-box" id="aiResultCard" style="border-left: 4px solid var(--primary);">
+          <!-- Сканирующий оверлей при дефектовке -->
+          <div class="ai-scan-overlay" id="aiScanOverlay">
+            <div style="font-family:var(--font-cond); font-size:11px; color:var(--primary); letter-spacing:0.12em; text-transform:uppercase;">
+              // СКАНИРОВАНИЕ ШИНЫ CAN-BUS И ДАТЧИКОВ...
+            </div>
+            <div class="ai-scan-bar"><div class="ai-scan-fill"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-family:var(--font-cond); font-size:11px; color:var(--gold);" id="aiResCode">ТЕХКАРТА: #VTW-402</span>
+                <span id="aiModelBadge" style="font-family:var(--font-cond); font-size:10px; color:#10b981; border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:3px; text-transform:uppercase; display:inline-flex; align-items:center; gap:4px;">
+                  <i style="width:5px; height:5px; background:#10b981; border-radius:50%; display:inline-block;"></i>DeepSeek V4.1 Flash • Кэш ВКЛ
+                </span>
+                <div class="sensor-wave-box" title="Датчик детонации и акустического шума">
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                  <div class="sensor-wave-bar"></div>
+                </div>
+              </div>
+              <span class="risk-tag risk-yellow" id="aiResRisk">Требует ревизии</span>
+            </div>
+            <h3 style="font-family:var(--font-display); font-size:18px; text-transform:uppercase; margin-bottom:8px;" id="aiResTitle">
+              Уход тепловых зазоров клапанов и износ натяжителя ГРМ
+            </h3>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.55;" id="aiResDesc">
+              Характерный износ гидронатяжителей цепи ГРМ. Требуется эндоскопия хона, проверка давления масла и установка усиленной гидравлической плиты Feuling.
+            </p>
+          </div>
+
+          <div class="ai-stats-3">
+            <div><span>Комплекс</span><strong id="aiResService">Ревизия ГРМ</strong></div>
+            <div><span>Срок</span><strong id="aiResTime">2–3 дня</strong></div>
+            <div><span>Ориентир</span><strong id="aiResPrice" style="color:var(--gold);">от 28 000 ₽</strong></div>
+          </div>
+
+          <button class="action-btn btn-primary" style="width:100%; font-size:12px;" onclick="applyAiToCalc()">
+            Перенести работы в калькулятор сметы ❯
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 / ПРОЕКТЫ -->
+    <section class="section" id="projectsSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">РЕАЛЬНЫЕ КЕЙСЫ ЦЕХА</div>
+        <h2 class="section-title" id="projectsTitle">ВЫПОЛНЕННЫЕ <em>КАСТОМ-ПРОЕКТЫ</em></h2>
+      </div>
+      <div class="projects-stack" id="projectsGrid"></div>
+    </section>
+
+    <!-- 05 / КАЛЬКУЛЯТОР -->
+    <section class="section" id="calcSec">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">ПРЯМОЙ РАСЧЁТ</div>
+        <h2 class="section-title" id="calcTitle">КАЛЬКУЛЯТОР <em>КАСТОМА И РЕМОНТА</em></h2>
+      </div>
+
+      <div class="calc-wrap reveal-up">
+        <div>
+          <div class="chamfer-box" style="padding:16px; margin-bottom:12px;">
+            <div style="font-family:var(--font-display); font-size:15px; color:var(--gold); text-transform:uppercase; margin-bottom:10px;" id="calcStep1Title">
+              1. Выберите класс мотоцикла
+            </div>
+            <div class="subclass-row" id="subclassContainer"></div>
+          </div>
+
+          <div class="chamfer-box" style="padding:16px;">
+            <div style="font-family:var(--font-display); font-size:15px; color:var(--gold); text-transform:uppercase; margin-bottom:10px;">
+              2. Отметьте требуемые работы
+            </div>
+            <div class="services-stack" id="calcServicesList"></div>
+          </div>
+        </div>
+
+        <div class="chamfer-box calc-sum-box">
+          <div>
+            <div style="font-family:var(--font-cond); color:var(--text-muted); text-transform:uppercase; font-size:11px;">
+              Предварительная смета
+            </div>
+            <div class="total-val" id="calcTotalDisplay">0 ₽</div>
+            <div style="font-size:12px; color:var(--gold);" id="calcDaysDisplay">Выберите услуги для расчёта</div>
+            
+            <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+              <input type="text" id="clientBikeModel" class="calc-input" placeholder="Марка и модель (Harley / KTM / др.)">
+              <input type="tel" id="clientPhone" class="calc-input" placeholder="Телефон для фиксации времени подъёмника">
+            </div>
+          </div>
+          <div class="calc-btn-group">
+            <button class="action-btn btn-telegram" onclick="sendOrder('tg')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:6px;"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>В Telegram ❯
+            </button>
+            <button class="action-btn btn-whatsapp" onclick="sendOrder('wa')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:6px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>В WhatsApp ❯
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- =========================================================================
+       ВИД 2: СТРАНИЦА ФЕДЕРАЦИИ + СПУТНИК GOOGLE EARTH
+       ========================================================================= -->
+  <div id="federationPage">
+    <div class="fed-hero-block">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:8px;">
+        <span style="font-family:var(--font-cond); color:var(--gold); font-size:12px; font-weight:700;">
+          РОО ФМСКК • АККРЕДИТОВАНА МФР
+        </span>
+        <button class="action-btn btn-outline" style="padding:6px 12px; font-size:11px;" onclick="showWorkshopView()">
+          ← В цех кастома
+        </button>
+      </div>
+
+      <h1 class="section-title" style="margin-bottom:8px;">
+        ФЕДЕРАЦИЯ МОТОСПОРТА <em>КРАСНОДАРСКОГО КРАЯ</em>
+      </h1>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.6; max-width:760px;">
+        Официальный спортивно-технический центр и комиссия мотокросса базируются в Туапсинском районе (пгт. Новомихайловский, СТК ВДЦ «Орлёнок»).
+      </p>
+    </div>
+
+    <!-- ИНТЕРАКТИВНЫЙ СПУТНИКОВЫЙ АТЛАС ЗЕМЛИ (GOOGLE EARTH СТИЛЬ) -->
+    <section class="section" style="padding-top:24px;">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">СПУТНИКОВЫЙ ЗУМ ТРАСС В РЕАЛЬНОМ ВРЕМЕНИ</div>
+        <h2 class="section-title">СПУТНИКОВЫЙ <em>3D-АТЛАС ТРАСС КУБАНИ</em></h2>
+        <p style="font-size:12px; color:var(--text-muted);">
+          Нажмите на любую трассу ниже — спутник плавно приблизит Землю прямо к треку, покажет рельеф, перепады высот и грунтовое полотно:
+        </p>
+      </div>
+
+      <!-- Кнопки выбора трасс -->
+      <div class="track-pills-row">
+        <button class="track-pill-btn active" id="pill0" onclick="zoomToTrack(0)">
+          <strong>01. ВДЦ «Орлёнок»</strong>
+          <span>Новомихайловский • MXGP ❯</span>
+        </button>
+        <button class="track-pill-btn" id="pill1" onclick="zoomToTrack(1)">
+          <strong>02. «Белая Стрела»</strong>
+          <span>Краснодар • Суглинок ❯</span>
+        </button>
+        <button class="track-pill-btn" id="pill2" onclick="zoomToTrack(2)">
+          <strong>03. «Чембурка»</strong>
+          <span>Анапа • Морской песок ❯</span>
+        </button>
+        <button class="track-pill-btn" id="pill3" onclick="zoomToTrack(3)">
+          <strong>04. «Хребет Маркотх»</strong>
+          <span>Геленджик • Хард-Эндуро ❯</span>
+        </button>
+      </div>
+
+      <!-- Контейнер спутниковой карты с тактическим HUD -->
+      <div class="satellite-viewport-box reveal-up">
+        <div class="earth-hud-corners">
+          <div class="earth-c-tl"></div>
+          <div class="earth-c-tr"></div>
+          <div class="earth-c-bl"></div>
+          <div class="earth-c-br"></div>
+        </div>
+
+        <div class="earth-hud-top">
+          <div class="earth-badge" id="earthHudLabel">ОРБИТА: ТРАССА ВДЦ «ОРЛЁНОК» (MXGP)</div>
+          <a class="earth-action-direct" id="googleEarthLink" href="https://earth.google.com/web/@44.2565,38.8375,120a,1200d,35y,0h,45t,0r" target="_blank" rel="noopener">
+            Google Earth 3D ↗
+          </a>
+        </div>
+
+        <div id="earthMap"></div>
+
+        <!-- Тактический профиль высот поверх карты -->
+        <div class="earth-elevation-panel">
+          <div>
+            <div style="font-size:9px; color:var(--gold); font-family:var(--font-cond); text-transform:uppercase;">
+              РЕЛЬЕФ ТРАССЫ // ПРОФИЛЬ ВЫСОТ
+            </div>
+            <strong id="trackAltOverlay" style="font-size:12px; color:#fff;">Перепад: 40 м</strong>
+          </div>
+          <svg class="elevation-sparkline-svg" viewBox="0 0 160 30" preserveAspectRatio="none">
+            <path id="elevationSparkline" d="M 0,22 Q 30,5 60,18 T 120,8 T 160,25" fill="none" stroke="#f0be5d" stroke-width="2" />
+          </svg>
+          <div style="font-size:9px; color:var(--text-muted); font-family:var(--font-cond); text-align:right;">
+            AZIMUTH: <span style="color:#fff;">035° N</span><br>GPS SATELLITES: <span style="color:#10b981;">18 LOCK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Информационная карточка активной трассы -->
+      <div class="chamfer-box reveal-up" style="padding:16px; margin-top:10px;" id="trackTelemetryCard">
+        <h3 style="font-family:var(--font-display); font-size:17px; text-transform:uppercase; color:#fff;" id="trackNameOut">
+          СТК ВДЦ «Орлёнок» (Туапсинский район)
+        </h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:6px 0 12px;" id="trackDescOut">
+          Трасса Чемпионата Мира MXGP на берегу Черного моря. Плотный морской глинозём, каскадные спуски и разрывные столы до 32 м.
+        </p>
+        <div class="stand-specs-row" style="border-top:1px solid var(--border-steel); padding-top:10px;">
+          <div><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase;">Длина полотна</span><strong id="trackLenOut" style="font-size:13px; color:#fff;">1 850 м</strong></div>
+          <div><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase;">Перепад высот</span><strong id="trackAltOut" style="font-size:13px; color:#fff;">40 метров</strong></div>
+          <div><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase;">Тип покрытия</span><strong id="trackSoilOut" style="font-size:13px; color:var(--gold);">Морская глина</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ТАБЛИЦА РЕГЛАМЕНТА МФР -->
+    <section class="section" style="background:#090b10;">
+      <div class="section-head reveal-up">
+        <div class="section-kicker">РЕГЛАМЕНТ СПОРТИВНОЙ ТЕХКОМИССИИ МФР</div>
+        <h2 class="section-title">ОФИЦИАЛЬНЫЕ КЛАССЫ <em>И ТЕХКОМИССИЯ</em></h2>
+      </div>
+
+      <div class="chamfer-box" style="overflow-x:auto; padding:12px;">
+        <table class="spec-table" style="min-width:480px;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--gold); text-align:left; font-family:var(--font-cond); color:var(--gold);">
+              <th style="padding:8px 0;">Класс</th>
+              <th>Возраст</th>
+              <th>Регламент двигателя</th>
+              <th>Точки проверки техкомиссией</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:8px 0;"><strong>50 / 65 см³</strong></td>
+              <td>6–12 лет</td>
+              <td>Автомат / Механика</td>
+              <td>Кнопка глушения («чека»), кожух цепи</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>85 см³</strong></td>
+              <td>11–15 лет</td>
+              <td>2Т до 85 см³</td>
+              <td>Шум выхлопа до 112 дБ, натяжка спиц</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>125 см³</strong></td>
+              <td>От 14 лет</td>
+              <td>2Т 125 / 4Т 250</td>
+              <td>Экипировка FIM, омологация шлема</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>OPEN</strong></td>
+              <td>От 15 лет</td>
+              <td>Свободный (до 450сс)</td>
+              <td>Отсутствие течей стоек, шарики на рычагах</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>Ветераны</strong></td>
+              <td>45+ лет</td>
+              <td>Свободный класс</td>
+              <td>Спортивная страховка МФР, техпаспорт</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ПОДВАЛ -->
+  <footer>
+    <div>
+      <strong style="color:#fff;">МОТО-АЛЬЯНС КУБАНЬ</strong> — Центр кастомайзинга, ремонта и подготовки мотоспорта Кубани.
+    </div>
+    <div>г. Краснодар • Пн–Вс с 09:00 до 20:00</div>
+  </footer>
+
+  <!-- Скрипт Leaflet для Спутника Google Earth -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // БАЗА ДАННЫХ ДИВИЗИОНОВ
+    const divisionData = {
+      custom: {
+        badge: "ЦЕХ ТЯЖЁЛОГО МЕТАЛЛА И V-TWIN ИНЖЕНЕРИИ",
+        heroTitle: "ПОСТРОЙКА <em>ШТУЧНЫХ КАСТОМОВ</em> И РЕБИЛД МОТОРОВ V-TWIN",
+        heroLead: "Проектирование рам, маятников под каток 280–300 мм, аргонодуговая сварка выхлопных систем из титана и глубокий ребилд двигателей Harley-Davidson и Indian в Краснодаре.",
+        heroImg: "images/hero_custom_vtwin.jpg",
+        heroTag: "СТАПЕЛЬ 01 // ШТУЧНЫЙ КАСТОМ V-TWIN",
+        spec1: ["Крутящий момент", "до 210 Н·м"],
+        spec2: ["Сварка выхлопа", "Титан ВТ1-0"],
+        spec3: ["Ширина катка", "240–300 мм"],
+
+        servKicker: "СПЕЦИАЛИЗАЦИЯ ЦЕХА",
+        servTitle: "ЧЕТЫРЕ НАПРАВЛЕНИЯ <em>V-TWIN И КАСТОМА</em>",
+        services: [
+          {
+            num: "01 / Моторный цех V-Twin",
+            title: "Stage 1–4 и Ребилд ДВС",
+            desc: "Установка распредвалов с подъёмом 550, расточка Big Bore, балансировка коленвалов, маслонасосы Feuling.",
+            list: [["Расточка цилиндров под поршни CP", "от 24 000 ₽"], ["Замена распредвалов и гидроплиты", "от 19 000 ₽"], ["Прошивка ЭБУ под выхлоп", "от 16 000 ₽"]]
+          },
+          {
+            num: "02 / Металл и ЧПУ",
+            title: "Шасси, Маятники и Баки",
+            desc: "Консольные маятники под каток 300 мм, баки ручной формовки и скрытая проводка в руле.",
+            list: [["Маятник под каток 280–300 мм", "от 75 000 ₽"], ["Кастомный бак и крыло", "от 38 000 ₽"], ["Фрезеровка траверс ЧПУ (Д16Т)", "от 32 000 ₽"]]
+          },
+          {
+            num: "03 / Аргоновый цех",
+            title: "Выхлопные трассы Pie-Cut",
+            desc: "Ручная сварка выхлопных систем из титана ВТ1-0 и нержавейки с внутренним поддувом аргона.",
+            list: [["Сварка выхлопа 2-в-1 из Титана", "от 55 000 ₽"], ["Заслонки громкости звука", "от 28 000 ₽"], ["Тепловые экраны ручной чеканки", "от 14 000 ₽"]]
+          },
+          {
+            num: "04 / Детейлинг и ЛКП",
+            title: "Полировка Хрома & Cerakote",
+            desc: "Зеркальная полировка хрома и алюминия, оружейная керамика и полиуретан 200 мкм.",
+            list: [["Многоступенчатая полировка хрома", "от 22 000 ₽"], ["Керамика Cerakote картера", "от 30 000 ₽"], ["Бронеплёнка бака (полиуретан)", "от 18 000 ₽"]]
+          }
+        ],
+
+                aiModes: {
+          defect: {
+            title: "НАЖМИТЕ НА ЧАСТЫЙ СИМПТОМ ДЛЯ ДЕФЕКТОВКИ:",
+            chips: [
+              { text: "Цокот в ГБЦ при прогреве", code: "#ENG-V88", risk: "risk-yellow", riskTxt: "Внимание", title: "Износ гидрокомпенсаторов и рокеров", desc: "Масляное голодание постелей ГБЦ. Проверим давление в плите маслонасоса и заменим гидрокомпенсаторы на S&S Precision.", srv: "Ревизия маслоплиты и ГРМ", time: "2 дня", price: "от 22 000 ₽" },
+              { text: "Тяжёлый выжим сцепления и рывки", code: "#TRN-312", risk: "risk-green", riskTxt: "Износ дисков", title: "Усталость диафрагменной пружины корзины", desc: "Пробуксовка дисков сцепления. Установим усиленный комплект Barnett Extra Plate с фрикционами из кевлара.", srv: "Сцепление Barnett Extra Plate", time: "1 день", price: "от 18 500 ₽" },
+              { text: "Стрельба в глушитель при сбросе газа", code: "#EXH-504", risk: "risk-green", riskTxt: "Смесь", title: "Подсос воздуха во впускной манифолд", desc: "Рассыхание уплотнительных колец коллектора. Опрессуем впуск и скорректируем VE-таблицы зажигания.", srv: "Опрессовка впуска + Прошивка", time: "1–2 дня", price: "от 15 000 ₽" },
+              { text: "Вибрация на подножках свыше 3000 об/мин", code: "#MNT-109", risk: "risk-yellow", riskTxt: "Опоры ДВС", title: "Проседание сайлентблоков Iso-Mount", desc: "Усталость передней подушки двигателя. Мотор передает резонанс на раму, риск образования трещин в выпускных трубах.", srv: "Замена опор мотора + Центровка", time: "1 день", price: "от 12 000 ₽" }
+            ]
+          },
+          tuning: {
+            title: "ВЫБЕРИТЕ ПРОГРАММУ ТЮНИНГА V-TWIN:",
+            chips: [
+              { text: "Stage 2: Валы 550 + Плита Feuling", code: "#TUN-V12", risk: "risk-green", riskTxt: "Пакет Stage 2", title: "Пакет «Максимальная тяга Stage 2»", desc: "Установка распредвалов с подъёмом 550, прямоточный фильтр и калибровка топливных карт. Прирост +24 л.с. и +32 Н·м в зоне средних оборотов.", srv: "Stage 2 Распредвалы + Настройка", time: "3–4 дня", price: "от 48 000 ₽" },
+              { text: "Титановая трасса 2-в-1 Pie-Cut", code: "#TUN-EXH", risk: "risk-green", riskTxt: "Выхлоп ВТ1-0", title: "Сварка прямотока Pie-Cut с поддувом аргона", desc: "Снижение веса на 8.5 кг, равнодлинные коллекторы и глубокий бархатный басовый звук без звона на высоких оборотах.", srv: "Кастомный выхлоп из Титана", time: "5–6 дней", price: "от 55 000 ₽" },
+              { text: "Консольный маятник под каток 300 мм", code: "#TUN-W30", risk: "risk-green", riskTxt: "Широкий каток", title: "Постройка шасси под колесо 300 мм", desc: "Изготовление консольного маятника, вынос шкива primary drive, кастомное крыло со скрытой диодной оптикой.", srv: "Комплект маятника под 300 мм", time: "14 дней", price: "от 75 000 ₽" },
+              { text: "Комплект Big Bore 128 куб. дюймов", code: "#TUN-BB1", risk: "risk-green", riskTxt: "Big Bore 128ci", title: "Расточка и кованые поршни CP-Carrillo", desc: "Увеличение рабочего объема Milwaukee-Eight до 128ci (2097 см³). Расточка цилиндров, усиленные шпильки и портинг ГБЦ.", srv: "Big Bore 128ci Kit + Сборка", time: "7 дней", price: "от 120 000 ₽" }
+            ]
+          },
+          maintenance: {
+            title: "ВЫБЕРИТЕ РЕГЛАМЕНТНОЕ ОБСЛУЖИВАНИЕ V-TWIN:",
+            chips: [
+              { text: "Межсезонное ТО: Замена 3 масел + Ремень", code: "#SRV-V80", risk: "risk-green", riskTxt: "Регламент ТО", title: "Комплексное ТО Milwaukee-8 / Twin Cam", desc: "Замена 3 масел (мотор 20W50, КПП Formula+, первичная передача primary), проверка натяжения ремня тензометром и протяжка шасси.", srv: "Комплексное ТО + Протяжка", time: "1 день", price: "от 14 000 ₽" },
+              { text: "Ультразвук форсунок + Опрессовка впуска", code: "#SRV-INJ", risk: "risk-green", riskTxt: "Топливная", title: "Ревизия инжекторной системы Delphi", desc: "Ультразвуковая чистка форсунок на стенде, проверка факела распыла, замена топливных фильтров в баке и опрессовка.", srv: "Чистка форсунок + Фильтры", time: "1 день", price: "от 9 500 ₽" },
+              { text: "Ревизия гидронатяжителей и цепей ГРМ", code: "#SRV-TEN", risk: "risk-yellow", riskTxt: "Ревизия ГРМ", title: "Проверка износа башмаков ГРМ эндоскопом", desc: "При пробеге от 25–30 тыс. км требуется осмотр башмаков натяжителя цепи. Замена на гидроплиту Feuling предотвращает сход фаз.", srv: "Инспекция ГРМ + Замеры", time: "1 день", price: "от 8 000 ₽" },
+              { text: "Аппаратная замена тормозной жидкости DOT 4", code: "#SRV-BRK", risk: "risk-green", riskTxt: "Тормоза", title: "Прокачка контура Brembo и сцепления", desc: "Удаление влаги из гидравлических контуров, промывка главного цилиндра сцепления и проверка остаточной толщины колодок.", srv: "Замена тормозной жидкости", time: "2 часа", price: "от 4 500 ₽" }
+            ]
+          }
+        },
+
+        projectsTitle: "ВЫПОЛНЕННЫЕ <em>КАСТОМ-ПРОЕКТЫ</em>",
+        projects: [
+          {
+            cat: "ТЯЖЁЛЫЙ КАСТОМ • V-TWIN",
+            name: "Harley Breakout «Чёрный Титан»",
+            desc: "Консольный маятник под каток 300 мм, титановый выхлоп Pie-Cut, поршневая 128 куб. дюймов, Cerakote.",
+            photos: [
+              "images/harley_breakout_after.jpg",
+              "images/harley_breakout_before.jpg",
+              "images/harley_breakout_details.jpg"
+            ],
+            specs: [["Двигатель", "Stage 4 • 138 л.с. / 184 Н·м"], ["Выхлоп", "Титан ВТ1-0 с поддувом"], ["Колесо", "300 мм 3-составной диск"], ["Срок", "45 рабочих дней"]]
+          },
+          {
+            cat: "БОББЕР СТАРОЙ ШКОЛЫ",
+            name: "Indian Chief «Медный Боббер»",
+            desc: "Укороченный подрамник с плавающим кожаным седлом, фрезерованные траверсы Д16Т, кастомный руль.",
+            photos: [
+              "images/indian_chief_bobber.jpg",
+              "images/indian_chief_jig.jpg",
+              "images/indian_chief_details.jpg"
+            ],
+            specs: [["Траверсы", "Фрезеровка ЧПУ 5 осей"], ["Покрытие", "Гальваническое меднение"], ["Тормоза", "Радиальные 4-поршневые"], ["Срок", "32 рабочих дня"]]
+          }
+        ],
+
+        calcTitle: "КАЛЬКУЛЯТОР <em>КАСТОМА И РЕМОНТА V-TWIN</em>",
+        step1Title: "1. Выберите класс круизера",
+        subclasses: [
+          { name: "Круизер / Софтейл", mult: 1.2 },
+          { name: "Туринг / Бэггер", mult: 1.35 },
+          { name: "Боббер / Чоппер", mult: 1.1 }
+        ],
+        calcServices: [
+          { name: "Сварка выхлопа (Титан ВТ1-0 / Нерж)", price: 48000, days: 6 },
+          { name: "Расточка цилиндров и поршни Big Bore", price: 38000, days: 5 },
+          { name: "Замена распредвалов и гидроплиты ГРМ", price: 22000, days: 3 },
+          { name: "Изготовление маятника под каток 300 мм", price: 75000, days: 14 },
+          { name: "Кастомный бензобак или крыло", price: 36000, days: 8 },
+          { name: "Полная полировка хрома и керамика", price: 24000, days: 3 },
+          { name: "Оклейка бака бронеплёнкой полиуретан", price: 20000, days: 2 },
+          { name: "Регулировка клапанов и прошивка Stage", price: 16000, days: 2 }
+        ]
+      },
+
+      cross: {
+        badge: "СПОРТИВНО-ТЕХНИЧЕСКИЙ ДИВИЗИОН КРОССА И ЭНДУРО",
+        heroTitle: "ГОНОЧНЫЙ <em>РЕБИЛД ПОДВЕСОК</em> И МОТОРОВ 2Т / 4Т",
+        heroLead: "Вакуумная переборка амортизаторов WP, KYB и Showa на стенде, настройка ревальвинга под вес райдера, сборка моторов по регламенту моточасов и изготовление силовой брони АМг6.",
+        heroImg: "images/hero_cross_lab.jpg",
+        heroTag: "СТЕНД 02 // ЛАБОРАТОРИЯ ПОДВЕСОК WP / ÖHLINS",
+        spec1: ["Вакуумный стенд", "0.02 Бар без кавитации"],
+        spec2: ["Ребилд ДВС", "Поршни Vertex / ProX"],
+        spec3: ["Защита картера", "Сплав АМг6 (5 мм)"],
+
+        servKicker: "ГОНОЧНАЯ СПЕЦИАЛИЗАЦИЯ",
+        servTitle: "ЧЕТЫРЕ ЦЕХА <em>ДЛЯ МОТОКРОССА И ЭНДУРО</em>",
+        services: [
+          {
+            num: "01 / Подвесочный стенд",
+            title: "Ревальвинг WP / KYB / Showa",
+            desc: "Вакуумная заправка стоек без пузырей воздуха, подбор жесткости пружин и шим-стеков под вес и грунт.",
+            list: [["Вакуумная прокачка + сальники SKF", "от 14 500 ₽"], ["Индивидуальный ревальвинг под вес", "от 18 000 ₽"], ["Восстановление зеркала перьев вилки", "от 8 000 ₽"]]
+          },
+          {
+            num: "02 / Моторный цех 2Т / 4Т",
+            title: "Капитальный ребилд ДВС",
+            desc: "Замена шатунных сборок на прессе, подбор поршней по нутромеру, притирка титановых клапанов.",
+            list: [["Переборка ЦПГ по моточасам (2Т/4Т)", "от 16 000 ₽"], ["Перепрессовка коленвала с центровкой", "от 12 000 ₽"], ["Опрессовка двигателя на утечки", "от 4 500 ₽"]]
+          },
+          {
+            num: "03 / Цех Хард-Эндуро",
+            title: "Силовая броня АМг6",
+            desc: "Цельные защиты картера с охватом помпы и прогрессии, силовые клетки радиаторов с вентилятором SPAL.",
+            list: [["Цельносварная защита картера + прогрессия", "от 17 500 ₽"], ["Защитные клетки радиаторов (АМг6)", "от 14 000 ₽"], ["Защита резонатора 2Т и тормозных дисков", "от 11 000 ₽"]]
+          },
+          {
+            num: "04 / Предстартовый пост",
+            title: "Боевая подготовка к гонке",
+            desc: "Протяжка спиц динамометром, ревизия подшипников прогрессии и маятника, монтаж муссов Mousse.",
+            list: [["Ревизия подшипников прогрессии и маятника", "от 8 500 ₽"], ["Монтаж муссов (Mousse) в 2 колеса", "от 6 000 ₽"], ["Дефектовка по регламенту МФР", "от 5 000 ₽"]]
+          }
+        ],
+
+                aiModes: {
+          defect: {
+            title: "НАЖМИТЕ НА ЧАСТЫЙ СИМПТОМ СПОРТ-ТЕХНИКИ:",
+            chips: [
+              { text: "Пробивает подвеску на приземлениях", code: "#SUS-901", risk: "risk-yellow", riskTxt: "Настройка", title: "Несоответствие жёсткости пружин весу райдера", desc: "Масло потеряло вязкость из-за перегрева и кавитации. Требуется прокачка на вакуумном стенде и замена пружин под фактический вес в экипировке.", srv: "Вакуумная переборка + Ревальвинг", time: "1–2 дня", price: "от 18 000 ₽" },
+              { text: "Мотор 450сс тяжело заводится на горячую", code: "#ENG-450", risk: "risk-yellow", riskTxt: "Зажаты клапана", title: "Уход тепловых зазоров титановых клапанов", desc: "Зажатый зазор грозит обрывом тарелки клапана на высоких оборотах. Необходима срочная регулировка калибровочными шайбами.", srv: "Регулировка тепловых зазоров ГРМ", time: "1 день", price: "от 9 500 ₽" },
+              { text: "Люфт заднего колеса и скрип в прогрессии", code: "#CHS-203", risk: "risk-red", riskTxt: "Опасно", title: "Разрушение игольчатых подшипников линков", desc: "Попадание глины уничтожило пальцы прогрессии. Люфт разбивает нижнее ухо крепления моноамортизатора WP.", srv: "Замена подшипников прогрессии", time: "1 день", price: "от 8 500 ₽" },
+              { text: "Зависает мощностной клапан 2Т (нет верхов)", code: "#2T-POW", risk: "risk-yellow", riskTxt: "Нагар 2Т", title: "Закоксовывание шторок клапана TPI/TBI", desc: "Смолистые отложения двухтактного масла блокируют ход шторок. Разборка узла, ультразвуковая ванна и калибровка пружин.", srv: "Ревизия мощностного клапана", time: "1 день", price: "от 7 500 ₽" }
+            ]
+          },
+          tuning: {
+            title: "ВЫБЕРИТЕ ПРОГРАММУ ГОНОЧНОГО ТЮНИНГА:",
+            chips: [
+              { text: "Гоночный спек «Орлёнок MXGP Ready»", code: "#TUN-MX2", risk: "risk-green", riskTxt: "Гоночный спек", title: "Ревальвинг вилки и амортизатора под 32-метровые столы", desc: "Увеличение энергоёмкости отбоя без подброса заднего колеса. Вакуумная прокачка и подбор шим-стеков под жесткий грунт.", srv: "Полный ревальвинг + Вакуум", time: "2 дня", price: "от 26 500 ₽" },
+              { text: "Силовая броня АМг6 + Вентилятор SPAL", code: "#TUN-ARM", risk: "risk-green", riskTxt: "Хард-Эндуро", title: "Защитный комплекс для горного скальника", desc: "Цельносварная защита картера 5 мм с охватом прогрессии и помпы, силовые клетки радиаторов и датчик включения вентилятора.", srv: "Комплексная броня АМг6 + SPAL", time: "3 дня", price: "от 31 500 ₽" },
+              { text: "Кованый поршень Vertex GP + Портинг ГБЦ", code: "#TUN-ENG", risk: "risk-green", riskTxt: "Мощность", title: "Подготовка боевого мотора 450сс / 250сс", desc: "Облегченный кованый поршень высокой компрессии, притирка титановых клапанов и полировка каналов ГБЦ. Прирост тяги с низов.", srv: "Поршневая GP + Портинг ГБЦ", time: "4 дня", price: "от 38 000 ₽" },
+              { text: "Комплект Tubliss / Муссы X-Grip Soft", code: "#TUN-WHL", risk: "risk-green", riskTxt: "Зацеп", title: "Бескамерная система сверхнизкого давления 0.3 Bar", desc: "Установка муссов экстремальной мягкости или системы Tubliss для максимального пятна контакта на мокрых бревнах и камнях.", srv: "Монтаж Tubliss / Муссов в 2 колеса", time: "1 день", price: "от 6 000 ₽" }
+            ]
+          },
+          maintenance: {
+            title: "ВЫБЕРИТЕ РЕГЛАМЕНТНОЕ ТО СПОРТ-ТЕХНИКИ:",
+            chips: [
+              { text: "Регламент 40 м/ч: Поршень ЦПГ + Клапана", code: "#SRV-MX4", risk: "risk-yellow", riskTxt: "Регламент 40 м/ч", title: "Регламентная замена поршня спортивного ДВС", desc: "После 40 м/ч на 450сс зазор кольца превышает допуск. Установка кованого поршня размерной группы B, регулировка зазоров клапанов и замена цепи ГРМ.", srv: "Замена ЦПГ + Сальники вилки", time: "2 дня", price: "от 22 500 ₽" },
+              { text: "Вакуумная заправка амортизатора и вилки", code: "#SRV-SUS", risk: "risk-green", riskTxt: "Подвеска", title: "Межсезонная замена масла Motorex 4W / 2.5W", desc: "Полная разборка картриджей, промывка шим-стеков, вакуумная прокачка под давлением 10 бар азота и новые сальники/пыльники SKF.", srv: "ТО подвески с сальниками SKF", time: "1–2 дня", price: "от 16 000 ₽" },
+              { text: "Протяжка спиц динамометром и балансировка", code: "#SRV-SPK", risk: "risk-green", riskTxt: "Колеса", title: "Инспекция натяжения спиц 5.0 Н·м", desc: "Устранение радиального и осевого биения ободов Excel/DID, замена разбитых подшипников ступиц и сальников.", srv: "Протяжка колес + Подшипники", time: "3 часа", price: "от 5 500 ₽" },
+              { text: "Опрессовка картера 2Т/4Т на утечки воздуха", code: "#SRV-PRS", risk: "risk-green", riskTxt: "Герметичность", title: "Проверка мотора на паразитный подсос воздуха", desc: "Подсос через сальники коленвала на 2Т ведет к мгновенному обеднению смеси и прихвату поршня. Проверка манометром до 0.5 бар.", srv: "Опрессовка двигателя на утечки", time: "2 часа", price: "от 4 000 ₽" }
+            ]
+          }
+        },
+
+        projectsTitle: "БОЕВЫЕ <em>ПРОЕКТЫ КРОССА И ЭНДУРО</em>",
+        projects: [
+          {
+            cat: "ЧЕМПИОНАТ РОССИИ • КЛАСС 450",
+            name: "KTM 450 SX-F «Спек Орлёнок»",
+            desc: "Подготовка мотора к этапу в «Орлёнке»: титановые клапана, портинг ГБЦ, ревальвинг вилки WP XACT под 82 кг.",
+            photos: [
+              "images/ktm_mxgp_after.jpg",
+              "images/ktm_mxgp_before.jpg",
+              "images/ktm_mxgp_details.jpg"
+            ],
+            specs: [["Подвеска", "Вакуумная прокачка + пружины 4.8 N/mm"], ["Поршень", "Vertex GP-Racer (ковка)"], ["Сцепление", "Усиленная корзина Hinson Billetproof"], ["Срок", "5 рабочих дней"]]
+          },
+          {
+            cat: "ХАРД-ЭНДУРО • СКАЛЬНИК",
+            name: "Husqvarna TE300i «Горный Броневик»",
+            desc: "Постройка под скалы Геленджика: сплошная броня картера и резонатора АМг6, вентилятор SPAL, защита тормозов.",
+            photos: [
+              "images/husqvarna_enduro.jpg",
+              "images/husqvarna_jig.jpg",
+              "images/husqvarna_details.jpg"
+            ],
+            specs: [["Силовая броня", "Цельносварная 5 мм АМг6"], ["Охлаждение", "Радиаторы увеличенного объема + силикон"], ["Колёса", "Муссы X-Grip Soft + резина супер-софт"], ["Срок", "6 рабочих дней"]]
+          }
+        ],
+
+        calcTitle: "КАЛЬКУЛЯТОР <em>КРОССОВОЙ И ЭНДУРО ПОДГОТОВКИ</em>",
+        step1Title: "1. Выберите класс спорт-техники",
+        subclasses: [
+          { name: "Кросс 250 / 450 см³", mult: 1.0 },
+          { name: "Хард-Эндуро 2Т / 4Т", mult: 1.05 },
+          { name: "Тяжёлый Тур-Эндуро", mult: 1.2 }
+        ],
+        calcServices: [
+          { name: "Вакуумная переборка и настройка вилки WP/KYB", price: 14500, days: 2 },
+          { name: "Ревальвинг заднего амортизатора под вес", price: 16000, days: 2 },
+          { name: "Капитальный ребилд поршневой ЦПГ (2Т/4Т)", price: 18000, days: 3 },
+          { name: "Регулировка клапанов ГРМ и дефектовка", price: 9500, days: 1 },
+          { name: "Сварка цельной брони картера АМг6 (5 мм)", price: 17500, days: 3 },
+          { name: "Установка защитных клеток радиаторов", price: 14000, days: 2 },
+          { name: "Ревизия подшипников прогрессии и маятника", price: 8500, days: 1 },
+          { name: "Монтаж муссов (Mousse) / Tubliss в 2 колеса", price: 6000, days: 1 }
+        ]
+      }
+    };
+
+    // БАЗА ДАННЫХ ДЛЯ СПУТНИКА GOOGLE EARTH (РЕАЛЬНЫЕ КООРДИНАТЫ ТРАСС КУБАНИ)
+    const earthTracksData = [
+      {
+        name: "СТК ВДЦ «Орлёнок» (Туапсинский район)",
+        desc: "Трасса Чемпионата Мира MXGP на берегу Черного моря. Плотный морской глинозём, каскадные спуски и разрывные столы до 32 м.",
+        len: "1 850 м",
+        alt: "40 метров",
+        soil: "Морская глина",
+        hud: "ОРБИТА: ТРАССА ВДЦ «ОРЛЁНОК» (MXGP)",
+        lat: 44.2565,
+        lng: 38.8375,
+        zoom: 16,
+        earthUrl: "https://earth.google.com/web/@44.2565,38.8375,120a,1200d,35y,0h,45t,0r"
+      },
+      {
+        name: "СТК «Белая Стрела» (г. Краснодар)",
+        desc: "Жёсткий суглинок, быстрые волны «вупс», серийные ритм-секции и крутые разворотные упоры для тренировки прыжков.",
+        len: "1 600 м",
+        alt: "12 метров",
+        soil: "Суглинок / Бетон",
+        hud: "ОРБИТА: КРАСНОДАР // БЕЛАЯ СТРЕЛА",
+        lat: 44.9961,
+        lng: 39.0628,
+        zoom: 16,
+        earthUrl: "https://earth.google.com/web/@44.9961,39.0628,80a,900d,35y,0h,45t,0r"
+      },
+      {
+        name: "Песчаный трек «Чембурка» (г. Анапа)",
+        desc: "Глубокий морской песок. Высокая тепловая нагрузка на ЦПГ и сцепление, отработка техники глубоких колей.",
+        len: "1 450 м",
+        alt: "15 метров",
+        soil: "Морской песок",
+        hud: "ОРБИТА: АНАПА // ЧЕМБУРКА (ПЕСОК)",
+        lat: 44.9312,
+        lng: 37.3512,
+        zoom: 16,
+        earthUrl: "https://earth.google.com/web/@44.9312,37.3512,60a,850d,35y,0h,45t,0r"
+      },
+      {
+        name: "Маркотхский хребет (г. Геленджик)",
+        desc: "Острый горный скальник, крутые сыпучие полки и русла каменистых ручьев. Требует сплошной брони картера АМг6.",
+        len: "4 200 м",
+        alt: "420 метров",
+        soil: "Острый скальник",
+        hud: "ОРБИТА: ХРЕБЕТ МАРКОТХ // ЭНДУРО",
+        lat: 44.6050,
+        lng: 37.9950,
+        zoom: 15,
+        earthUrl: "https://earth.google.com/web/@44.6050,37.9950,450a,2500d,35y,0h,60t,0r"
+      }
+    ];
+
+    let currentDiv = 'custom';
+    let currentMult = 1.2;
+    let selectedSubclassName = 'Круизер / Софтейл';
+    let earthMap = null;
+    let activeTrackMarker = null;
+
+    // Управление меню-бургером
+    function toggleMenu(open) {
+      document.getElementById('mobileDrawer').classList.toggle('open', open);
+      document.getElementById('drawerBackdrop').classList.toggle('open', open);
+    }
+
+    // Переключение между мастерской и Федерацией
+    function showWorkshopView() {
+      document.getElementById('federationPage').classList.remove('active');
+      document.getElementById('workshopPage').classList.remove('hidden');
+      document.getElementById('modeToggleBar').style.display = 'grid';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFederationView() {
+      document.getElementById('workshopPage').classList.add('hidden');
+      document.getElementById('federationPage').classList.add('active');
+      document.getElementById('modeToggleBar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      initEarthMapIfNeeded();
+    }
+
+    // Инициализация Спутниковой Карты Google Earth с защитой от сбоя сети
+    function initEarthMapIfNeeded() {
+      setTimeout(() => {
+        if (typeof L === 'undefined') {
+          const m = document.getElementById('earthMap');
+          if (m) {
+            m.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8e97a8;font-family:var(--font-cond);text-align:center;padding:24px;line-height:1.6;">'
+              + 'СПУТНИКОВЫЙ ТЕРМИНАЛ ОРБИТЫ КУБАНИ<br><span style="color:#f0be5d;font-size:11px;">(Подключите интернет для загрузки космоснимков ArcGIS World Imagery)</span></div>';
+          }
+          return;
+        }
+
+        if (!earthMap) {
+          earthMap = L.map('earthMap', {
+            zoomControl: false,
+            attributionControl: false
+          }).setView([earthTracksData[0].lat, earthTracksData[0].lng], earthTracksData[0].zoom);
+
+          L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18
+          }).addTo(earthMap);
+
+          L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18
+          }).addTo(earthMap);
+
+          zoomToTrack(0);
+        } else {
+          earthMap.invalidateSize();
+        }
+      }, 120);
+    }
+
+    // Профили высот для SVG-спарклайна (перепад трассы)
+    const trackSparklines = [
+      "M 0,10 Q 30,26 65,12 T 110,28 T 160,16", // 0: Орлёнок (каскад столов)
+      "M 0,22 Q 35,10 70,24 T 120,12 T 160,18", // 1: Белая Стрела (ритм)
+      "M 0,24 Q 45,28 90,16 T 130,22 T 160,20", // 2: Чембурка (песок)
+      "M 0,28 Q 50,20 90,12 T 130,6 T 160,2"    // 3: Маркотх (скальный подъем)
+    ];
+
+    // Зум к конкретной трассе + анимация сонара
+    function zoomToTrack(idx) {
+      const data = earthTracksData[idx];
+      document.querySelectorAll('.track-pill-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+      document.getElementById('earthHudLabel').innerText = data.hud;
+      document.getElementById('googleEarthLink').href = data.earthUrl;
+      document.getElementById('trackNameOut').innerText = data.name;
+      document.getElementById('trackDescOut').innerText = data.desc;
+      document.getElementById('trackLenOut').innerText = data.len;
+      document.getElementById('trackAltOut').innerText = data.alt;
+      document.getElementById('trackSoilOut').innerText = data.soil;
+
+      // Обновляем тактическую плашку перепада высот
+      const altOverlay = document.getElementById('trackAltOverlay');
+      if (altOverlay) altOverlay.innerText = `Перепад: ${data.alt}`;
+      const sparkline = document.getElementById('elevationSparkline');
+      if (sparkline && trackSparklines[idx]) {
+        sparkline.setAttribute('d', trackSparklines[idx]);
+      }
+
+      if (typeof L !== 'undefined' && earthMap) {
+        earthMap.flyTo([data.lat, data.lng], data.zoom, {
+          duration: 1.8,
+          easeLinearity: 0.25
+        });
+
+        if (activeTrackMarker) earthMap.removeLayer(activeTrackMarker);
+
+        // Интерактивный пульсирующий сонар радара
+        const customIcon = L.divIcon({
+          className: 'custom-track-pin',
+          html: `<div style="position:relative;">
+            <div class="radar-pulse-ring"></div>
+            <div style="background:#f0be5d; width:16px; height:16px; border-radius:50%; border:2px solid #000; box-shadow:0 0 14px #f0be5d;"></div>
+          </div>`,
+          iconSize: [16, 16],
+          iconAnchor: [8, 8]
+        });
+
+        activeTrackMarker = L.marker([data.lat, data.lng], { icon: customIcon }).addTo(earthMap);
+      }
+    }
+
+    // Переключение режимов (Кастом / Кросс) с неоновым импульсом и шкалами
+    function switchDivision(div) {
+      currentDiv = div;
+      
+      // Неоновый визуальный импульс
+      document.body.classList.remove('theme-flash');
+      void document.body.offsetWidth; // trigger reflow
+      document.body.classList.add('theme-flash');
+
+      document.body.classList.toggle('mode-cross', div === 'cross');
+      document.getElementById('btnCustom').classList.toggle('active', div === 'custom');
+      document.getElementById('btnCross').classList.toggle('active', div === 'cross');
+
+      const data = divisionData[div];
+
+      document.getElementById('heroBadge').innerText = data.badge;
+      document.getElementById('heroTitle').innerHTML = data.heroTitle;
+      document.getElementById('heroLead').innerText = data.heroLead;
+      document.getElementById('heroStandImg').src = data.heroImg;
+      document.getElementById('heroStandTag').innerText = data.heroTag;
+      document.getElementById('heroSpecL1').innerText = data.spec1[0];
+      document.getElementById('heroSpecV1').innerText = data.spec1[1];
+      document.getElementById('heroSpecL2').innerText = data.spec2[0];
+      document.getElementById('heroSpecV2').innerText = data.spec2[1];
+      document.getElementById('heroSpecL3').innerText = data.spec3[0];
+      document.getElementById('heroSpecV3').innerText = data.spec3[1];
+
+      // Обновление полосок прогресса телеметрии в Hero стенде
+      const m1 = document.getElementById('heroSpecMeter1');
+      const m2 = document.getElementById('heroSpecMeter2');
+      const m3 = document.getElementById('heroSpecMeter3');
+      if (m1 && m2 && m3) {
+        if (div === 'custom') {
+          m1.style.width = '88%';
+          m2.style.width = '100%';
+          m3.style.width = '95%';
+        } else {
+          m1.style.width = '96%';
+          m2.style.width = '92%';
+          m3.style.width = '100%';
+        }
+      }
+
+      document.getElementById('servKicker').innerText = data.servKicker;
+      document.getElementById('servTitle').innerHTML = data.servTitle;
+      renderServices(data.services);
+
+      // Инициализируем выбранный режим (дефектовка, тюнинг или ТО) с актуальными пунктами
+      const modeIdx = currentAiModeKey === 'defect' ? 1 : (currentAiModeKey === 'tuning' ? 2 : 3);
+      selectAiMode(modeIdx);
+
+      document.getElementById('projectsTitle').innerHTML = data.projectsTitle;
+      renderProjects(data.projects);
+
+      document.getElementById('calcTitle').innerHTML = data.calcTitle;
+      document.getElementById('calcStep1Title').innerText = data.step1Title;
+      renderSubclasses(data.subclasses);
+      renderCalcServices(data.calcServices);
+      recalc();
+    }
+
+    function renderServices(list) {
+      const c = document.getElementById('servicesGrid');
+      c.innerHTML = '';
+      list.forEach(item => {
+        const div = document.createElement('article');
+        div.className = 'chamfer-box service-card';
+        div.innerHTML = `
+          <div>
+            <div class="sc-num">${item.num}</div>
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <ul class="sc-list">
+              ${item.list.map(l => `<li><span>${l[0]}</span><span>${l[1]}</span></li>`).join('')}
+            </ul>
+          </div>
+          <button class="action-btn btn-outline" style="width:100%;font-size:12px;padding:9px;" onclick="document.getElementById('calcSec').scrollIntoView({behavior:'smooth'})">
+            В калькулятор сметы ❯
+          </button>
+        `;
+        c.appendChild(div);
+      });
+      observeNewElements('#servicesGrid', '.service-card');
+    }
+
+    function renderAiChips(chips) {
+      const c = document.getElementById('aiChipContainer');
+      c.innerHTML = '';
+      chips.forEach((ch, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'symptom-item' + (idx === 0 ? ' active' : '');
+        btn.innerHTML = `<span>● ${ch.text}</span><span style="color:var(--gold);">❯</span>`;
+        btn.onclick = () => {
+          c.querySelectorAll('.symptom-item').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          setAiResult(ch.code, ch.risk, ch.riskTxt, ch.title, ch.desc, ch.srv, ch.time, ch.price);
+        };
+        c.appendChild(btn);
+      });
+    }
+
+    // Установка результатов ИИ-диагностики с эффектом сканирования CAN-bus
+    function setAiResult(code, riskClass, riskText, title, desc, srv, time, price, immediate = false) {
+      const overlay = document.getElementById('aiScanOverlay');
+      const applyData = () => {
+        document.getElementById('aiResCode').innerText = `ТЕХКАРТА: ${code}`;
+        const riskEl = document.getElementById('aiResRisk');
+        riskEl.className = `risk-tag ${riskClass}`;
+        riskEl.innerText = riskText;
+        document.getElementById('aiResTitle').innerText = title;
+        document.getElementById('aiResDesc').innerText = desc;
+        document.getElementById('aiResService').innerText = srv;
+        document.getElementById('aiResTime').innerText = time;
+        document.getElementById('aiResPrice').innerText = price;
+      };
+
+      if (!immediate && overlay) {
+        overlay.classList.add('scanning');
+        setTimeout(() => {
+          applyData();
+          overlay.classList.remove('scanning');
+        }, 260);
+      } else {
+        applyData();
+      }
+    }
+
+        let currentAiModeKey = 'defect';
+
+    function selectAiMode(mode) {
+      document.querySelectorAll('.ai-mode-btn').forEach((t, i) => t.classList.toggle('active', i === mode - 1));
+      const modeKeys = ['defect', 'tuning', 'maintenance'];
+      currentAiModeKey = modeKeys[mode - 1];
+
+      const divData = divisionData[currentDiv];
+      if (!divData || !divData.aiModes) return;
+      const modeData = divData.aiModes[currentAiModeKey];
+
+      // 1. Обновляем заголовок над кнопками симптомов/программ
+      const subTitle = document.getElementById('aiChipsSubtitle');
+      if (subTitle && modeData) {
+        subTitle.innerText = modeData.title;
+      }
+
+      // 2. ДИНАМИЧЕСКИ ПЕРЕСТРАИВАЕМ ПУНКТЫ-КНОПКИ ДЛЯ ВЫБРАННОГО РЕЖИМА!
+      if (modeData && modeData.chips) {
+        renderAiChips(modeData.chips);
+        // 3. Выбираем первый пункт и отображаем карточку
+        const first = modeData.chips[0];
+        if (first) {
+          setAiResult(first.code, first.risk, first.riskTxt, first.title, first.desc, first.srv, first.time, first.price);
+        }
+      }
+    }
+
+        async function runAiAnalysis() {
+      const q = document.getElementById('aiCustomInput').value.trim();
+      if (!q) return;
+
+      document.querySelectorAll('#aiChipContainer .symptom-item').forEach(b => b.classList.remove('active'));
+
+      const overlay = document.getElementById('aiScanOverlay');
+      if (overlay) overlay.classList.add('scanning');
+
+      const modelBadge = document.getElementById('aiModelBadge');
+
+      try {
+        const resp = await fetch('/api/diagnose', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: q,
+            division: currentDiv,
+            mode: currentAiModeKey
+          })
+        });
+
+        if (resp.ok) {
+          const data = await resp.json();
+          if (overlay) overlay.classList.remove('scanning');
+
+          if (modelBadge) {
+            if (data.cached) {
+              modelBadge.innerHTML = `<i style="width:5px; height:5px; background:#10b981; border-radius:50%; display:inline-block;"></i>DeepSeek V4.1 Flash • Кэш: [HIT] МГНОВЕННО`;
+              modelBadge.style.color = '#10b981';
+            } else {
+              modelBadge.innerHTML = `<i style="width:5px; height:5px; background:#00f0ff; border-radius:50%; display:inline-block;"></i>DeepSeek V4.1 Flash • Онлайн расчет`;
+              modelBadge.style.color = '#00f0ff';
+            }
+          }
+
+          setAiResult(
+            data.code || '#AI-DSK',
+            data.riskClass || 'risk-yellow',
+            data.riskText || 'Техкарта ИИ',
+            data.title || `Анализ: «${q}»`,
+            data.desc + (data.advice ? `\n\nРекомендация шеф-механика: ${data.advice}` : ''),
+            data.service || 'Инструментальная дефектовка узла',
+            data.time || '1–2 рабочих дня',
+            data.price || 'от 8 000 ₽',
+            true
+          );
+          return;
+        }
+      } catch (err) {
+        console.log('Local AI server not running, using internal offline heuristics:', err);
+      }
+
+      if (overlay) overlay.classList.remove('scanning');
+      if (modelBadge) {
+        modelBadge.innerHTML = `<i style="width:5px; height:5px; background:#f0be5d; border-radius:50%; display:inline-block;"></i>Локальный контур (запустите start.bat)`;
+        modelBadge.style.color = '#f0be5d';
+      }
+
+      setAiResult(
+        '#LOC-999',
+        'risk-yellow',
+        'Индивидуальный наряд',
+        `Разбор симптома: «${q}»`,
+        'Задача принята в контур стендовой диагностики. Механик проведет эндоскопию цилиндра, проверку давления масла и опрессовку впуска. (Запустите start.bat для работы с DeepSeek через .env)',
+        'Инструментальная дефектовка узла',
+        '1 день',
+        'от 5 000 ₽',
+        true
+      );
+    }
+
+    // Поддержка нажатия Enter в поле ИИ
+    const customInp = document.getElementById('aiCustomInput');
+    if (customInp) {
+      customInp.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') runAiAnalysis();
+      });
+    }
+
+    function applyAiToCalc() {
+      const checkboxes = document.querySelectorAll('.service-check-row');
+      if (checkboxes.length > 0) {
+        checkboxes[0].classList.add('checked');
+        if (checkboxes[1]) checkboxes[1].classList.add('checked');
+        recalc();
+      }
+      document.getElementById('calcSec').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Отрисовка проектов: для флагманского кейса (idx === 0) внедрен интерактивный слайдер «До / После»
+    function renderProjects(list) {
+      const c = document.getElementById('projectsGrid');
+      c.innerHTML = '';
+      list.forEach((p, idx) => {
+        const plate = document.createElement('article');
+        plate.className = 'chamfer-box project-card';
+
+        let visualHtml = '';
+        if (idx === 0) {
+          // Интерактивный До / После слайдер для флагманского проекта
+          visualHtml = `
+            <div class="ba-slider-container" id="baContainer_${idx}">
+              <img class="ba-img-after" id="projImg_${idx}" src="${p.photos[0]}" alt="${p.name} - После">
+              <img class="ba-img-before" id="baImgBefore_${idx}" src="${p.photos[1]}" alt="${p.name} - До">
+              <div class="ba-divider-line" id="baLine_${idx}"></div>
+              <div class="ba-handle" id="baHandle_${idx}">❮❯</div>
+              <span class="ba-tag-before" id="baTagBefore_${idx}">ДО // СТОК</span>
+              <span class="ba-tag-after" id="baTagAfter_${idx}">ПОСЛЕ // КАСТОМ</span>
+            </div>
+            <div class="proj-tabs" style="position:static; padding:8px 12px; background:#0b0d14; border-bottom:1px solid var(--border-steel); display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">← Тяните ползунок →</span>
+              <div style="display:flex; gap:4px;">
+                <button class="proj-tab-btn active" onclick="swapPhoto(${idx}, 0, this, '${p.photos[0]}')">Слайдер До/После</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 1, this, '${p.photos[1]}')">Сток</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 2, this, '${p.photos[2]}')">Узлы</button>
+              </div>
+            </div>
+          `;
+        } else {
+          // Классическая галерея с вкладками
+          visualHtml = `
+            <div class="project-pic-box">
+              <img id="projImg_${idx}" src="${p.photos[0]}" alt="${p.name}">
+              <div class="proj-tabs">
+                <button class="proj-tab-btn active" onclick="swapPhoto(${idx}, 0, this, '${p.photos[0]}')">Общий</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 1, this, '${p.photos[1]}')">Стапель</button>
+                <button class="proj-tab-btn" onclick="swapPhoto(${idx}, 2, this, '${p.photos[2]}')">Узлы</button>
+              </div>
+            </div>
+          `;
+        }
+
+        plate.innerHTML = `
+          ${visualHtml}
+          <div class="project-body">
+            <div>
+              <div style="font-family:var(--font-cond); color:var(--primary); font-size:11px; text-transform:uppercase;">${p.cat}</div>
+              <h3 style="font-family:var(--font-display); font-size:17px; text-transform:uppercase; margin:4px 0 6px;">${p.name}</h3>
+              <p style="font-size:12px; color:var(--text-muted);">${p.desc}</p>
+            </div>
+            <table class="spec-table">
+              ${p.specs.map(s => `<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join('')}
+            </table>
+            <button class="action-btn btn-primary" style="width:100%; font-size:12px; padding:10px;" onclick="document.getElementById('calcSec').scrollIntoView({behavior:'smooth'})">
+              Рассчитать похожий проект ❯
+            </button>
+          </div>
+        `;
+        c.appendChild(plate);
+
+        if (idx === 0) {
+          initBeforeAfterSlider(idx);
+        }
+      });
+    }
+
+    // Инициализация сенсорного/мышиного слайдера До / После с обрезкой через clip-path
+    function initBeforeAfterSlider(idx) {
+      setTimeout(() => {
+        const container = document.getElementById(`baContainer_${idx}`);
+        const beforeImg = document.getElementById(`baImgBefore_${idx}`);
+        const line = document.getElementById(`baLine_${idx}`);
+        const handle = document.getElementById(`baHandle_${idx}`);
+        const tagBefore = document.getElementById(`baTagBefore_${idx}`);
+        const tagAfter = document.getElementById(`baTagAfter_${idx}`);
+        if (!container || !beforeImg || !line || !handle) return;
+
+        let isDragging = false;
+        const setPosition = (clientX) => {
+          const rect = container.getBoundingClientRect();
+          if (rect.width <= 0) return;
+          let x = clientX - rect.left;
+          x = Math.max(0, Math.min(x, rect.width));
+          const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
+          const pctStr = pct.toFixed(2);
+          beforeImg.style.clipPath = `polygon(0 0, ${pctStr}% 0, ${pctStr}% 100%, 0 100%)`;
+          line.style.left = `${pctStr}%`;
+          handle.style.left = `${pctStr}%`;
+
+          // Плавное исчезновение плашек «ДО» и «ПОСЛЕ» при наезде ползунка
+          if (tagBefore) {
+            if (pct < 12) {
+              tagBefore.style.opacity = '0';
+              tagBefore.style.transform = 'translateX(-10px)';
+            } else if (pct < 28) {
+              const alpha = (pct - 12) / (28 - 12);
+              tagBefore.style.opacity = alpha.toFixed(2);
+              tagBefore.style.transform = `translateX(${((1 - alpha) * -10).toFixed(1)}px)`;
+            } else {
+              tagBefore.style.opacity = '1';
+              tagBefore.style.transform = 'translateX(0)';
+            }
+          }
+
+          if (tagAfter) {
+            if (pct > 88) {
+              tagAfter.style.opacity = '0';
+              tagAfter.style.transform = 'translateX(10px)';
+            } else if (pct > 72) {
+              const alpha = (88 - pct) / (88 - 72);
+              tagAfter.style.opacity = alpha.toFixed(2);
+              tagAfter.style.transform = `translateX(${((1 - alpha) * 10).toFixed(1)}px)`;
+            } else {
+              tagAfter.style.opacity = '1';
+              tagAfter.style.transform = 'translateX(0)';
+            }
+          }
+        };
+
+        const onDown = (clientX) => {
+          if (beforeImg.style.display === 'none') return;
+          isDragging = true;
+          setPosition(clientX);
+        };
+        const onMove = (clientX) => {
+          if (!isDragging || beforeImg.style.display === 'none') return;
+          setPosition(clientX);
+        };
+        const onUp = () => {
+          isDragging = false;
+        };
+
+        container.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          onDown(e.clientX);
+        });
+        window.addEventListener('mousemove', (e) => onMove(e.clientX));
+        window.addEventListener('mouseup', onUp);
+
+        container.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches[0]) onDown(e.touches[0].clientX);
+        }, { passive: true });
+        window.addEventListener('touchmove', (e) => {
+          if (isDragging && e.touches && e.touches[0]) onMove(e.touches[0].clientX);
+        }, { passive: true });
+        window.addEventListener('touchend', onUp);
+        window.addEventListener('touchcancel', onUp);
+      }, 50);
+    }
+
+    function swapPhoto(pIdx, tIdx, btn, url) {
+      const img = document.getElementById(`projImg_${pIdx}`);
+      const beforeImg = document.getElementById(`baImgBefore_${pIdx}`);
+      const line = document.getElementById(`baLine_${pIdx}`);
+      const handle = document.getElementById(`baHandle_${pIdx}`);
+      const tagBefore = document.getElementById(`baTagBefore_${pIdx}`);
+      const tagAfter = document.getElementById(`baTagAfter_${pIdx}`);
+      const container = document.getElementById(`baContainer_${pIdx}`);
+
+      if (pIdx === 0 && beforeImg && line && handle) {
+        if (tIdx === 0) {
+          // Режим слайдера До / После
+          if (img) img.src = url;
+          beforeImg.style.display = 'block';
+          line.style.display = 'block';
+          handle.style.display = 'flex';
+          if (tagBefore) {
+            tagBefore.style.display = 'block';
+            tagBefore.style.opacity = '1';
+            tagBefore.style.transform = 'translateX(0)';
+          }
+          if (tagAfter) {
+            tagAfter.style.display = 'block';
+            tagAfter.style.opacity = '1';
+            tagAfter.style.transform = 'translateX(0)';
+          }
+          if (container) container.style.cursor = 'ew-resize';
+        } else {
+          // Одиночное фото (Сток или Узлы)
+          if (img) img.src = url;
+          beforeImg.style.display = 'none';
+          line.style.display = 'none';
+          handle.style.display = 'none';
+          if (tagBefore) tagBefore.style.display = 'none';
+          if (tagAfter) tagAfter.style.display = 'none';
+          if (container) container.style.cursor = 'default';
+        }
+      } else {
+        if (img) img.src = url;
+      }
+      btn.parentElement.querySelectorAll('.proj-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function renderSubclasses(subs) {
+      const c = document.getElementById('subclassContainer');
+      c.innerHTML = '';
+      subs.forEach((s, idx) => {
+        const opt = document.createElement('div');
+        opt.className = 'subclass-item' + (idx === 0 ? ' active' : '');
+        opt.innerHTML = `<strong>${s.name}</strong><span style="font-size:11px; color:var(--gold);">Выбрать ❯</span>`;
+        opt.onclick = () => {
+          c.querySelectorAll('.subclass-item').forEach(b => b.classList.remove('active'));
+          opt.classList.add('active');
+          currentMult = s.mult;
+          selectedSubclassName = s.name;
+          recalc();
+        };
+        c.appendChild(opt);
+      });
+      currentMult = subs[0].mult;
+      selectedSubclassName = subs[0].name;
+    }
+
+    function renderCalcServices(services) {
+      const c = document.getElementById('calcServicesList');
+      c.innerHTML = '';
+      services.forEach((srv, idx) => {
+        const item = document.createElement('div');
+        item.className = 'service-check-row' + (idx < 2 ? ' checked' : '');
+        item.dataset.price = srv.price;
+        item.dataset.days = srv.days;
+        item.dataset.name = srv.name;
+        item.innerHTML = `
+          <span>${srv.name}</span>
+          <span style="font-family:var(--font-cond); color:var(--gold); font-weight:700;">${srv.price.toLocaleString('ru-RU')} ₽</span>
+        `;
+        item.onclick = () => {
+          item.classList.toggle('checked');
+          recalc();
+        };
+        c.appendChild(item);
+      });
+    }
+
+    // Живой счетчик одометра в смете
+    let currentTotalValue = 0;
+    function animateTotalDisplay(target) {
+      const display = document.getElementById('calcTotalDisplay');
+      if (!display) return;
+      if (target === currentTotalValue) {
+        display.innerText = target.toLocaleString('ru-RU') + ' ₽';
+        return;
+      }
+      const start = currentTotalValue;
+      const change = target - start;
+      const duration = 280;
+      let startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (change * ease));
+        display.innerText = current.toLocaleString('ru-RU') + ' ₽';
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          currentTotalValue = target;
+          display.innerText = target.toLocaleString('ru-RU') + ' ₽';
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function recalc() {
+      let base = 0;
+      let days = 0;
+      document.querySelectorAll('.service-check-row.checked').forEach(it => {
+        base += parseInt(it.dataset.price, 10);
+        days += parseInt(it.dataset.days, 10);
+      });
+      const total = Math.round(base * currentMult);
+      animateTotalDisplay(total);
+
+      document.getElementById('calcDaysDisplay').innerText = days > 0
+        ? `Срок в цеху: ~${Math.max(1, days)} раб. дн.`
+        : 'Отметьте необходимые позиции в списке';
+    }
+
+    // Отправка заявки в Telegram или WhatsApp с валидацией телефона
+    function sendOrder(channel) {
+      const phoneInput = document.getElementById('clientPhone');
+      const bike = document.getElementById('clientBikeModel').value.trim() || 'Не указана';
+      const phone = phoneInput.value.trim();
+
+      if (!phone || phone.length < 5) {
+        phoneInput.classList.add('input-error-shake');
+        phoneInput.focus();
+        setTimeout(() => phoneInput.classList.remove('input-error-shake'), 600);
+        alert('Пожалуйста, укажите контактный номер телефона для бронирования подъемника.');
+        return;
+      }
+
+      const total = document.getElementById('calcTotalDisplay').innerText;
+      const checkedServices = [];
+      document.querySelectorAll('.service-check-row.checked').forEach(it => checkedServices.push(it.dataset.name));
+
+      const text = `Здравствуйте! Заявка с сайта МОТО-АЛЬЯНС КУБАНЬ.\n`
+        + `Дивизион: ${currentDiv === 'custom' ? 'Тяжёлый Кастом / V-Twin' : 'Кросс и Эндуро'}\n`
+        + `Класс: ${selectedSubclassName}\n`
+        + `Модель: ${bike}\n`
+        + `Телефон: ${phone}\n`
+        + `Выбранные услуги:\n- ${checkedServices.join('\n- ')}\n`
+        + `Ориентировочная смета: ${total}`;
+
+      if (channel === 'tg') {
+        window.open(`https://t.me/share/url?text=${encodeURIComponent(text)}`, '_blank');
+      } else if (channel === 'wa') {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    }
+
+    // Инициализация при загрузке
+    
+    // =========================================================================
+    // SCROLL REVEAL OBSERVER (АНИМАЦИЯ ПОДТЯГИВАНИЯ СНИЗУ)
+    // =========================================================================
+    let scrollObserver = null;
+
+    function initScrollReveal() {
+      if ('IntersectionObserver' in window) {
+        scrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              scrollObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.08,
+          rootMargin: '0px 0px -30px 0px'
+        });
+
+        document.querySelectorAll('.reveal-up').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          // Если элемент уже в зоне видимости первого экрана
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('revealed');
+          } else {
+            scrollObserver.observe(el);
+          }
+        });
+      } else {
+        // Фоллбэк для старых браузеров
+        document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('revealed'));
+      }
+    }
+
+    function observeNewElements(containerSelector, itemSelector) {
+      setTimeout(() => {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        const items = container.querySelectorAll(itemSelector);
+        items.forEach((item, idx) => {
+          item.classList.add('reveal-up');
+          item.style.transitionDelay = `${idx * 0.08}s`;
+          if (scrollObserver) {
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              item.classList.add('revealed');
+            } else {
+              scrollObserver.observe(item);
+            }
+          } else {
+            item.classList.add('revealed');
+          }
+        });
+      }, 30);
+    }
+
+
+    switchDivision('custom');
+    initScrollReveal();
+  </script>
+</body>
+</html>
