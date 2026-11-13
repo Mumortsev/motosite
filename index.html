@@ -1297,6 +1297,9 @@
     .reveal-delay-3 { transition-delay: 0.24s; }
     .reveal-delay-4 { transition-delay: 0.32s; }
 
+      @media (prefers-reduced-motion: reduce) {
+      #aiScanOverlay, #aiScanOverlay * { animation: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -2254,14 +2257,21 @@
         btn.onclick = () => {
           c.querySelectorAll('.symptom-item').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-          setAiResult(ch.code, ch.risk, ch.riskTxt, ch.title, ch.desc, ch.srv, ch.time, ch.price);
+          if (isStaticDemo) {
+            document.getElementById('aiCustomInput').value = ch.text;
+            runScriptedAnalysis(ch.text, ch);
+          } else {
+            setAiResult(ch.code, ch.risk, ch.riskTxt, ch.title, ch.desc, ch.srv, ch.time, ch.price);
+          }
         };
         c.appendChild(btn);
       });
     }
 
     // Установка результатов ИИ-диагностики с эффектом сканирования CAN-bus
+    let aiResultTimer = null;
     function setAiResult(code, riskClass, riskText, title, desc, srv, time, price, immediate = false) {
+      clearTimeout(aiResultTimer);
       const overlay = document.getElementById('aiScanOverlay');
       const applyData = () => {
         document.getElementById('aiResCode').innerText = `ТЕХКАРТА: ${code}`;
@@ -2277,7 +2287,7 @@
 
       if (!immediate && overlay) {
         overlay.classList.add('scanning');
-        setTimeout(() => {
+        aiResultTimer = setTimeout(() => {
           applyData();
           overlay.classList.remove('scanning');
         }, 260);
@@ -2289,6 +2299,7 @@
         let currentAiModeKey = 'defect';
 
     function selectAiMode(mode) {
+      if (isStaticDemo) cancelDemoAnalysis();
       document.querySelectorAll('.ai-mode-btn').forEach((t, i) => t.classList.toggle('active', i === mode - 1));
       const modeKeys = ['defect', 'tuning', 'maintenance'];
       currentAiModeKey = modeKeys[mode - 1];
@@ -2315,29 +2326,136 @@
     }
 
     const isStaticDemo = location.hostname.endsWith('.github.io') || new URLSearchParams(location.search).has('demo');
+    let demoTimers = [];
+    let demoRun = 0;
+
+    function cancelDemoAnalysis() {
+      demoRun += 1;
+      demoTimers.forEach(clearTimeout);
+      demoTimers = [];
+      clearTimeout(aiResultTimer);
+      document.getElementById('aiScanOverlay').classList.remove('scanning');
+      document.getElementById('aiResultCard').setAttribute('aria-busy', 'false');
+      document.getElementById('aiCustomInput').disabled = false;
+      const button = document.querySelector('[onclick="runAiAnalysis()"]');
+      button.disabled = false;
+      button.textContent = 'Разобрать';
+      const status = document.getElementById('aiDemoProgress');
+      if (status) status.textContent = '';
+      if (isStaticDemo) document.getElementById('aiModelBadge').textContent = 'AI-инженер · Демо';
+    }
+
+    function chooseDemoScenario(query) {
+      const pool = divisionData[currentDiv].aiModes[currentAiModeKey].chips;
+      const normalize = value => value.toLowerCase().replace(/ё/g, 'е');
+      const q = normalize(query);
+      const groups = [
+        /стук|цок|грем|шум|грм|клапан|натяж|гидрокомпенс/,
+        /сцепл|буксу|выжим|рывк|передач|коробк/,
+        /выхлоп|глушител|стрел|хлоп|впуск|смесь/,
+        /вибрац|поднож|опор|сайлент/,
+        /вилк|аморт|подвес|перья|сальник|пробо/,
+        /масл|теч|смаз|фильтр/,
+        /тормоз|колод|диск|суппорт/,
+        /завод|стартер|зажиган|свеч|аккумулятор/,
+        /stage|стейдж|вал|тяга|мощност|прошив|тюнинг/,
+        /колес|колес|маятник|каток|рама/,
+        /bore|порш|расточ|объем|цилиндр/,
+        /то\b|обслуж|регламент|сезон|моточас/
+      ];
+      const words = q.match(/[а-яa-z0-9]{4,}/g) || [];
+      let best = null, bestScore = 0;
+      pool.forEach(item => {
+        const label = normalize(item.text + ' ' + item.title + ' ' + item.srv);
+        let score = groups.reduce((sum, group) => sum + (group.test(q) && group.test(label) ? 4 : 0), 0);
+        words.forEach(word => { if (label.includes(word.slice(0, 5))) score += 1; });
+        if (score > bestScore) { best = item; bestScore = score; }
+      });
+      return best || {
+        code: '#DEMO-PLAN', risk: 'risk-yellow', riskTxt: 'Уточнить на осмотре',
+        title: currentAiModeKey === 'tuning' ? 'План подбора доработок' : currentAiModeKey === 'maintenance' ? 'План обслуживания техники' : 'План первичной диагностики',
+        desc: currentDiv === 'cross'
+          ? 'Уточнить модель и моточасы, условия появления симптома и историю обслуживания. Начать с осмотра, затем проверить соответствующий узел на стенде.'
+          : 'Уточнить модель V-Twin, пробег и установленные доработки. Зафиксировать условия появления симптома и составить перечень измерений для механика.',
+        srv: 'Осмотр и согласование работ', time: 'После уточнения задачи', price: 'После осмотра'
+      };
+    }
+
+    function runScriptedAnalysis(query, preset) {
+      cancelDemoAnalysis();
+      const run = demoRun;
+      const result = preset || chooseDemoScenario(query);
+      const overlay = document.getElementById('aiScanOverlay');
+      const scanLabel = overlay.querySelector('div');
+      const status = document.getElementById('aiDemoProgress');
+      const badge = document.getElementById('aiModelBadge');
+      const button = document.querySelector('[onclick="runAiAnalysis()"]');
+      document.getElementById('aiCustomInput').disabled = true;
+      document.getElementById('aiResultCard').setAttribute('aria-busy', 'true');
+      button.disabled = true;
+      button.textContent = 'Разбираем…';
+      overlay.classList.add('scanning');
+      const steps = ['Разбираем описание и тип техники…', 'Подбираем подходящий сценарий…', 'Формируем техкарту и перечень работ…'];
+      const interval = matchMedia('(prefers-reduced-motion: reduce)').matches ? 70 : 650;
+      const showStep = i => {
+        if (run !== demoRun) return;
+        scanLabel.textContent = steps[i];
+        status.textContent = steps[i];
+        badge.textContent = 'Демо · ' + (i + 1) + ' / 3';
+      };
+      showStep(0);
+      [1, 2].forEach(i => demoTimers.push(setTimeout(() => showStep(i), interval * i)));
+      demoTimers.push(setTimeout(() => {
+        if (run !== demoRun) return;
+        setAiResult(result.code, result.risk, result.riskTxt, result.title,
+          'Сценарий по запросу «' + query + '».\n\n' + result.desc,
+          result.srv, result.time, result.price, true);
+        overlay.classList.remove('scanning');
+        document.getElementById('aiResultCard').setAttribute('aria-busy', 'false');
+        document.getElementById('aiCustomInput').disabled = false;
+        button.disabled = false;
+        button.textContent = 'Разобрать ещё';
+        badge.textContent = 'AI-инженер · Демо';
+        status.textContent = 'Техкарта готова. Можно изменить запрос или перенести работы в смету.';
+        demoTimers = [];
+      }, interval * steps.length));
+    }
 
     if (isStaticDemo) {
       const badge = document.getElementById('aiModelBadge');
-      badge.textContent = 'Демо-карточки · ИИ не подключён';
+      badge.textContent = 'AI-инженер · Демо';
       badge.style.color = 'var(--gold)';
       const input = document.getElementById('aiCustomInput');
-      input.disabled = true;
-      input.placeholder = 'ИИ-разбор недоступен в демоверсии';
-      const button = document.querySelector('[onclick="runAiAnalysis()"]');
-      button.disabled = true;
-      button.style.opacity = '.55';
+      input.maxLength = 500;
+      input.placeholder = 'Например: стук на горячую или течёт вилка…';
       const note = document.createElement('p');
       note.id = 'aiDemoNote';
-      note.textContent = 'Демонстрационный режим. Выберите готовый пример: индивидуальный ИИ-разбор требует подключения сервера.';
-      note.style.cssText = 'font-size:13px;line-height:1.6;color:var(--text-muted);margin-top:12px';
+      note.textContent = 'Сценарная демонстрация: ответы и цены — примеры, а не результат диагностики.';
+      note.style.cssText = 'font-size:12px;line-height:1.6;color:var(--text-muted);margin-top:12px';
       input.setAttribute('aria-describedby', note.id);
       input.parentElement.after(note);
+      const progress = document.createElement('p');
+      progress.id = 'aiDemoProgress';
+      progress.setAttribute('role', 'status');
+      progress.setAttribute('aria-live', 'polite');
+      progress.style.cssText = 'font-size:13px;line-height:1.6;color:var(--gold);min-height:2.5em;margin-top:8px';
+      note.after(progress);
+      window.addEventListener('pagehide', cancelDemoAnalysis);
     }
 
     async function runAiAnalysis() {
-      if (isStaticDemo) return;
       const q = document.getElementById('aiCustomInput').value.trim();
-      if (!q) return;
+      if (!q) {
+        document.getElementById('aiCustomInput').focus();
+        const status = document.getElementById('aiDemoProgress');
+        if (status) status.textContent = 'Опишите симптом или выберите готовый пример выше.';
+        return;
+      }
+      if (isStaticDemo) {
+        document.querySelectorAll('#aiChipContainer .symptom-item').forEach(b => b.classList.remove('active'));
+        runScriptedAnalysis(q);
+        return;
+      }
 
       document.querySelectorAll('#aiChipContainer .symptom-item').forEach(b => b.classList.remove('active'));
 
